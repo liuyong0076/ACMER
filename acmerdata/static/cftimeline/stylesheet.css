@@ -1,0 +1,47 @@
+.domain {
+    display: none;
+}
+
+.tick line {
+    stroke: #C0C0BB;
+}
+
+.tick text {
+    fill: #8E8883;
+    font-size: 12pt;
+}
+
+.days {
+    fill: rgb(92, 92, 92);
+    font-weight: bold;
+    font-size: 55pt;
+}
+
+.timer {
+    fill: #686868;
+}
+
+.value {
+    fill: rgb(138, 46, 46);
+    font-size: 20pt;
+    font-weight: 400;
+}
+
+.barInfo {
+    fill: rgb(255, 255, 255);
+    font-size: 22pt;
+    font-weight: 800;
+}
+
+.A {fill: red;}
+.B {fill: darkred;}
+.C {fill: mediumvioletred;}
+.D {fill: palevioletred;}
+.E {fill: deeppink;}
+.F {fill: indigo;}
+.G {fill: purple;}
+.H {fill: slateblue;}
+.I {fill: mediumorchid;}
+.J {fill: chocolate;}
+.K {fill: darkorange;}
+.L {fill: lime;}

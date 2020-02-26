@@ -1,0 +1,185 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUCTCODER</title>
+	<!-- Bootstrap Styles-->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+   
+        <!-- Custom Styles-->
+    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link href="{% static 'assets/js/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        
+        {% include 'template-menu.html' %}
+        
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-8">
+                      <!--   Kitchen Sink -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="https://codeforces.com/contests" target="_blank">Codeforces</a>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>name</th>
+                                                <th>开始时间</th>
+                                                <th>时长</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if cflist %}
+                                            {% for s in cflist %}
+                                            <tr>
+                                                <td>{{  forloop.counter }}</td>
+                                                <td>{{s.cname}}</td>
+                                                <td>{{s.starttime}}</td>
+                                                <td>{{s.during}}</td>
+                                            </tr>
+                                            {% endfor%}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- End  Kitchen Sink -->
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Codeforces访问提示
+                            </div>
+                            <div class="panel-body">
+                                点击左边标题即可访问Codeforces的Contest页面进入报名比赛<br/>如果已经报名比赛则可以使用<a href="http://m1.codeforces.com/enter"target="_blank">http://m1.codeforces.com/enter</a>或
+                                <a href="http://m2.codeforces.com/enter"target="_blank">http://m2.codeforces.com/enter</a><br/>进行比赛(以上两个网址不可报名)<hr style="height: 0px;">此外，可以考虑使用手机访问报名页面进行报名，使用电脑访问m1、m2进行比赛
+                                <hr style="height: 0px;">如果由于不知名原因以上网页不能访问导致无法注册，请使用<a href="https://codeforces.ml/contests" target="_blank">https://codeforces.ml/contests</a><br/>
+                                该链接指向一个Codeforces的镜像站(类似于学校网页版vpn进入教务管理系统的原理)<br>同时它还提供了<a href="http://m2.codeforces.ml/enter"target="_blank">http://m2.codeforces.ml/enter</a>进行比赛(注意：该网站不提供m1)
+                                <hr style="height: 0px;">如果仍然不能访问，建议使用vpn进行访问
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <!--   Kitchen Sink -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                AtCoder
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>name</th>
+                                                <th>开始时间</th>
+                                                <th>时长</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if aclist %}
+                                            {% for s in aclist %}
+                                            <tr>
+                                                <td>{{  forloop.counter }}</td>
+                                                <td><a href='{{s.link}}' target="_blank">{{s.cname}}</a></td>
+                                                <td>{{s.starttime}}</td>
+                                                <td>{{s.during}}</td>
+                                            </tr>
+                                            {% endfor%}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- End  Kitchen Sink -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <!--   Kitchen Sink -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                牛客网比赛
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>name</th>
+                                                <th>开始时间</th>
+                                                <th>时长</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if nclist %}
+                                            {% for s in nclist %}
+                                            <tr>
+                                                <td>{{  forloop.counter }}</td>
+                                                <td><a href='{{s.link}}' target="_blank">{{s.cname}}</a></td>
+                                                <td>{{s.starttime}}</td>
+                                                <td>{{s.during}}</td>
+                                            </tr>
+                                            {% endfor%}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- End  Kitchen Sink -->
+                    </div>
+                </div>
+            
+        </div>
+               
+    </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
+      <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Metis Menu Js -->
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="{% static 'assets/js/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables/dataTables.bootstrap.js' %}"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+         <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+    
+   
+</body>
+</html>

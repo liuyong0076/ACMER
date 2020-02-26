@@ -1,0 +1,291 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUCTCODER</title>
+	<!-- Bootstrap Styles-->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+   
+        <!-- Custom Styles-->
+    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link href="{% static 'assets/js/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        
+        
+        {% include 'template-menu.html' %}
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div id="container" style="height: 600%;width:100%;"></div>
+                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                    <script type="text/javascript">
+                        var names = JSON.parse('{{names|safe}}');
+                        var lineX = JSON.parse('{{lineX|safe}}');
+                        var stuNOList = JSON.parse('{{stuNOList|safe}}');
+                        var dic_stuNO_rating = JSON.parse('{{dic_stuNO_rating|safe}}');
+                        var color = JSON.parse('{{color|safe}}');
+                
+                        var datalist = []
+                        for(var item in stuNOList){
+                            console.log(dic_stuNO_rating[stuNOList[item]])
+                            datalist.push(dic_stuNO_rating[stuNOList[item]])
+                        }
+                
+                        var dom = document.getElementById("container");
+                        var myChart = echarts.init(dom);
+                        var charts = {
+                            unit: 'Rating(cf)',
+                            names: names, //['庄禹', '赵伟杰'],
+                            lineX: lineX, //['Freshman-9', '10', '11', '12', '1', '2', '3', '4', '5', '6', '7', '8', 'Sophomore-9', '10', '11', '12', '1', '2', '3', '4'],
+                            value: datalist
+                            // [
+                            // 	[451, 352, 1303, 534, 95, 236, 217, 328, 159, 151, 231, 192, 453, 524, 165, 236, 527, 328, 129, 530],
+                            // 	[360, 545, 80, 192, 330, 2580, 1192, 80, 250, 453, 352, 28, 1625, 345, 65, 325, 468, 108, 253, 98]
+                            // ]
+                        };
+                        //var color = ['rgba(23, 255, 243', 'rgba(255,100,97', 'rgba(255,100,197', 'rgba(255,200,97'];
+                        var lineY = [];
+                
+                        for (var i = 0; i < charts.names.length; i++) {
+                            var x = i;
+                            if (x > color.length - 1) {
+                                x = color.length - 1;
+                            }
+                            var data = {
+                                name: charts.names[i],
+                                type: 'line',
+                                color: color[x] + ')',
+                                smooth: true,
+                                areaStyle: {
+                                    normal: {
+                                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                            offset: 0,
+                                            color: color[x] + ', 0.3)'
+                                        }, {
+                                            offset: 0.8,
+                                            color: color[x] + ', 0)'
+                                        }], false),
+                                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                                        shadowBlur: 10
+                                    }
+                                },
+                                symbol: 'circle',
+                                symbolSize: 5,
+                                data: charts.value[i]
+                            }
+                            lineY.push(data)
+                        };
+                
+                        lineY[0].markLine = {
+                            silent: true,
+                            data: [{
+                                yAxis: 1300
+                            }, {
+                                yAxis: 1500
+                            }, {
+                                yAxis: 1700
+                            }, {
+                                yAxis: 1900
+                            }, {
+                                yAxis: 2100
+                            }]
+                        };
+                        var option = {
+                            backgroundColor:'#1b2735',
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                    dataZoom: [
+                        {
+                            show: true,
+                            realtime: true,
+                            start: '1',
+                            end: '70'
+                        },
+                        {
+                            type: 'inside',
+                            realtime: true,
+                            start: '1',
+                            end: '70'
+                        }
+                    ],
+                            legend: {
+                                data: charts.names,
+                                textStyle: {
+                                    fontSize: 12,
+                                    color: 'rgb(0,253,255,0.6)'
+                                },
+                                right: '4%'
+                            },
+                            grid: {
+                                top: '14%',
+                                left: '4%',
+                                right: '4%',
+                                bottom: '12%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: charts.lineX,
+                                axisLabel: {
+                                    textStyle: {
+                                        color: 'rgb(0,253,255,0.6)'
+                                    },
+                                    formatter: function(params) {
+                                        return params;//.split(' ')[0] + '\n' + params.split(' ')[1]
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                name: charts.unit,
+                                type: 'value',
+                                axisLabel: {
+                                    formatter: '{value}',
+                                    textStyle: {
+                                        color: 'rgb(0,253,255,0.6)'
+                                    }
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: 'rgb(23,255,243,0.3)'
+                                    }
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: 'rgb(0,253,255,0.6)'
+                                    }
+                                }
+                            },
+                            series: lineY
+                        };
+                
+                        myChart.setOption({
+                          legend: {
+                            selected: {
+                              '赵伟杰': true,
+                              '庄禹': true
+                            }
+                          }
+                        });
+                        
+                        myChart.setOption(option, true);
+                    </script>
+                    <p  style="text-align:center"><a href="/acmerdata/group/ratingline/{{ groupid }}"class="btn btn-primary btn-sm">点此进入全屏</a></p>
+                    <p></p>
+			 <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                            <div class="panel-heading">
+                                已有组
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>remark</th>
+                                                <th>names</th>
+                                                <th>数据</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                                {% if grouplist %}
+                                                    {% for s in grouplist %}
+                                                        <tr class="odd gradeX"></tr>
+                                                            <td>{{s.id}}</td>
+                                                            <td>{{s.remark}}</td>
+                                                            <td>{{s.studentNames| truncatechars:20 }}</td>
+                                                            <td><a href="/acmerdata/group/data/{{s.id}}"class="btn btn-info btn-sm">view</a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         
+                    </div>    
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                            <div class="panel-heading">
+                                成员名单
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>姓名</th>
+                                                <th>cfID</th>
+                                                <th>#cf</th>
+                                                <th>cfRating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                                {% if students %}
+                                                    {% for s in students %}
+                                                        <tr class="odd gradeX"></tr>
+                                                            <td>{{  forloop.counter }}</td>
+                                                            <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                            <td><a href="https://codeforces.com/profile/{{ s.cfID }}" target="_blank">{{s.cfID| truncatechars:20 }}</a></td>
+                                                            <td>{{s.cfTimes}}</td>
+                                                            <td>{{s.cfRating}}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         
+                    </div>    
+                </div>
+                
+            </div>
+                 
+            
+            </div>     
+        </div>
+             <!-- /. PAGE INNER  -->
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
+      <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Metis Menu Js -->
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="{% static 'assets/js/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables/dataTables.bootstrap.js' %}"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+         <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+    
+   
+</body>
+</html>

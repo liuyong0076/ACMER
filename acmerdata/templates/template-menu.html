@@ -1,0 +1,89 @@
+{% load static %}
+<!--
+增加腾讯统计功能，来自https://ta.qq.com/
+-->
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522036" charset="UTF-8"></script>
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" style="width:1000px;" href="/acmerdata">
+                    <!-- <img style="width:60px;" src="{% static 'logo.jpg'%}"/> -->
+                    BUCTCODER
+                    <span style="font-size: small;">A data statistics and analysis system for acmers in BUCT</span>
+                </a>
+                <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button> -->
+                
+            </div>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <a href="/acmerdata"><i class="fa fa-dashboard"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="/acmerdata/weightratingstatistic"><i class="fa fa-table"></i> WeightedRating</a>
+                    </li>
+                    <li>
+                        <a href="/acmerdata/contests"><i class="fa fa-desktop"></i>Recent Contests</a>
+                    </li>
+                    <li>
+                        <a href="/acmerdata/contestforecast"><i class="fa fa-table"></i> Upcoming Contests</a>
+                    </li>
+                    <!-- <li>
+                        <a href="tab-panel.html"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
+                    </li>
+                    
+                    <li>
+                        <a href="table.html"><i class="fa fa-table"></i> Responsive Tables</a>
+                    </li> -->
+
+                
+                <li>
+                    <a href="#"><i class="fa fa-sitemap"></i> Data Visualization<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/acmerdata/group"><i class="fa fa-bar-chart-o"></i> Group</a>
+                        </li>
+                        <li>
+                            <a href="/acmerdata/timeline" target="_blank"><i class="fa fa-bar-chart-o"></i> Timeline</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#">Third Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level Link</a>
+                                </li>
+
+                            </ul>
+
+                        </li> -->
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/acmerdata/addstudent"><i class="fa fa-table"></i> Addstudent</a>
+                </li>
+                <!--<li>
+                    <a href="/acmerdata/spider"><i class="fa fa-edit"></i> Spider </a>
+                </li> -->
+                <li>
+                   <a href="/acmerdata/contact"><i class="fa fa-qrcode"></i> Contact</a>
+               </li>
+                </ul>
+
+            </div>
+
+        </nav>
