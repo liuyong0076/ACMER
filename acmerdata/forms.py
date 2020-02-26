@@ -5,9 +5,20 @@ from .models import AddStudentqueue,studentgroup
 from django.utils.translation import ugettext_lazy as _
 class Addstudent(ModelForm):
     class Meta:
+        sexchoice = (
+            ('',''),
+            ('女',"女"),
+            ('男',"男"),
+        )
+        typechoice = (
+            ('create','创建'),
+            ('update','更新'),
+        )
         model = AddStudentqueue
-        fields = ['stuNO','realName','className','school','year','acID','cfID','vjID','ncID']
+        fields = ['atype','stuNO','realName','sex','className','school','year','acID','cfID','vjID','ncID']
         widgets = {
+            'sex' : forms.widgets.Select(attrs={'class':'form-control'},choices=sexchoice),
+            'atype' : forms.widgets.Select(attrs={'class':'form-control','onchange':'typechange()'},choices=typechoice),
             'stuNO' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'realName' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'className' : forms.widgets.TextInput(attrs={'class':'form-control'}),
@@ -19,6 +30,8 @@ class Addstudent(ModelForm):
             'school' : forms.widgets.TextInput(attrs={'class':'form-control'}),
         }
         labels = {
+            'atype' :_('操作类型'),
+            'sex' :_('性别'),
             'stuNO': _('学号'),
             'realName':_('姓名'),
             'className':_('班别'),
@@ -28,7 +41,6 @@ class Addstudent(ModelForm):
             'vjID':_('VirtualJudgeID'),
             'ncID':_('牛客网ID'),
             'school' : _('学校'),
-            
         }
         help_texts = {
             'cfID': _('codeforces网站ID，请注意不要有多余空格'),
@@ -106,5 +118,3 @@ class addprize(forms.Form):
     cyear = forms.IntegerField(widget=forms.Select(attrs={'class':'form-control'},choices=yearcholce),label="年份")
     prize = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class':'form-control'}),label="奖项")
     level = forms.CharField(initial="国家级",widget=forms.Select(attrs={'class':'form-control','id':'level',},choices=levelchoice),label="比赛等级",disabled=True)
-
-

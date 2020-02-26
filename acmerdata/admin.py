@@ -11,7 +11,7 @@ def execute_execution_accept(odeladmin, request, queryset):
 execute_execution_accept.short_description = "Accept Student"
 execute_execution_reject.short_description = "Reject Student"
 class AddAdmin(admin.ModelAdmin):
-    list_display = ('stuNO', 'realName','className','year','acID','accheck','cfID','cfcheck',
+    list_display = ('stuNO', 'realName','className','sex','year','acID','accheck','cfID','cfcheck',
     'vjID','ncID','execution','request_time','execution_statu','execution_time'
     )
     actions = [execute_execution_reject,execute_execution_accept]

@@ -26,6 +26,12 @@ ACMERDATA是一个acm队员数据系统,能够直接从CodeForces、AtCoder、ne
 2. lxml --html资源辅助处理
 3. django-crontab --定时任务
 
+### 技术需求
+
+部署：一定的mysql基础以及linux基础
+
+开发：部署的基础上拥有一定的python基础以及django基础
+
 ### 项目布局
 
 ``` lua
@@ -53,24 +59,108 @@ acmer --总目录
 
 ## 搭建步骤
 
-本项目开发环境为windows,服务器部署环境为ubuntu故以ubuntu为例
+本项目开发环境为windows,服务器部署环境为ubuntu,故以ubuntu为例
 
-(1) 首先执行apt更新
+#### (1)脚本辅助配置
+
+在acmer目录下切换至root权限
+
+输入
+
+```
+sh quicksetenviornment.sh
+```
+
+运行脚本安装环境
+
+##### 数据库配置：
+
+然后进入mysql中
+
+输入以下代码:(注意替换{{内容}}为实际信息)
+
+```mysql
+mysql
+create database acmerdata;
+create user {{用户名}}@'localhost'identified with mysql_native_password by '{{密码}}';
+grant all on acmerdata.* to {{用户名}}@'localhost';
+```
+
+更多mysql新建用户参考:
+
+ https://www.cnblogs.com/wuxunyan/p/9095016.html 
+
+进入acmer->acmer->setting.py
+
+将MySQL相关参数调整为自己的数据库
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+```
+
+例：假设我使用acmerdata数据库,用户名为123,密码为123且主机为本机：
+
+上述应填为
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'acmerdata',
+        'USER': '123',
+        'PASSWORD': '123',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+```
+
+然后进入到manage.py同级目录下
+
+输入
+
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+即可配置完成数据库
+
+本项目已预设一个数据库,可导入使用查看效果
+
+然后执行python3 manage.py runserver 0.0.0.0:8000 即可在本机8000端口访问数据系统
+
+#### (2)手动配置
+
+首先执行apt更新
 
 apt下载：
+
 1. python3
 2. python3-dev
 3. python3-pip
 4. gcc
 5. mysql-server
 6. build-essential 
-7. python3-dev 
-8. libssl-dev libffi-dev 
-9. libxml2 libxml2-dev 
-10. libxslt1-dev zlib1g-dev
-11. phantomjs
+8. libssl-dev 
+8. libffi-dev 
+9. libxml2 
+10. libxml2-dev 
+11. libxslt1-dev 
+12. libmysqlclient-dev
+13. zlib1g-dev
+14. phantomjs
 
-（2）apt下载完成后进行pip下载:
+apt下载完成后进行pip下载:
 
 1. django
 2. lxml
@@ -83,7 +173,37 @@ apt下载：
 9. pygments
 10. mysqlclient
 
-（3）进入/acmer/setting.py中将MySQL相关参数调整为自己的数据库
+进入/acmer/setting.py中将MySQL相关参数调整为自己的数据库
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+```
+
+例：假设我使用acmerdata数据库,用户名为123,密码为123且主机为本机：
+
+上述应填为
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'acmerdata',
+        'USER': '123',
+        'PASSWORD': '123',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+```
 
 然后进入到manage.py同级目录下
 
@@ -96,9 +216,9 @@ python3 manage.py migrate
 
 完成数据库配置
 
-（4）然后执行python3 manage.py runserver 0.0.0.0:8000 即可在本机8000端口访问数据系统
+然后执行python3 manage.py runserver 0.0.0.0:8000 即可在本机8000端口访问数据系统
 
-etc：
+#### etc：
 
 配合nohup使用可使系统manage.py持续挂起,但此环境仍然是测试环境
 
@@ -106,7 +226,7 @@ etc：
 
  https://blog.csdn.net/eightbrother888/article/details/79503716?utm_source=distribute.pc_relevant.none-task 
 
-### 定时任务配置
+## 定时任务配置
 
 本系统使用django-crontab基于linux的crontab进行定时任务设置,故windows并不支持此定时任务配置
 
@@ -116,7 +236,7 @@ etc：
 
  https://www.cnblogs.com/qiaoqianshitou/p/10549011.html 
 
-本系统已配置完成几个更新
+本系统已配置完成几个定时更新
 
 输入python manage.py crontab add即可使用
 

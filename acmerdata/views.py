@@ -14,26 +14,304 @@ from django.db.models import Max
 import operator
 
 # Create your views here.
-def spider(request):
+#数据展示模块
+def spider(request):    #spider页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'spider.html', context)
 
-def contact(request):
+def contact(request):   #contact页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'contact.html', context)
 
-def timeline(request):
+def timeline(request):  #时间线页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'timeline.html', context)
 
-def groupRatingLine(request,groupid):
+def cftimeline(request):
+    # fix the diff is 0 of ac data
+    studentlist = Student.objects.all()
+    dic = {'name':'name',"value":"v","date":"d"}
+    datalist = []
+    str = ""
+    logger = logging.getLogger('log')
+    yearlist = ['2015','2016','2017','2018','2019','2020']
+    monthlist = ['01','02','03','04','05','06','07','08','09','10','11','12']
+    stuRatingList = {}
+    for year in yearlist:
+        for month in monthlist:
+            isChange = 0            
+            for stu in studentlist:
+                date = year+'-'+month
+                name = stu.realName
+                value = datautils.getLatestCFRating(stu.stuNO,date)
+                if value > 0:
+                    isChange = 1
+                    stuRatingList[stu.realName] = value
+            if isChange == 1:
+                newList = sorted(stuRatingList.items(), key=lambda item:item[1], reverse=True)
+                for k in newList:
+                    if int(k[1]) > 0:
+                        datalist.append({
+                            'name':k[0],"value":k[1],"date":year+month
+                        })
+    context = {'str': datalist}
+    return render(request, 'cftimeline.html', context)
+
+def fixbug(request):
+    # fix the diff is 0 of ac data
+    studentlist = Student.objects.all()
+    str = ""
+    logger = logging.getLogger('log')
+    for stu in studentlist:
+        logger.info(stu.realName + "start ac data")
+        datautils.saveACData_fixbug(stu)
+        str += stu.realName + ","
+        logger.info(stu.realName + "end ac data")
+    datautils.setContestJoinNumbers()
+    context = {'str': str}
+    return render(request, 'fixbug.html', context)
+
+def index(request):   #入口页面
+    studentlist = Student.objects.order_by("-cfRating").all()
+    data=[]
+    for stu in studentlist:
+        data.append({
+            'stuNO':stu.stuNO,
+            'realName':stu.realName,
+            'className':stu.className,
+            'year':stu.year,
+            'cfRating':stu.cfRating,
+            'cfTimes':stu.cfTimes,
+            'after':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
+            'acRating':stu.acRating,
+            'acTimes':stu.acTimes,
+            'ncTimes':stu.ncTimes,
+            'ncRating':stu.ncRating,
+            'school':stu.school,
+            'sex':stu.sex,
+        })
+    context = {'studentlist': data}
+    return render(request, 'students.html', context)
+
+def contests(request):  #比赛页面
+    contestlist = Contest.objects.order_by('-cdate').all()
+    for c in contestlist:
+        c.cdate = c.cdate[0:16]
+        if len(c.cname) > 50:
+            c.cname = c.cname[0:50] + "..."
+    context = {'contestlist': contestlist}
+    return render(request, 'contests.html', context)
+
+def contest(request, contest_id=-1,studentcontest_id=-1):   #比赛详情,分别从学生页面与比赛页面进入
+    if contest_id > 0:
+        ct = Contest.objects.filter(id=contest_id)  
+    else:
+        ct = StudentContest.objects.filter(id=studentcontest_id)  
+    logging.info("len(ct)"+str(len(ct)))
+    list = []
+    if len(ct)>0:
+        #list = StudentContest.objects.order_by('rank').filter(cname=ct[0].cname)
+        list = datautils.contestdatasolve(cname=ct[0].cname)
+        if ct[0].ctype == 'cf':
+            cid = ct[0].cid
+        else:
+            cid = ''
+    context = {'list': list,"cname":ct[0].cname,"cdate":ct[0].cdate,'cid':cid}
+    return render(request, 'contest.html', context)
+
+def student(request, stuNO):
+    #list = StudentContest.objects.order_by('-cdate').filter(stuNO=stuNO)
+    data = datautils.contestdatasolve(stuNO=stuNO)
+    stu = Student.objects.get(stuNO=stuNO)
+    classname, realname= '',''
+    if len(data)>0:
+        classname,realname,cfID,acID,ncID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID
+
+    context = {'list': data,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID}
+    return render(request, 'student.html', context)
+#end数据展示模块
+#数据爬取模块
+# update cf data by contest, start from not zero
+def updateCFDataByContest(request):
+    str = "CF Data, successed list:"
+    str += datautils.saveCFDataByContest()
+    datautils.cftimesreset()#供测试阶段调试使用，正式上线请将cftimes调整至准确再使用递增方法
+    context = {'str': str}
+    return render(request, 'spiderResults.html', context)   
+
+# update cf data by all user, start from zero
+def getCFData(request):     #全量抓取codeforce数据；注意根据网络情况可能极慢！！！
+    studentlist = Student.objects.all()
+    str = "CF Data, successed list:"
+    log = logging.getLogger("log")
+    log.info("getCFData start")
+    count = 0
+    for stu in studentlist:
+        count += 1
+        text = "getCFData start %d/%d: %s" % (count,len(studentlist),stu.realName)
+        log.info(text)
+        datautils.saveCFdataByUser(stu)
+        str += stu.realName + ","
+        log.info("getCFData end:" + stu.realName)
+    context = {'str': str}
+    strs=datautils.cftimeStandard()
+    datautils.setContestJoinNumbers()
+    contests = Contest.objects.filter(ctype='cf')
+    for contest in contests:
+        datautils.setcontestsolve(contest.cid)
+    return render(request, 'spiderResults.html', context)    
+
+def getACData(request):    #手动抓取atcoder数据
+    studentlist = Student.objects.all()
+    str = "AC Data, successed list:"
+    logger = logging.getLogger('log')
+    for stu in studentlist:
+        logger.info(stu.realName + "start ac data")
+        datautils.saveACData(stu)
+        str += stu.realName + ","
+        logger.info(stu.realName + "end ac data")
+    datautils.setContestJoinNumbers()
+    context = {'str': str}
+    return render(request, 'spiderResults.html', context)
+
+def getNCData(request):    #手动抓取newcoder数据；受工具限制较慢
+    studentlist = Student.objects.all()
+    str = "NC Data, successed list:"
+    logger = logging.getLogger('log')
+    for stu in studentlist:
+        logger.info(stu.realName + "start nc data")
+        datautils.saveNCData(stu)
+        str += stu.realName + ","
+        logger.info(stu.realName + "end nc data")
+    context = {'str': str}
+    datautils.setContestJoinNumbers()
+    return render(request, 'spiderResults.html', context)
+#end数据爬取模块
+#学生信息修改模块
+def Addstudentdata(request):
+    massage =""
+    if request.method == 'POST':
+        formt = Addstudent(request.POST)
+        if formt.is_valid():
+            print(formt.clean())
+            c = formt.clean()
+            if c['atype']=='update':
+                exist = Student.objects.filter(stuNO=c['stuNO'])
+                if len(exist) == 0:
+                    massage = "无此学号,请检查"
+                    return render(request,'addstudent.html',{'form': formt,'massage':massage})
+            acck=bsdata.cheakacID(str(c['acID']))
+            cfck=bsdata.cheakcfID(str(c['cfID']))
+            AddStudentqueue.objects.create(atype=c['atype'],stuNO=c['stuNO'],realName=c['realName'],sex=c['sex'],className=c['className'],school=c['school'],year=c['year'],
+            acID=c['acID'],accheck=acck,cfID=c['cfID'],cfcheck=cfck,vjID=c['vjID'],ncID=c['ncID'],execution_statu=False,request_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+            formt=Addstudent()
+            massage = "申请成功，请等待审核"
+            return render(request,'addstudent.html',{'form': formt,'massage':massage})
+    else:
+        formt = Addstudent()
+    return render(request,'addstudent.html',{'form': formt,'massage':massage})
+
+def updatestudentlist(request):     #更新学生名单函数,对后台审核操作为accept的学生进行添加,同时具有更新功能,用if分支来进行判断
+    students = []
+    for s in AddStudentqueue.objects.all():
+        if s.execution_statu == False and str(s.execution) != "None":       #判断该操作是否以及执行以及是否已经通过审核
+            if s.execution == True:     #判断是否通过
+                if s.atype == 'update':     #判断是否为更新
+                    a = Student.objects.get(stuNO=s.stuNO)
+                    if s.acID!='':
+                        a.acID=s.acID
+                        datautils.saveACData(a)
+                    if s.cfID!='':
+                        a.cfID=s.cfID
+                        datautils.saveCFdataByUser(a)
+                        students.append(a)
+                    if s.ncID!='':
+                        a.ncID=s.ncID
+                        datautils.saveNCData(a)
+                    if s.vjID!='':
+                        a.vjID=s.vjID
+                    if s.realName!='':
+                        a.realName=s.realName
+                    if s.className!='':
+                        a.className=s.className
+                    if s.school != '':
+                        a.school=s.school
+                    if s.year != '':
+                        a.year=s.year
+                    if s.sex != '':
+                        a.sex = s.sex
+                    a.save()
+                elif s.atype=='create':     #判断是否为创建
+                    Student.objects.create(
+                    stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,sex=s.sex,
+                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,
+                    )
+                    a = Student.objects.get(stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school)
+                    datautils.saveCFdataByUser(a)
+                    datautils.saveACData(a)
+                    datautils.saveNCData(a)
+                    students.append(a)
+            s.execution_statu=True      #设置
+            s.execution_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            s.save()
+    contests = Contest.objects.filter(ctype='cf')       #重置cf比赛解题数
+    for contest in contests:
+        datautils.setcontestsolve(contest.cid)
+    for stu in students:
+        datautils.setaftersolve(stu)       #重置补题人数
+    datautils.setContestJoinNumbers()   #重置比赛人数
+    studentlist = AddStudentqueue.objects.order_by("-request_time").all()
+    context = {'studentlist': studentlist}
+    return render(request, 'addstudentslist.html', context)
+#end学生信息修改模块
+def addstatu(request):      #添加详情页面函数
+    studentlist = AddStudentqueue.objects.order_by("-request_time").all()
+    context = {'studentlist': studentlist}
+    return render(request, 'addstudentslist.html', context)
+#比较组展示模块
+def group(request):     #组页面函数,提供未被删除的组进行浏览,同时使用POST进行增加组
+    massage = ''
+    grouplist = studentgroup.objects.filter(enable=True)
+    if request.method == "POST":
+        form = Addgroup(request.POST)
+        if form.is_valid():
+            name = ''
+            c = form.clean()
+            pattern = re.compile(r'\d+')
+            s = pattern.findall(c['groupstuID'])
+            try:
+                for sid in s:
+                    print(str(sid))
+                    student = Student.objects.get(stuNO=str(sid))
+                    if name == '':
+                        name = ''.join([name,str(student.realName)])
+                    else :
+                        name="&".join([name,str(student.realName)])
+                studentgroup.objects.create(groupstuID=c['groupstuID'],remark = c['remark'],studentNames = name)
+                form=Addgroup()
+                massage = "Add success"
+            except:
+                massage = "Error:no student-" + str(sid)
+            grouplist = studentgroup.objects.filter(enable=True)
+            return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})            
+    else:
+        form=Addgroup()
+    return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})
+
+def groupdel(request,groupid):      #组删除视图函数,传入组id,但此删除为伪删除,删除之后此比较组不可用,但仍能在数据库中查询到相关信息
+    qs = studentgroup.objects.get(id=groupid)
+    massage = "您已删除id为" + str(qs.id) +"的组" 
+    qs.enable = False
+    qs.save()
+    return render(request,"groupdeleteresult.html",{'massage':massage})
+
+def groupRatingLine(request,groupid):   #队时间线页面接口
     group = studentgroup.objects.get(id=groupid)
     pattern = re.compile(r'\d+')
     s = pattern.findall(str(group.groupstuID))
     stuNOList = []
     for sid in s:
         stuNOList.append(int(sid))
-    # stuNOList = [ 2016014323]
     logger = logging.getLogger('log')
 
     stuList = Student.objects.filter(stuNO__in = stuNOList)
@@ -65,12 +343,6 @@ def groupRatingLine(request,groupid):
                     value = dic_stuNO_rating[stuNO][-1]
                 logger.info(date + ":" + str(value))
                 dic_stuNO_rating[stuNO].append(value)
-
-    
-    # logger.info(lineX)
-    # logger.info(names)
-    # logger.info(dic_stuNO_rating)
-
     context = {
         "lineX":json.dumps(lineX),
         "names":json.dumps(names),
@@ -80,14 +352,13 @@ def groupRatingLine(request,groupid):
     } 
     return render(request, 'groupRatingLine.html', context)
 
-def groupdata(request,groupid):
+def groupdata(request,groupid):   #队数据
     group = studentgroup.objects.get(id=groupid)
     pattern = re.compile(r'\d+')
     s = pattern.findall(str(group.groupstuID))
     stuNOList = []
     for sid in s:
         stuNOList.append(int(sid))
-    # stuNOList = [ 2016014323]
     logger = logging.getLogger('log')
 
     stuList = Student.objects.filter(stuNO__in = stuNOList)
@@ -137,271 +408,9 @@ def groupdata(request,groupid):
         "groupid":groupid,
     } 
     return render(request, 'groupdata.html', context)
-
-def cftimeline(request):
-    # fix the diff is 0 of ac data
-    studentlist = Student.objects.all()
-    dic = {'name':'name',"value":"v","date":"d"}
-    datalist = []
-    str = ""
-    logger = logging.getLogger('log')
-    yearlist = ['2015','2016','2017','2018','2019','2020']
-    monthlist = ['01','02','03','04','05','06','07','08','09','10','11','12']
-    stuRatingList = {}
-    for year in yearlist:
-        for month in monthlist:
-            isChange = 0            
-            for stu in studentlist:
-                date = year+'-'+month
-                name = stu.realName
-                value = datautils.getLatestCFRating(stu.stuNO,date)
-                if value > 0:
-                    isChange = 1
-                    stuRatingList[stu.realName] = value
-            if isChange == 1:
-                newList = sorted(stuRatingList.items(), key=lambda item:item[1], reverse=True)
-                for k in newList:
-                    if int(k[1]) > 0:
-                        datalist.append({
-                            'name':k[0],"value":k[1],"date":year+month
-                        })
-    context = {'str': datalist}
-    return render(request, 'cftimeline.html', context)
-
-def fixbug(request):
-    # fix the diff is 0 of ac data
-    studentlist = Student.objects.all()
-    str = ""
-    logger = logging.getLogger('log')
-    for stu in studentlist:
-        logger.info(stu.realName + "start ac data")
-        datautils.saveACData_fixbug(stu)
-        str += stu.realName + ","
-        logger.info(stu.realName + "end ac data")
-    datautils.setContestJoinNumbers()
-    context = {'str': str}
-    return render(request, 'fixbug.html', context)
-
-def index(request):
-    studentlist = Student.objects.order_by("-cfRating").all()
-    data=[]
-    for stu in studentlist:
-        data.append({
-            'stuNO':stu.stuNO,
-            'realName':stu.realName,
-            'className':stu.className,
-            'year':stu.year,
-            'cfRating':stu.cfRating,
-            'cfTimes':stu.cfTimes,
-            'after':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
-            'acRating':stu.acRating,
-            'acTimes':stu.acTimes,
-            'ncTimes':stu.ncTimes,
-            'ncRating':stu.ncRating,
-            'school':stu.school,
-        })
-    context = {'studentlist': data}
-    return render(request, 'students.html', context)
-
-def contests(request):
-    contestlist = Contest.objects.order_by('-cdate').all()
-    for c in contestlist:
-        c.cdate = c.cdate[0:16]
-        if len(c.cname) > 50:
-            c.cname = c.cname[0:50] + "..."
-    context = {'contestlist': contestlist}
-    return render(request, 'contests.html', context)
-
-def contest(request, contest_id=-1,studentcontest_id=-1):
-    if contest_id > 0:
-        ct = Contest.objects.filter(id=contest_id)  
-    else:
-        ct = StudentContest.objects.filter(id=studentcontest_id)  
-    logging.info("len(ct)"+str(len(ct)))
-    list = []
-    if len(ct)>0:
-        #list = StudentContest.objects.order_by('rank').filter(cname=ct[0].cname)
-        list = datautils.contestdatasolve(cname=ct[0].cname)
-        if ct[0].ctype == 'cf':
-            cid = ct[0].cid
-        else:
-            cid = ''
-    context = {'list': list,"cname":ct[0].cname,"cdate":ct[0].cdate,'cid':cid}
-    return render(request, 'contest.html', context)
-
-def student(request, stuNO):
-    #list = StudentContest.objects.order_by('-cdate').filter(stuNO=stuNO)
-    data = datautils.contestdatasolve(stuNO=stuNO)
-    stu = Student.objects.get(stuNO=stuNO)
-    classname, realname= '',''
-    if len(data)>0:
-        classname,realname,cfID,acID,ncID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID
-
-    context = {'list': data,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID}
-    return render(request, 'student.html', context)
-
-# update cf data by contest, start from not zero
-def updateCFDataByContest(request):
-    str = "CF Data, successed list:"
-    str += datautils.saveCFDataByContest()
-    datautils.cftimesreset()#供测试阶段调试使用，正式上线请将cftimes调整至准确再使用递增方法
-    context = {'str': str}
-    return render(request, 'spiderResults.html', context)   
-
-# update cf data by all user, start from zero
-def getCFData(request):
-    studentlist = Student.objects.all()
-    str = "CF Data, successed list:"
-    log = logging.getLogger("log")
-    log.info("getCFData start")
-    count = 0
-    for stu in studentlist:
-        count += 1
-        text = "getCFData start %d/%d: %s" % (count,len(studentlist),stu.realName)
-        log.info(text)
-        datautils.saveCFdataByUser(stu)
-        str += stu.realName + ","
-        log.info("getCFData end:" + stu.realName)
-    context = {'str': str}
-    strs=datautils.cftimeStandard()
-    datautils.setContestJoinNumbers()
-    contests = Contest.objects.filter(ctype='cf')
-    for contest in contests:
-        datautils.setcontestsolve(contest.cid)
-    return render(request, 'spiderResults.html', context)    
-
-def getACData(request):    
-    studentlist = Student.objects.all()
-    # studentlist = Student.objects.filter(realName='张世东')
-    str = "AC Data, successed list:"
-    logger = logging.getLogger('log')
-    for stu in studentlist:
-        logger.info(stu.realName + "start ac data")
-        datautils.saveACData(stu)
-        str += stu.realName + ","
-        logger.info(stu.realName + "end ac data")
-    datautils.setContestJoinNumbers()
-    context = {'str': str}
-    return render(request, 'spiderResults.html', context)
-
-def getNCData(request):    
-    studentlist = Student.objects.all()
-    # studentlist = Student.objects.filter(realName='张世东')
-    str = "NC Data, successed list:"
-    logger = logging.getLogger('log')
-    for stu in studentlist:
-        logger.info(stu.realName + "start nc data")
-        datautils.saveNCData(stu)
-        str += stu.realName + ","
-        logger.info(stu.realName + "end nc data")
-    context = {'str': str}
-    datautils.setContestJoinNumbers()
-    return render(request, 'spiderResults.html', context)
-
-def Addstudentdata(request):
-    if request.method == 'POST':
-        formt = Addstudent(request.POST)
-        if formt.is_valid():
-            print(formt.clean())
-            c = formt.clean()
-            acck=bsdata.cheakacID(str(c['acID']))
-            cfck=bsdata.cheakcfID(str(c['cfID']))
-            AddStudentqueue.objects.create(stuNO=c['stuNO'],realName=c['realName'],className=c['className'],school=c['school'],year=c['year'],
-            acID=c['acID'],accheck=acck,cfID=c['cfID'],cfcheck=cfck,vjID=c['vjID'],ncID=c['ncID'],execution_statu=False,request_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
-            formt=Addstudent()
-            massage = "添加成功，请等待审核"
-            return render(request,'addstudent.html',{'form': formt,'massage':massage})
-    else:
-        formt = Addstudent()
-        massage =""
-    return render(request,'addstudent.html',{'form': formt,'massage':massage})
-
-def updatestudentlist(request):
-    students = []
-    for s in AddStudentqueue.objects.all():
-        if s.execution_statu == False and str(s.execution) != "None":
-            if s.execution == True:
-                sc = Student.objects.filter(stuNO=s.stuNO,realName=s.realName,className=s.className)
-                if len(sc)==0:
-                    Student.objects.create(
-                    stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,
-                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,
-                    )
-                    a = Student.objects.get(stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school)
-                else:
-                    """sc.update(
-                    stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,
-                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,
-                    )"""#全量修改
-                    a = Student.objects.get(stuNO=s.stuNO)
-                    if s.acID!='':
-                        a.acID=s.acID
-                    if s.cfID!='':
-                        a.cfID=s.cfID
-                    if s.ncID!='':
-                        a.ncID=s.ncID
-                    if s.vjID!='':
-                        a.vjID=s.vjID
-                datautils.saveCFdataByUser(a)
-                datautils.saveACData(a)
-                datautils.saveNCData(a)
-                students.append(a)
-            s.execution_statu=True
-            s.execution_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-            s.save()
-    contests = Contest.objects.filter(ctype='cf')
-    for contest in contests:
-        datautils.setcontestsolve(contest.cid)
-    for stu in students:
-        datautils.setaftersolve(stu)
-    datautils.setContestJoinNumbers()
-    studentlist = AddStudentqueue.objects.order_by("-request_time").all()
-    context = {'studentlist': studentlist}
-    return render(request, 'addstudentslist.html', context)
-
-
-def addstatu(request):
-    studentlist = AddStudentqueue.objects.order_by("-request_time").all()
-    context = {'studentlist': studentlist}
-    return render(request, 'addstudentslist.html', context)
-
-def group(request):
-    massage = ''
-    grouplist = studentgroup.objects.filter(enable=True)
-    if request.method == "POST":
-        form = Addgroup(request.POST)
-        if form.is_valid():
-            name = ''
-            c = form.clean()
-            pattern = re.compile(r'\d+')
-            s = pattern.findall(c['groupstuID'])
-            try:
-                for sid in s:
-                    print(str(sid))
-                    student = Student.objects.get(stuNO=str(sid))
-                    if name == '':
-                        name = ''.join([name,str(student.realName)])
-                    else :
-                        name="&".join([name,str(student.realName)])
-                studentgroup.objects.create(groupstuID=c['groupstuID'],remark = c['remark'],studentNames = name)
-                form=Addgroup()
-                massage = "Add success"
-            except:
-                massage = "Error:no student-" + str(sid)
-            grouplist = studentgroup.objects.filter(enable=True)
-            return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})            
-    else:
-        form=Addgroup()
-    return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})
-
-def groupdel(request,groupid):
-    qs = studentgroup.objects.get(id=groupid)
-    massage = "您已删除id为" + str(qs.id) +"的组" 
-    qs.enable = False
-    qs.save()
-    return render(request,"groupdeleteresult.html",{'massage':massage})
-
-def cfcontestsubmit(request,cid):
+#end比较组展示模块
+#代码及解题数模块
+def cfcontestsubmit(request,cid):   #比赛提交记录视图函数,传入cf比赛id进行查询
     contest = Contest.objects.get(cid=cid)
     cname = contest.cname
     cdate = contest.cdate
@@ -424,7 +433,7 @@ def cfcontestsubmit(request,cid):
     }
     return render(request,"cfcontestsubmit.html",context)
 
-def viewcode(request,submitid):
+def viewcode(request,submitid):     #代码展示视图函数,传入cf提交代码展示学生代码页面
     cfct = CFContest.objects.get(subid=submitid)
     name = cfct.realName
     statu = cfct.statu
@@ -446,7 +455,7 @@ def viewcode(request,submitid):
     }
     return render(request,"codeshow.html",context)
     
-def fixcodeerrorforinternetproblem(request):
+def fixcodeerrorforinternetproblem(request):    #此视图函数用于补正由于网络问题出现的get error代码，已成功实现
     list = CFContest.objects.filter(code='get error')
     for i in list:
         print(str(i.subid))
@@ -459,7 +468,8 @@ def fixcodeerrorforinternetproblem(request):
             print('error')
     context = {'str': 'str'}
     return render(request, 'spiderResults.html', context)
-def fixcodeerrorforlanguageerror(request):
+
+def fixcodeerrorforlanguageerror(request): #此视图函数用于尝试修复cf乱码问题，但没有成功
     list = CFContest.objects.filter(code='get error')
     for i in list:
         print(str(i.subid))
@@ -476,7 +486,7 @@ def fixcodeerrorforlanguageerror(request):
     context = {'str': 'str'}
     return render(request, 'spiderResults.html', context)  
 
-def cfcontestsubmitupdatebycontest(request):
+def cfcontestsubmitupdatebycontest(request): #此视图函数用于更新codeforce补题数
     maxsubid = CFContest.objects.all().aggregate(Max('subid'))['subid__max']
     students = Student.objects.all()
     cfIDList = []
@@ -504,7 +514,7 @@ def cfcontestsubmitupdatebycontest(request):
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
 
-def updateforecastlist(request):
+def updateforecastlist(request):    #此视图函数用于增量更新比赛预告,过期预告会自动删除,但官方主动删除的比赛会保留
     ntime = time.time()
     strs = ''
     Contestforecast.objects.filter(starttime__lte=ntime).delete()
@@ -523,7 +533,7 @@ def updateforecastlist(request):
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
 
-def contestforecast(request):
+def contestforecast(request):       #用于提供比赛预告
     ac = Contestforecast.objects.filter(ctype='ac').order_by("starttime")
     nc = Contestforecast.objects.filter(ctype='nc').order_by("starttime")
     cf = Contestforecast.objects.filter(ctype='cf').order_by("starttime")
@@ -553,12 +563,12 @@ def contestforecast(request):
     context = {'aclist': aclist,'nclist':nclist,'cflist':cflist }
     return render(request,'forecast.html',context)
 
-def Standardizecftime(request):
+def Standardizecftime(request):     #用于手动标准化cf比赛时间
     strs = datautils.cftimeStandard()
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
 
-def setallcontestsolve(request):
+def setallcontestsolve(request):    #用于手动标准化cf解题数量
     contests = Contest.objects.filter(ctype='cf')
     strs = ''
     for contest in contests:
@@ -567,7 +577,7 @@ def setallcontestsolve(request):
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
 
-def aftersolve(request,stuNO):
+def aftersolve(request,stuNO):      #展示学生补题数
     cfcontests = StudentContest.objects.filter(ctype='cf',stuNO=stuNO)
     data = []
     for contest in cfcontests:
@@ -590,7 +600,7 @@ def aftersolve(request,stuNO):
     }
     return render(request,"aftersubmit.html",context)
 
-def setallaftersolve(request):
+def setallaftersolve(request):      #手动更新解题数
     students = Student.objects.all()
     strs = ''
     for stu in students:
@@ -598,8 +608,9 @@ def setallaftersolve(request):
         datautils.setaftersolve(stu)
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
+#end代码及解题数模块
 
-def addprizet(request):
+def addprizet(request):     #比赛获奖记录功能,此模块尚未开发完毕
     if request.method=="POST":
         formt = addprize(request.POST)
         if formt.is_valid():
@@ -612,8 +623,10 @@ def addprizet(request):
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
 
-def updataweightratingstatistics(request):
-    students = Student.objects.filter(school="北京化工大学")
+
+#权重模块
+def updataweightratingstatistics(request):      #更新权重
+    students = Student.objects.all()
     strs=''
     tngap = time.time() - 8035200
     for stu in students:
@@ -647,6 +660,8 @@ def updataweightratingstatistics(request):
         Weightrating.objects.update_or_create(datalist,stuNO=stu.stuNO)
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
-def weightratingstatistic(request):
+
+def weightratingstatistic(request):     #权重展示
     list = Weightrating.objects.order_by("-count").all()
     return render(request,'weightrating.html',{'studentlist': list})
+#权重模块结束

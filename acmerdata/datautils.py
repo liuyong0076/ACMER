@@ -10,14 +10,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import colorsys,random
 
-def setContestJoinNumbers():
+def setContestJoinNumbers():    #重置参赛人数
     list = Contest.objects.all()
     for l in list:
         sc = StudentContest.objects.filter(cname=l.cname)
         l.cnumber = len(sc)
         l.save()
 
-def getDivByName(contestname):
+def getDivByName(contestname):  #获取div等级
     div = 0
     dic = {"Div. 1":1, "Div. 2":2, "Div. 3":3, 'Grand ':1, 'Regular':2, 'Beginner':3}
     for k,v in dic.items():
@@ -26,7 +26,7 @@ def getDivByName(contestname):
             break
     return div
 
-def addContest(contestID,date,contest,ctype,cnumber=0,starttime=0,endtime=0):
+def addContest(contestID,date,contest,ctype,cnumber=0,starttime=0,endtime=0):   #添加比赛
     if contestID and int(contestID)>0:
         ct = Contest.objects.filter(cid=contestID)
     else:
@@ -35,7 +35,7 @@ def addContest(contestID,date,contest,ctype,cnumber=0,starttime=0,endtime=0):
         div = getDivByName(contest)
         Contest.objects.create(cid=contestID,cname=contest,cdate=date,cdiv=div,ctype=ctype,cnumber=cnumber,starttimestamp=starttime,endtimestamp=endtime)
 
-def addStudentContest(stuNO,realname,classname,cid,cname,cdate,rank,newRating,diff,ctype,solve="no data"):
+def addStudentContest(stuNO,realname,classname,cid,cname,cdate,rank,newRating,diff,ctype,solve="no data"):    #添加学生比赛记录
     sc = StudentContest.objects.filter(stuNO=stuNO,cid=cid,cname=cname)
     if len(sc) == 0:
         cdiv = getDivByName(cname)
@@ -46,7 +46,7 @@ def addStudentContest(stuNO,realname,classname,cid,cname,cdate,rank,newRating,di
         sc[0].diff = diff  # for fix bug
         sc[0].save()
 
-def addCFStatu(stuNO,realname,cid,cname,cfID):
+def addCFStatu(stuNO,realname,cid,cname,cfID):      #添加学生提交代码
     datalist = bsdata.getsubmitdata(cid,cfID)
     for data in datalist:
         sc = CFContest.objects.filter(subid=data['subid'])
@@ -62,9 +62,8 @@ def addCFStatu(stuNO,realname,cid,cname,cfID):
             op = CFContest.objects.get(subid=data['subid'])
             op.code = data['code']
             op.save()
-        
 
-def saveCFDataByContest():
+def saveCFDataByContest():  #更新cf比赛
     students = Student.objects.all()
     cfIDList = []
     stuInfoDic = {}
@@ -104,7 +103,7 @@ def saveCFDataByContest():
             setcontestsolve(c["cid"])
     return str
 
-def saveCFdataByUser(stu):
+def saveCFdataByUser(stu):  #   根据学生对象获取cf数据
     if stu.cfID:
         dataList = bsdata.getCFUserData(stu.cfID)
         stu.cfTimes = len(dataList)
@@ -131,7 +130,7 @@ def getLatestCFRating(stuNO,date):
         rating = sc.newRating
     return rating
 
-def saveACData(stu):
+def saveACData(stu):    #   根据学生对象获取atcoder数据
     if stu.acID:
         dataList = bsdata.getACUserData(stu.acID)
         stu.acTimes = len(dataList)
@@ -147,7 +146,7 @@ def saveACData(stu):
         stu.acRating = 0
     stu.save()
 
-def saveNCData(stu):
+def saveNCData(stu):    #   根据学生对象获取newcoder数据
     if stu.ncID:
         dataList=bsdata.getNCUserData(stu.ncID)
         stu.ncTimes = len(dataList)
@@ -166,7 +165,7 @@ def saveNCData(stu):
         stu.ncTimes=0
     stu.save()
 
-def contestdatasolve(cname=0,stuNO=0):
+def contestdatasolve(cname=0,stuNO=0):      #比赛数据展示规范函数,用于过滤数据并输出字典列表供展示
     if(cname):
         list = StudentContest.objects.order_by('rank').filter(cname=cname)
     if(stuNO):
@@ -199,7 +198,7 @@ def contestdatasolve(cname=0,stuNO=0):
         })
     return data
 
-def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):
+def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):      #添加提交记录
     print(subid)
     t=0
     while True:
@@ -228,7 +227,7 @@ def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):
     except:
         pass
 
-def cfsolvereset(stuNO,cid):
+def cfsolvereset(stuNO,cid):    #重置解题数量
     submits = CFContest.objects.filter(stuNO=stuNO,cid=cid)
     ok = []
     solve = 0
@@ -239,14 +238,14 @@ def cfsolvereset(stuNO,cid):
     contest = StudentContest.objects.get(stuNO=stuNO,cid=cid)
     contest.solve = str(solve)
     contest.save()
-def cftimesreset():
+def cftimesreset(): #重置参赛次数
     students = Student.objects.all()
     for stu in students:
         contests = StudentContest.objects.filter(ctype='cf',stuNO=stu.stuNO)
         stu.cfTimes = len(contests)
         stu.save()
 
-def addforecastlist(starttime,cname,during,link,ctype,cid=0):
+def addforecastlist(starttime,cname,during,link,ctype,cid=0):   #添加比赛预告
     if ctype == 'cf':
         sc = Contestforecast.objects.filter(cid=cid)
     else:
@@ -262,13 +261,13 @@ def addforecastlist(starttime,cname,during,link,ctype,cid=0):
         a.during=during
         a.save()
     
-def timestamptotime(ts):
+def timestamptotime(ts):    #时间戳转换时间间隔
     hour = ts/3600
     minute = (ts%3600)/60
     time = '%02d:%02d' % (hour,minute)
     return time
 
-def cftimeStandard():
+def cftimeStandard():   #cf时间标准化
     cfcontest = Contest.objects.filter(ctype='cf')
     cflist=[]
     strs=''
@@ -284,7 +283,7 @@ def cftimeStandard():
         con.save()
     return strs
 
-def setcontestsolve(cid):
+def setcontestsolve(cid):       #比赛解题数重置
     stucons = StudentContest.objects.filter(cid=cid)
     for stucon in stucons:
         submits = CFContest.objects.filter(cid=cid,stuNO=stucon.stuNO)
@@ -303,7 +302,7 @@ def setcontestsolve(cid):
         stucon.aftersolve = str(after)
         stucon.save()
 
-def setaftersolve(stu):
+def setaftersolve(stu):     #补题数重置
     allsub = 0
     correctsub = 0
     StuCFcontests = StudentContest.objects.filter(stuNO=stu.stuNO,ctype='cf')
@@ -316,39 +315,7 @@ def setaftersolve(stu):
     stu.correct_cf_aftersolve = correctsub
     stu.save()
 
-def setcfdata():
-    cfcontests = StudentContest.objects.filter(ctype='cf',stuNO=stuNO)
-    data = []
-    for contest in cfcontests:
-        con = Contest.objects.get(cid=contest.cid)
-        submits = CFContest.objects.filter(cid=contest.cid,stuNO=stuNO,ctime__gt=con.endtimestamp)
-        for submit in submits:
-            data.append({
-                'stuNO':submit.stuNO,
-                'realName':submit.realName,
-                'contestname':con.cname,
-                'subid':submit.subid,
-                'index':submit.index,
-                'tag':submit.tag,
-                'statu':submit.statu,
-                'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
-            })
-    context = {
-        'name':Student.objects.get(stuNO=stuNO).realName,
-        'list':data,
-    }
-    return render(request,"aftersubmit.html",context)
-
-def setallaftersolve(request):
-    students = Student.objects.all()
-    strs = ''
-    for stu in students:
-        strs += stu.realName + ','
-        datautils.setaftersolve(stu)
-    context = {'str': strs }
-    return render(request, 'spiderResults.html', context)
-
-def addprizet(request):
+def addprizet(request):     #添加比赛获奖记录，未完全开发
     if request.method=="POST":
         formt = addprize(request.POST)
         if formt.is_valid():

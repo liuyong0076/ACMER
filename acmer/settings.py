@@ -25,7 +25,7 @@ SECRET_KEY = 'jb5x-^e4zj^+t900#m7l)b9l@&gy_g#9u64=k7ijauxi=r2ce@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CRONJOBS=(
+    # 每一分钟执行一次你的定时函数
+    ('10 * * * *', 'acmerdata.cron.updateforecastlist'),
+    ('0 * * * *', 'acmerdata.cron.getACData'),
+    ('10 12,18,22 * * *', 'acmerdata.cron.getNCData'),
+    ('0 * * * *', 'acmerdata.cron.cfcontestsubmitupdatebycontest'),
+    ('0 * * * *', 'acmerdata.cron.updateCFDataByContest'),
+    ('0 * * * *', 'acmerdata.cron.updataweightratingstatistics'),
+)
+
 
 ROOT_URLCONF = 'acmer.urls'
 
@@ -84,8 +95,8 @@ WSGI_APPLICATION = 'acmer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'acmerdata',
-        'USER': 'root',
+        'NAME': '',
+        'USER': '',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
@@ -116,13 +127,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

@@ -62,6 +62,7 @@
                                         <button type="submit" class="btn btn-default">提交</button>
                                         <a href="/acmerdata/addstudentslist" class="btn btn-primary">审核列表</a>
                                         </form>
+                                        
                                          
                                             
                                             
@@ -75,14 +76,45 @@
                         </div>
                 
                         
-            </div> 
-                
-            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                申请提示
+                            </div>
+                            <div class="panel-body">
+                                <b>关于新申请:</b><br>请按照左边的提示填写表格并申请，个人信息为必填项,其余账号选填,填写完毕后可进入审核列表进行查看审核相关信息以及填写情况
+                                cfcheck及accheck项供检查codeforces、atcoder网站用户名的正确性,若为True即该账号存在,若为false请检查您填写的账号的正确性。<br>填写完成后请与本站管理员联系说明申请,无认证申请恕不通过
+                                <hr><b>关于更新信息:</b><br>学号必填,但账号信息可选择要更新的信息填写,不更新的信息注意留空,学校\年级等信息如不更新应除去<br>例：需要更新codeforces昵称，填写完成codeforces昵称后,atcoder昵称以及其它账号留空直接提交,这时审核通过后会保留atcoder账号，同时更新codeforces账号<br>
+                                如需申请个人信息更新请直接全量填写,并与管理员联系
+        
+                            </div>
+        
+                        </div>
+                    </div> 
 
         
         </div>
     </div>
         </div>
 </div>
+<script>
+    function typechange(){
+        var type = document.getElementById("id_atype").value
+        if(type=="update"){
+            document.getElementById("id_realName").required =false
+            document.getElementById("id_className").required = false
+            document.getElementById("id_year").required=false
+            document.getElementById("id_cfID").required=false
+        }
+        else if(type == "create"){
+            document.getElementById("id_realName").required = true
+            document.getElementById("id_className").required = true
+            document.getElementById("id_year").required = true
+            document.getElementById("id_cfID").required= true
+        }
+    }
+</script>
 </body>
 </html>

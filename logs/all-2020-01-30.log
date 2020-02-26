@@ -1,0 +1,756 @@
+[2020-01-30 10:47:30,405] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 10:47:48,561] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata HTTP/1.1" 301 0
+[2020-01-30 10:47:48,655] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:47:48,982] [log.py:228] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2020-01-30 10:47:48,984] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 2081
+[2020-01-30 10:47:53,932] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:48:01,387] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/290/contest HTTP/1.1" 200 6351
+[2020-01-30 10:48:32,866] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:48:53,163] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/getCFData HTTP/1.1" 200 16
+[2020-01-30 10:49:16,739] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:49:42,089] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 10:49:43,987] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 10:49:46,630] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 10:49:48,404] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 10:54:20,172] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/getCFData HTTP/1.1" 200 1163
+[2020-01-30 10:54:37,182] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:38,035] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:38,726] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:40,222] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:54:41,052] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:54:41,754] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:54:43,146] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:54:43,495] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 10:54:44,807] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:46,165] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:46,764] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:47,861] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 10:54:48,972] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 11:56:48,919] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata HTTP/1.1" 301 0
+[2020-01-30 11:56:49,010] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 11:56:49,714] [log.py:228] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2020-01-30 11:56:49,715] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 2081
+[2020-01-30 12:15:59,416] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57431
+[2020-01-30 12:17:57,803] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 12:18:13,552] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 64977
+[2020-01-30 17:02:27,256] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:02:34,465] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/getCFData
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 82, in getCFData
+    datautils.saveCFdata(stu)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 51, in saveCFdata
+    data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"cf")
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 36, in addStudentContest
+    cid=cid,cname=cname,cdate=cdate,cdiv=cdiv,rank=rank,newRating=newRating,diff=diff,ctype=ctype)
+  File "C:\Python37\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 431, in create
+    obj = self.model(**kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\base.py", line 500, in __init__
+    raise TypeError("%s() got an unexpected keyword argument '%s'" % (cls.__name__, kwarg))
+TypeError: StudentContest() got an unexpected keyword argument 'realname'
+[2020-01-30 17:02:34,475] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/getCFData HTTP/1.1" 500 97966
+[2020-01-30 17:03:24,327] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 17:03:27,963] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:15:33,579] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:15:41,547] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:15:48,265] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:15:53,134] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:15:57,814] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:19:04,096] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:19:07,460] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:19:09,548] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:25:15,181] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:25:15,809] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:25:15,937] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:25:16,982] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:25:20,549] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:25:22,642] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:25:24,402] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:26:39,180] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:26:41,102] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:27:12,925] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:27:14,605] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:27:22,378] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:27:24,251] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:27:29,267] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:27:31,210] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:28:23,317] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:28:25,243] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:28:39,413] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:28:41,255] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:30:08,293] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:30:12,369] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:33:41,777] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:33:43,539] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:33:53,916] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:33:56,200] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:35:23,242] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:35:25,136] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:35:43,628] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:35:45,464] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:36:09,021] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:36:11,041] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:36:32,427] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:36:34,379] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:37:43,476] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:37:45,402] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:38:40,025] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:38:42,551] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:05,254] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:07,192] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:10,650] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:12,407] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:15,455] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:17,222] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:32,960] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:34,829] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:50,283] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:52,246] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:39:55,208] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:39:57,258] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:40:20,927] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:40:22,730] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:40:58,260] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:41:00,192] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:43:17,466] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:43:19,410] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:43:34,503] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:43:36,394] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:43:56,753] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 17:43:58,699] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:45:06,040] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 17:45:07,783] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 17:45:10,355] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 17:48:44,249] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 17:48:46,186] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:48:59,411] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 17:49:01,445] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 17:50:25,162] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:02:10,220] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 18:02:12,085] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/293/contest HTTP/1.1" 200 4911
+[2020-01-30 18:03:04,205] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:03:06,463] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:03:27,855] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:03:33,908] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:03:36,288] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:04:05,838] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:04:06,602] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:04:07,050] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57589
+[2020-01-30 18:09:56,999] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:09:58,821] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:10:13,007] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:10:14,887] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:12:32,722] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:12:34,785] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:12:42,268] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:12:44,246] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:13:48,266] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:13:50,815] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:14:17,440] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:14:19,143] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:14:42,681] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:14:44,928] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:16:41,005] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:16:42,837] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:17:00,096] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:17:02,161] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:17:07,111] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:17:09,751] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:17:23,057] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:17:25,067] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:17:28,650] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:17:30,925] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:17:56,087] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:17:58,593] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:19:11,623] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:19:13,680] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:19:28,194] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:19:30,190] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:20:23,067] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:20:25,324] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:20:44,949] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:20:46,871] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:21:58,964] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:22:01,165] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:22:21,930] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:22:24,014] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:23:15,776] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:23:17,761] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:09,918] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:24:11,671] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:16,642] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:24:18,876] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:28,420] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:24:30,306] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:35,340] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:24:37,153] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:44,749] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:24:46,692] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:24:52,283] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 18:24:54,858] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:25:01,837] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 18:25:05,179] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:25:59,590] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 18:26:04,634] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 49, in saveCFDataByContest
+    existMaxCFID = Contest.objects.all().aggregate(Max('cid'))
+NameError: name 'Max' is not defined
+[2020-01-30 18:26:04,640] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 83959
+[2020-01-30 18:26:53,588] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:26:55,424] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:27:16,207] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 18:27:17,828] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:27:25,970] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 18:27:27,872] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:29:20,324] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:29:22,326] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:30:29,884] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 51, in saveCFDataByContest
+    contestList = bsdata.getCFContestList(existMaxCFID)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py", line 101, in getCFContestList
+    if int(d["id"])>existMaxID:
+TypeError: '>' not supported between instances of 'int' and 'dict'
+[2020-01-30 18:30:29,888] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 108378
+[2020-01-30 18:31:10,224] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 18:31:13,565] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:31:55,448] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:31:57,589] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:32:22,330] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:32:24,317] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:32:34,751] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:32:36,757] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:33:12,608] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:33:14,716] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:33:17,165] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:33:19,027] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:33:26,799] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:33:28,997] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:33:31,677] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:33:33,808] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:33:41,498] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:33:43,575] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:34:21,189] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 52, in saveCFDataByContest
+    contestList = bsdata.getCFContestList(existMaxCFID)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py", line 101, in getCFContestList
+    if int(d["id"])>int(existMaxID):
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'dict'
+[2020-01-30 18:34:21,193] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 108421
+[2020-01-30 18:35:13,617] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:35:15,910] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:35:21,150] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:35:23,206] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:36:58,582] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:37:03,282] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:05,898] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:08,246] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:37,206] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:37,590] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:37,757] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:37:37,923] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:38:08,449] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:38:10,344] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:38:13,615] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:38:35,958] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:38:37,872] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:38:57,647] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:38:59,948] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:39:02,925] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:39:05,099] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:39:17,313] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 58, in saveCFDataByContest
+    rankChangingList = bsdata.getCFContestRankingChange(c["cid"],cfIDList)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py", line 110, in getCFContestRankingChange
+    url = "https://codeforces.com/api/contest.ratingChanges?contestId=" + contestID  #566
+TypeError: can only concatenate str (not "int") to str
+[2020-01-30 18:39:17,318] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 92721
+[2020-01-30 18:39:40,183] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\bsdata.py changed, reloading.
+[2020-01-30 18:39:42,214] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:40:35,190] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:42:25,635] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 60, in saveCFDataByContest
+    log.info("addContest" + c["id"])
+KeyError: 'id'
+[2020-01-30 18:42:25,637] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 89596
+[2020-01-30 18:43:00,182] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:43:02,573] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:43:04,932] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:43:06,901] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:44:23,528] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/updateCFDataByContest
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 79, in updateCFDataByContest
+    datautils.saveCFDataByContest()
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py", line 60, in saveCFDataByContest
+    log.info("addContest" + c["cid"])
+TypeError: can only concatenate str (not "int") to str
+[2020-01-30 18:44:23,531] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 500 89772
+[2020-01-30 18:44:44,359] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:44:46,439] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:45:06,293] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\datautils.py changed, reloading.
+[2020-01-30 18:45:09,299] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:45:15,367] [datautils.py:55] [datautils:saveCFDataByContest] [INFO]- 1294
+[2020-01-30 18:45:41,076] [datautils.py:60] [datautils:saveCFDataByContest] [INFO]- addContest1295
+[2020-01-30 18:45:41,079] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest赵伟杰
+[2020-01-30 18:45:41,085] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest王诗海
+[2020-01-30 18:45:41,092] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest刘洋滔
+[2020-01-30 18:45:41,097] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest梁策源
+[2020-01-30 18:45:41,102] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest成亦峻
+[2020-01-30 18:45:41,107] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest赵云启
+[2020-01-30 18:45:41,113] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest张鹤山
+[2020-01-30 18:45:41,118] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest黄福龙
+[2020-01-30 18:45:41,123] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest李腾飞
+[2020-01-30 18:45:41,128] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest李潇
+[2020-01-30 18:45:41,134] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest方玺皓
+[2020-01-30 18:45:41,137] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest梁嘉豪
+[2020-01-30 18:45:41,142] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest王柯铭
+[2020-01-30 18:45:41,146] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest岳晨龙
+[2020-01-30 18:45:41,151] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest杜子涵
+[2020-01-30 18:45:41,155] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest王润泽
+[2020-01-30 18:45:41,161] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest李煜
+[2020-01-30 18:45:41,165] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest蒋恒
+[2020-01-30 18:45:41,169] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest张鑫伟
+[2020-01-30 18:45:41,174] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest李公睿
+[2020-01-30 18:45:41,178] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest姜晨
+[2020-01-30 18:45:41,184] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest侯泽坤
+[2020-01-30 18:45:41,189] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest于博
+[2020-01-30 18:45:41,194] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest李逸伦
+[2020-01-30 18:45:41,198] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest王玉龙
+[2020-01-30 18:45:41,202] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest曹驭舒
+[2020-01-30 18:45:41,207] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest张炜亮
+[2020-01-30 18:45:41,211] [datautils.py:64] [datautils:saveCFDataByContest] [INFO]- addStudentContest王嘉薪
+[2020-01-30 18:45:41,223] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/updateCFDataByContest HTTP/1.1" 200 10
+[2020-01-30 18:45:57,392] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 18:46:00,461] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 65269
+[2020-01-30 18:46:04,780] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/294/contest HTTP/1.1" 200 8721
+[2020-01-30 18:46:51,151] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 18:48:01,773] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 18:48:03,677] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 18:48:04,765] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 21:32:07,560] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:32:15,741] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata
+[2020-01-30 21:32:15,742] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata HTTP/1.1" 404 2075
+[2020-01-30 21:32:15,930] [log.py:228] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2020-01-30 21:32:15,933] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 2081
+[2020-01-30 21:32:23,762] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/
+[2020-01-30 21:32:23,763] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/ HTTP/1.1" 404 3683
+[2020-01-30 21:32:30,577] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/111 HTTP/1.1" 200 57670
+[2020-01-30 21:32:50,992] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 21:32:52,910] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:32:58,266] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 21:33:00,083] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:33:04,893] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata HTTP/1.1" 301 0
+[2020-01-30 21:33:04,970] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 21:33:09,768] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 57670
+[2020-01-30 21:34:19,176] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:34:21,043] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:34:46,452] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:34:48,281] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:34:52,384] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 59, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year="+year)
+TypeError: can only concatenate str (not "int") to str
+[2020-01-30 21:34:52,387] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 68917
+[2020-01-30 21:35:03,550] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:35:05,082] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:35:08,970] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 59, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year="+str(year))
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:35:08,989] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 94711
+[2020-01-30 21:36:02,591] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:36:04,214] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:36:15,288] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 59, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year=%d" % year)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:36:15,292] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 94709
+[2020-01-30 21:36:36,201] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:36:37,995] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:36:47,914] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 60, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year=%d" % year)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:36:47,935] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 94706
+[2020-01-30 21:37:15,412] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 57670
+[2020-01-30 21:37:19,835] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 60, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year=%d" % year)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:37:19,838] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 94569
+[2020-01-30 21:37:46,978] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 60, in index
+    studentlist = Student.objects.order_by("-cfRating").filter("year=%d" % year)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:37:46,987] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 94706
+[2020-01-30 21:38:31,994] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:38:33,745] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:38:35,474] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /acmerdata/2018
+Traceback (most recent call last):
+  File "C:\Python37\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Python37\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py", line 60, in index
+    studentlist = Student.objects.filter("year=%d" % year).order_by("-cfRating")
+  File "C:\Python37\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 904, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python37\lib\site-packages\django\db\models\query.py", line 923, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1350, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1381, in _add_q
+    check_filterable=check_filterable,
+  File "C:\Python37\lib\site-packages\django\db\models\sql\query.py", line 1247, in build_filter
+    arg, value = filter_expr
+ValueError: too many values to unpack (expected 2)
+[2020-01-30 21:38:35,479] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /acmerdata/2018 HTTP/1.1" 500 98883
+[2020-01-30 21:39:06,124] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:39:08,315] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:39:09,392] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 22136
+[2020-01-30 21:39:20,994] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:39:22,702] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:39:29,463] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2019 HTTP/1.1" 200 11580
+[2020-01-30 21:41:45,208] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2019 HTTP/1.1" 200 13030
+[2020-01-30 21:42:09,177] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 65206
+[2020-01-30 21:42:23,678] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2016 HTTP/1.1" 200 8416
+[2020-01-30 21:44:13,189] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 70052
+[2020-01-30 21:44:46,380] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 61642
+[2020-01-30 21:45:03,796] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 53460
+[2020-01-30 21:45:16,794] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests HTTP/1.1" 200 53461
+[2020-01-30 21:48:30,678] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests?page=1 HTTP/1.1" 200 53461
+[2020-01-30 21:48:59,627] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:49:01,364] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:49:21,145] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 21:49:23,163] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:49:23,659] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests
+[2020-01-30 21:49:23,662] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests?page=1 HTTP/1.1" 404 3902
+[2020-01-30 21:49:28,495] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 53461
+[2020-01-30 21:49:33,095] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests
+[2020-01-30 21:49:33,097] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests HTTP/1.1" 404 3895
+[2020-01-30 21:51:14,669] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 53461
+[2020-01-30 21:54:46,618] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:54:48,453] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:54:58,570] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:55:00,220] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:55:18,221] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 11647
+[2020-01-30 21:55:46,514] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:55:48,488] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:55:55,505] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 21:55:57,320] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 21:56:26,780] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6968
+[2020-01-30 21:57:16,203] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6968
+[2020-01-30 21:57:26,552] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests/
+[2020-01-30 21:57:26,554] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests/ HTTP/1.1" 404 3898
+[2020-01-30 21:57:30,894] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 65206
+[2020-01-30 21:57:46,999] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 24966
+[2020-01-30 21:57:54,782] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests
+[2020-01-30 21:57:54,787] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests HTTP/1.1" 404 3895
+[2020-01-30 21:59:26,286] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 24968
+[2020-01-30 21:59:28,030] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6968
+[2020-01-30 21:59:34,979] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests/
+[2020-01-30 21:59:34,981] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests/ HTTP/1.1" 404 3898
+[2020-01-30 22:07:09,302] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:07:11,084] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:07:28,577] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:07:30,363] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:07:39,021] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:07:40,898] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:08:19,984] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:08:21,671] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:08:33,168] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:08:34,964] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:08:40,151] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:08:41,869] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:08:52,970] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:08:54,731] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:08:58,490] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:09:00,177] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:09:02,858] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:09:04,848] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:09:12,086] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/43/
+[2020-01-30 22:09:12,089] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/43/ HTTP/1.1" 404 3875
+[2020-01-30 22:11:09,712] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 28045
+[2020-01-30 22:11:13,943] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/2018/
+[2020-01-30 22:11:13,945] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/2018/ HTTP/1.1" 404 3881
+[2020-01-30 22:11:24,362] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 28045
+[2020-01-30 22:12:00,056] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 27810
+[2020-01-30 22:12:02,890] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 27810
+[2020-01-30 22:12:12,302] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/2018 HTTP/1.1" 200 27810
+[2020-01-30 22:12:15,765] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 11967
+[2020-01-30 22:12:25,413] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/student/contest/1536/
+[2020-01-30 22:12:25,414] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/student/contest/1536/ HTTP/1.1" 404 3929
+[2020-01-30 22:13:58,129] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 10417
+[2020-01-30 22:14:00,244] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmdata/contest/1536/
+[2020-01-30 22:14:00,246] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmdata/contest/1536/ HTTP/1.1" 404 2111
+[2020-01-30 22:14:03,751] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmdata/contest/1536
+[2020-01-30 22:14:03,753] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmdata/contest/1536 HTTP/1.1" 404 2108
+[2020-01-30 22:14:23,669] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 10451
+[2020-01-30 22:14:27,656] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contest/1536
+[2020-01-30 22:14:27,659] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contest/1536 HTTP/1.1" 404 3902
+[2020-01-30 22:14:33,607] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contest/1536
+[2020-01-30 22:14:33,609] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contest/1536 HTTP/1.1" 404 3902
+[2020-01-30 22:14:48,002] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/1536/contest HTTP/1.1" 200 265
+[2020-01-30 22:15:25,704] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:15:28,140] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:15:34,407] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 10470
+[2020-01-30 22:15:36,561] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contest/1293 HTTP/1.1" 200 265
+[2020-01-30 22:15:41,666] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contest/-1
+[2020-01-30 22:15:41,667] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contest/-1 HTTP/1.1" 404 3896
+[2020-01-30 22:15:48,544] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contest/-1
+[2020-01-30 22:15:48,545] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contest/-1 HTTP/1.1" 404 3896
+[2020-01-30 22:16:35,548] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 10451
+[2020-01-30 22:16:39,659] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contest/1536 HTTP/1.1" 200 265
+[2020-01-30 22:23:01,576] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:23:03,402] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:24:15,457] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:24:17,258] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:24:44,018] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:24:45,959] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:24:54,189] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:24:56,273] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:24:58,709] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:25:00,291] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:02,934] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:25:04,754] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:11,509] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:25:13,503] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:29,694] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:25:31,725] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:40,806] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:25:42,449] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:45,051] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:25:46,945] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:25:50,616] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:25:52,378] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:26:15,177] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\urls.py changed, reloading.
+[2020-01-30 22:26:17,003] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:26:28,556] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:26:30,425] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:26:40,574] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:26:42,367] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:27:07,200] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:27:09,035] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:27:23,142] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\刘勇团队文件\项目相关\程序代码\PY-2020-ACM\mycode\acmer\acmerdata\views.py changed, reloading.
+[2020-01-30 22:27:25,485] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-01-30 22:27:38,015] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2018040447 HTTP/1.1" 200 10825
+[2020-01-30 22:27:40,800] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contestFromStudent/1536 HTTP/1.1" 200 6351
+[2020-01-30 22:27:53,271] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contestFromStudent/1535 HTTP/1.1" 200 7206
+[2020-01-30 22:27:59,424] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 72738
+[2020-01-30 22:28:02,553] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6968
+[2020-01-30 22:28:06,665] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2017040266 HTTP/1.1" 200 8248
+[2020-01-30 22:28:13,257] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 72738
+[2020-01-30 22:28:21,170] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6968
+[2020-01-30 22:28:22,633] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests/290/contest
+[2020-01-30 22:28:22,635] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests/290/contest HTTP/1.1" 404 4147
+[2020-01-30 22:29:02,664] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6622
+[2020-01-30 22:29:05,859] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/contests/contest/289
+[2020-01-30 22:29:05,861] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/contests/contest/289 HTTP/1.1" 404 4147
+[2020-01-30 22:29:17,525] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contests/1 HTTP/1.1" 200 6892
+[2020-01-30 22:29:19,846] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/contest/290 HTTP/1.1" 200 6351
+[2020-01-30 22:30:22,331] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/student/2016014323 HTTP/1.1" 200 8842
+[2020-01-30 22:56:39,450] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 229877
+[2020-01-30 22:56:39,521] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/bootstrap.css
+[2020-01-30 22:56:39,525] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/font-awesome.css
+[2020-01-30 22:56:39,530] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/bootstrap.css HTTP/1.1" 404 4159
+[2020-01-30 22:56:39,537] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/custom-styles.css
+[2020-01-30 22:56:39,537] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/font-awesome.css HTTP/1.1" 404 4168
+[2020-01-30 22:56:39,541] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/dataTables.bootstrap.css
+[2020-01-30 22:56:39,543] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/custom-styles.css HTTP/1.1" 404 4171
+[2020-01-30 22:56:39,544] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/dataTables.bootstrap.css HTTP/1.1" 404 4222
+[2020-01-30 22:56:39,775] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/jquery-1.10.2.js
+[2020-01-30 22:56:39,779] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/bootstrap.min.js
+[2020-01-30 22:56:39,783] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/jquery.metisMenu.js
+[2020-01-30 22:56:39,787] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/jquery.dataTables.js
+[2020-01-30 22:56:39,789] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/jquery-1.10.2.js HTTP/1.1" 404 4165
+[2020-01-30 22:56:39,789] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/bootstrap.min.js HTTP/1.1" 404 4165
+[2020-01-30 22:56:39,795] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/dataTables.bootstrap.js
+[2020-01-30 22:56:39,800] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/custom-scripts.js
+[2020-01-30 22:56:39,800] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/jquery.metisMenu.js HTTP/1.1" 404 4174
+[2020-01-30 22:56:39,801] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/jquery.dataTables.js HTTP/1.1" 404 4210
+[2020-01-30 22:56:39,803] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/dataTables.bootstrap.js HTTP/1.1" 404 4219
+[2020-01-30 22:56:39,804] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/custom-scripts.js HTTP/1.1" 404 4168
+[2020-01-30 22:59:07,313] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /acmerdata/ HTTP/1.1" 200 229888
+[2020-01-30 22:59:07,404] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/bootstrap.css
+[2020-01-30 22:59:07,408] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/font-awesome.css
+[2020-01-30 22:59:07,412] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/dataTables.bootstrap.css
+[2020-01-30 22:59:07,416] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/custom-styles.css
+[2020-01-30 22:59:07,419] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/bootstrap.css HTTP/1.1" 404 4159
+[2020-01-30 22:59:07,423] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/font-awesome.css HTTP/1.1" 404 4168
+[2020-01-30 22:59:07,428] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/dataTables.bootstrap.css HTTP/1.1" 404 4222
+[2020-01-30 22:59:07,429] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/custom-styles.css HTTP/1.1" 404 4171
+[2020-01-30 22:59:07,495] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/jquery-1.10.2.js
+[2020-01-30 22:59:07,498] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/jquery.metisMenu.js
+[2020-01-30 22:59:07,501] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/bootstrap.min.js
+[2020-01-30 22:59:07,504] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/custom-scripts.js
+[2020-01-30 22:59:07,508] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/dataTables.bootstrap.js
+[2020-01-30 22:59:07,509] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/jquery-1.10.2.js HTTP/1.1" 404 4165
+[2020-01-30 22:59:07,509] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/jquery.metisMenu.js HTTP/1.1" 404 4174
+[2020-01-30 22:59:07,514] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/jquery.dataTables.js
+[2020-01-30 22:59:07,515] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/bootstrap.min.js HTTP/1.1" 404 4165
+[2020-01-30 22:59:07,517] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/custom-scripts.js HTTP/1.1" 404 4168
+[2020-01-30 22:59:07,519] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/dataTables.bootstrap.js HTTP/1.1" 404 4219
+[2020-01-30 22:59:07,523] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/jquery.dataTables.js HTTP/1.1" 404 4210
+[2020-01-30 22:59:07,610] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/jquery.metisMenu.js
+[2020-01-30 22:59:07,614] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/jquery.metisMenu.js HTTP/1.1" 404 4174
+[2020-01-30 22:59:07,973] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/jquery.dataTables.js
+[2020-01-30 22:59:07,974] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/jquery.dataTables.js HTTP/1.1" 404 4210
+[2020-01-30 22:59:08,042] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/dataTables/dataTables.bootstrap.js
+[2020-01-30 22:59:08,067] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/dataTables/dataTables.bootstrap.js HTTP/1.1" 404 4219
+[2020-01-30 22:59:08,175] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/js/custom-scripts.js
+[2020-01-30 22:59:08,176] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/js/custom-scripts.js HTTP/1.1" 404 4168
+[2020-01-30 22:59:16,317] [log.py:228] [log:log_response] [WARNING]- Not Found: /acmerdata/assets/css/bootstrap.css
+[2020-01-30 22:59:16,319] [basehttp.py:157] [basehttp:log_message] [WARNING]- "GET /acmerdata/assets/css/bootstrap.css HTTP/1.1" 404 4159

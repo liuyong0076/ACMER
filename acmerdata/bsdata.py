@@ -7,7 +7,7 @@ import operator
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-def getUrlText(url):
+def getUrlText(url):    #根据url获取html资源,返回html文本
     while True:
         try:
             html = requests.get(url,timeout=60)
@@ -25,7 +25,7 @@ def getUrlText(url):
     return html
 
 # codeforces get one user's data
-def getCFUserData(cfID):
+def getCFUserData(cfID):    #根据cfID获取比赛记录,返回一个字典列表,里面存储此学生的比赛记录
     url = "https://codeforces.com/api/user.rating?handle=" + cfID.strip()
     html = getUrlText(url)    
     js = json.loads(html)    
@@ -53,7 +53,7 @@ def getCFUserData(cfID):
     return datalist
 
 # atcoder get one user's data
-def getACUserData(acID):
+def getACUserData(acID):    #根据acID获取比赛记录,返回一个字典列表,里面存储此学生的比赛记录
     print("getACUserData---"+acID)
     url = "https://atcoder.jp/users/"+acID.strip()+"/history"
     html = getUrlText(url)
@@ -93,7 +93,7 @@ def getACUserData(acID):
 
     return data_list
 
-def getCFContestList(max_timestamp):
+def getCFContestList(max_timestamp):    #根据最大时间戳获取cf比赛列表,返回比赛开始时间超过此时间戳的cf比赛信息,同样以字典列表返回
     url = "https://codeforces.com/api/contest.list?gym=false"
     html = getUrlText(url)
     js = json.loads(html)    
@@ -113,7 +113,7 @@ def getCFContestList(max_timestamp):
         datalist.sort(key=operator.itemgetter('starttime'))
     return datalist
 
-def getCFContestRankingChange(contestID,existCFIDList):
+def getCFContestRankingChange(contestID,existCFIDList):     #根据cf比赛id(cid),及已存在的学生名单,获取参与此比赛的学生的排名变化,返回包含参与学生信息的字典列表
     url = "https://codeforces.com/api/contest.ratingChanges?contestId=" + str(contestID)  #566
     html = getUrlText(url)
     js = json.loads(html)    
@@ -131,7 +131,7 @@ def getCFContestRankingChange(contestID,existCFIDList):
             })
     return datalist
 
-def cheakcfID(cfID):
+def cheakcfID(cfID):    #验证cfid的存在,若存在返回True,不存在返回False
     url = "https://codeforces.com/api/user.rating?handle=" + cfID.strip()
     html = getUrlText(url)    
     js = json.loads(html)
@@ -141,7 +141,7 @@ def cheakcfID(cfID):
     else:
         return False
 
-def cheakacID(acID):
+def cheakacID(acID):    #验证acid的存在,若存在返回True,不存在返回False
     if acID =='':
         return False
     url = "https://atcoder.jp/users/"+acID.strip()+"/history"
@@ -152,7 +152,7 @@ def cheakacID(acID):
         return False
     else:
         return True
-def getNCUserData(ncID):
+def getNCUserData(ncID):    #根据ncid获取牛客数据,同样返回字典列表
     url = "https://ac.nowcoder.com/acm/contest/profile/" + ncID
     driver = webdriver.PhantomJS()
     driver.get(url)
@@ -200,12 +200,12 @@ def getNCUserData(ncID):
     driver.close()
     return datalist
 
-def exeNCrank(rank):
+def exeNCrank(rank):        #ncrank数据处理
     p=rank.replace(" ","")
     l=p.split("/" , 1)
     return int(l[0])
 
-def getsubmitdata(cid,cfID):
+def getsubmitdata(cid,cfID):    #根据比赛id与cfid获取该学生在此场比赛中的所有提交,返回一个包含提交代码的字典列表,考虑到网络问题,在超过一定次数的请求后有可能会将代码设定成get error
     url = 'https://codeforces.com/api/contest.status?contestId='+str(cid)+'&handle='+cfID
     html = getUrlText(url)
     datalist = []
@@ -243,22 +243,7 @@ def getsubmitdata(cid,cfID):
             }
         )
     return datalist
-
-"""def getcfsolve(cid,cfID):
-    url = 'https://codeforces.com/api/contest.status?contestId='+str(cid)+'&handle='+cfID
-    html = getUrlText(url)
-    solve = 0
-    indexs = ''
-    data = json.loads(html)['result']
-    for submit in data:
-        if submit['verdict']=='OK':
-            if indexs.find(submit['problem']['index']) == -1 :
-                solve = solve + 1
-                indexs += submit['problem']['index']
-    return solve"""
-#旧solve获取，已废弃
-def submitdetail(cid,subID):
-    code = ''
+def submitdetail(cid,subID):    #根据比赛id与提交id获取该次提交的代码,返回抓取到的代码
     url = 'https://codeforces.com/contest/'+str(cid)+'/submission/'+str(subID)
     html = getUrlText(url)
     soup = BeautifulSoup(html,features="lxml")
@@ -268,7 +253,7 @@ def submitdetail(cid,subID):
     #print(code)
     return code
 
-def contestsubmitgetupdate(cid,cfidlist,maxsubid):
+def contestsubmitgetupdate(cid,cfidlist,maxsubid):  #根据最大提交id进行更新赛后补题
     url = 'https://codeforces.com/api/contest.status?contestId=' +str(cid)
     source = getUrlText(url)
     submits = json.loads(source)['result']
@@ -301,7 +286,7 @@ def contestsubmitgetupdate(cid,cfidlist,maxsubid):
                 })
                 break
     return datalist
-
+#预告更新模块,返回一个字典列表
 def cfforecastget():
     url = 'https://codeforces.com/api/contest.list?gym=false'
     html = getUrlText(url)
@@ -339,7 +324,6 @@ def acforecastget():
                 'link':link,
             })
     return datalist
-
 def ncforecastget():
     url = 'https://ac.nowcoder.com/acm/contest/vip-index'
     html = getUrlText(url)
@@ -360,7 +344,8 @@ def ncforecastget():
                 'link':link,
         })
     return datalist
-
+#end
+#获取cf的时间戳,用于标准化时间
 def getcftimestamp(cflist):
     url = "https://codeforces.com/api/contest.list?gym=false"
     html = getUrlText(url)
