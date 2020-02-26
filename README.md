@@ -55,12 +55,9 @@ acmer --总目录
 
 本项目开发环境为windows,服务器部署环境为ubuntu故以ubuntu为例
 
-(1)
-
-首先执行apt更新
+(1) 首先执行apt更新
 
 apt下载：
-
 1. python3
 2. python3-dev
 3. python3-pip
@@ -73,7 +70,7 @@ apt下载：
 10. libxslt1-dev zlib1g-dev
 11. phantomjs
 
-apt下载完成后进行pip下载:
+（2）apt下载完成后进行pip下载:
 
 1. django
 2. lxml
@@ -86,7 +83,7 @@ apt下载完成后进行pip下载:
 9. pygments
 10. mysqlclient
 
-进入/acmer/setting.py中将MySQL相关参数调整为自己的数据库
+（3）进入/acmer/setting.py中将MySQL相关参数调整为自己的数据库
 
 然后进入到manage.py同级目录下
 
@@ -99,7 +96,7 @@ python3 manage.py migrate
 
 完成数据库配置
 
-然后执行python3 manage.py runserver 0.0.0.0:8000 即可在本机8000端口访问数据系统
+（4）然后执行python3 manage.py runserver 0.0.0.0:8000 即可在本机8000端口访问数据系统
 
 etc：
 
