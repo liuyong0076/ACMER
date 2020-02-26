@@ -88,14 +88,6 @@ apt下载完成后进行pip下载:
 
 进入/acmer/setting.py中将MySQL相关参数调整为自己的数据库
 
-![image-20200225220503503](C:\Users\jhas\AppData\Roaming\Typora\typora-user-images\image-20200225220503503.png)
-
-例：假设我使用acmerdata数据库,用户名为123,密码为123且主机为本机：
-
-上图应填为
-
-![image-20200225220739238](C:\Users\jhas\AppData\Roaming\Typora\typora-user-images\image-20200225220739238.png)
-
 然后进入到manage.py同级目录下
 
 执行 
