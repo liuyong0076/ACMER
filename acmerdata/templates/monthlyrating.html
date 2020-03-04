@@ -5,7 +5,7 @@
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BUCTCODER</title>
+    <title>MonthlyRating-BUCTCODER</title>
 	<!-- Bootstrap Styles-->
     <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FontAwesome Styles-->
@@ -45,6 +45,25 @@
                             students' data
                         </div> -->
                         <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group col-md-1">                               
+                                    <select class="form-control" style="width:80px" id="year">
+                                        {% for s in yearlist %}
+                                            <option {% if s == year %}  selected="selected"  {% endif %} >{{s}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <select class="form-control" style="width:80px" id="month">
+                                        {% for s in monthlist %}
+                                            <option {% if s == month %}  selected="selected"  {% endif %} >{{s}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <a href="#" class="btn btn-primary" id="query" onclick="query()">query</a>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
@@ -53,13 +72,16 @@
                                             <th>stuNO</th>
                                             <th>realname</th>
                                             <th>classname</th>
-                                            <th>year</th>
-                                            <th>cfRating</th>
-                                            <th>div1</th>
-                                            <th>div2</th>
-                                            <th>div3</th>
+                                            <th>#cf</th>
+                                            <th>cf-diff</th>
+                                            <th>#cf+</th>
                                             <th>#cf++</th>
-                                            <th>acRating</th>
+                                            <th>#ac</th>
+                                            <th>ac-diff</th>
+                                            <th>#jsk</th>
+                                            <th>#jsk+</th>
+                                            <th>#nc</th>
+                                            <th>#nc+</th>
                                             <th>Score</th>
                                         </tr>
                                     </thead>
@@ -68,17 +90,20 @@
                                             {% for s in studentlist %}
                                             <tr class="odd gradeX">
                                                 <td>{{  forloop.counter }}</td>
-                                                <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.stuNO }}</a></td>
-                                                <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                <td>{{ s.stuNO }}</td>
+                                                <td>{{ s.realName }}</td>
                                                 <td>{{ s.className }}</td>
-                                                <td>{{ s.year }}</td>
-                                                <td>{{ s.cfRating }}</td>
-                                                <td>{{ s.div1 }}</td>
-                                                <td>{{ s.div2 }}</td>
-                                                <td>{{ s.div3 }}</td>
-                                                <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.after }}</a></td>
-                                                <td>{{ s.acRating }}</td>
-                                                <td>{{ s.count }}</td>
+                                                <td>{{ s.cf }}</td>
+                                                <td>{{ s.cfdiff }}</td>
+                                                <td>{{ s.cfp }}</td>
+                                                <td>{{ s.cfpp }}</td>
+                                                <td>{{ s.ac }}</td>
+                                                <td>{{ s.acdiff }}</td>
+                                                <td>{{ s.jsk }}</td>
+                                                <td>{{ s.jskp }}</td>
+                                                <td>{{ s.nc }}</td>
+                                                <td>{{ s.ncp }}</td>
+                                                <td>{{ s.score }}</td>
                                             </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -88,6 +113,9 @@
                                 </table>
                             </div>
                             
+                            <div class="alert alert-success">
+                                Score = 参赛场次*20 + 解题数*5 + cfdiff + acdiff
+                            </div>
                         </div>
                     </div>
                     <!--End Advanced Tables -->
@@ -115,6 +143,12 @@
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
+                $("#query").on('click',function query(){
+                    var year = $("#year").find("option:selected").text();
+                    var month = $("#month").find("option:selected").text();
+                    var url = "/acmerdata/monthlyrating/"+year+"/"+month;
+                    $(location).attr('href', url);
+                });
             });
     </script>
          <!-- Custom Js -->

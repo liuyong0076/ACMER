@@ -18,6 +18,7 @@
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
      <!-- TABLE STYLES-->
     <link href="{% static 'assets/js/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet" />
+    <link rel="icon" href="{% static 'favicon.ico' %}">
 </head>
 <body>
     <div id="wrapper">
@@ -60,6 +61,7 @@
                                             <th>atcoderID</th>
                                             <th>vjudgeID</th>
                                             <th>牛客ID</th>
+                                            <th>计蒜客ID</th>
                                             <th>cfcheck</th> 
                                             <th>accheck</th>
                                             <th>申请时间</th>
@@ -81,6 +83,7 @@
                                                 <td>{{ s.acID | truncatechars:9 }}</td>
                                                 <td>{{ s.vjID | truncatechars:9 }}</td>
                                                 <td>{{ s.ncID | truncatechars:9 }}</td>
+                                                <td>{{ s.jskID | truncatechars:9 }}</td>
                                                 <td>{{ s.cfcheck }}</td>
                                                 <td>{{ s.accheck }}</td>
                                                 <td>{{ s.request_time }}</td>

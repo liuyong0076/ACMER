@@ -18,13 +18,14 @@ ACMERDATA是一个acm队员数据系统,能够直接从CodeForces、AtCoder、ne
 | beautifulsoup4 | HTML资源处理 |           https://pypi.org/project/beautifulsoup4/           |
 |     mysql      |    数据库    |                    https://www.mysql.com/                    |
 |    selenium    |  js资源处理  |                  https://www.selenium.dev/                   |
-|   phantomjs    |  模拟浏览器  |                    https://phantomjs.org/                    |
+| chrome-driver  |  模拟浏览器  |              http://chromedriver.chromium.org/               |
 
 其它辅助插件：
 
 1. pygments --代码高亮
 2. lxml --html资源辅助处理
 3. django-crontab --定时任务
+4. xvfb --辅助chrome-driver浏览器模拟，为模拟提供输出端
 
 ### 技术需求
 

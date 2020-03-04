@@ -6,6 +6,7 @@ import json, time, datetime
 import operator
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 def getUrlText(url):    #根据url获取html资源,返回html文本
     while True:
@@ -154,7 +155,11 @@ def cheakacID(acID):    #验证acid的存在,若存在返回True,不存在返回
         return True
 def getNCUserData(ncID):    #根据ncid获取牛客数据,同样返回字典列表
     url = "https://ac.nowcoder.com/acm/contest/profile/" + ncID
-    driver = webdriver.PhantomJS()
+    op = Options()
+    op.add_argument('--headless')
+    op.add_argument('--disable-gpu')
+    op.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(chrome_options=op)
     driver.get(url)
     time.sleep(5)
     soup = BeautifulSoup(driver.page_source)

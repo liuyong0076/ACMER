@@ -15,7 +15,7 @@ class Addstudent(ModelForm):
             ('update','更新'),
         )
         model = AddStudentqueue
-        fields = ['atype','stuNO','realName','sex','className','school','year','acID','cfID','vjID','ncID']
+        fields = ['atype','stuNO','realName','sex','className','school','year','acID','cfID','vjID','ncID','jskID']
         widgets = {
             'sex' : forms.widgets.Select(attrs={'class':'form-control'},choices=sexchoice),
             'atype' : forms.widgets.Select(attrs={'class':'form-control','onchange':'typechange()'},choices=typechoice),
@@ -28,6 +28,7 @@ class Addstudent(ModelForm):
             'vjID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'ncID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'school' : forms.widgets.TextInput(attrs={'class':'form-control'}),
+            'jskID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
         }
         labels = {
             'atype' :_('操作类型'),
@@ -41,10 +42,12 @@ class Addstudent(ModelForm):
             'vjID':_('VirtualJudgeID'),
             'ncID':_('牛客网ID'),
             'school' : _('学校'),
+            'jskID':_('计蒜客ID'),
         }
         help_texts = {
             'cfID': _('codeforces网站ID，请注意不要有多余空格'),
             'ncID': _('nowcoder网站ID，请注意不是昵称，而是系统生成的数字'),
+            'jskID':_('与牛客ID相似,不是昵称,是系统生成的字符串'),
         }
         error_messages = {
             'realName': {

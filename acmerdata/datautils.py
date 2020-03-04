@@ -36,7 +36,7 @@ def addContest(contestID,date,contest,ctype,cnumber=0,starttime=0,endtime=0):   
         Contest.objects.create(cid=contestID,cname=contest,cdate=date,cdiv=div,ctype=ctype,cnumber=cnumber,starttimestamp=starttime,endtimestamp=endtime)
 
 def addStudentContest(stuNO,realname,classname,cid,cname,cdate,rank,newRating,diff,ctype,solve="no data"):    #添加学生比赛记录
-    sc = StudentContest.objects.filter(stuNO=stuNO,cid=cid,cname=cname)
+    sc = StudentContest.objects.filter(stuNO=stuNO,cid=cid,cname=cname,ctype=ctype)
     if len(sc) == 0:
         cdiv = getDivByName(cname)
         StudentContest.objects.create(stuNO=stuNO,realName=realname,className=classname,
@@ -72,7 +72,7 @@ def saveCFDataByContest():  #更新cf比赛
         stuInfoDic[stu.cfID] = stu
     log = logging.getLogger("log")
     max_timestamp=0
-    for d in Contest.objects.all():
+    for d in Contest.objects.filter():
         t=d.ctype
         dt=d.cdate 
         if(d.ctype=="cf"):
@@ -84,6 +84,8 @@ def saveCFDataByContest():  #更新cf比赛
     log.info(max_timestamp)
     str = ""
     contestList = bsdata.getCFContestList(max_timestamp)
+    if len(contestList) != 0:
+        cfcontestsubmitupdatebycontest()
     for c in contestList:
         rankChangingList = bsdata.getCFContestRankingChange(c["cid"],cfIDList)
         if len(rankChangingList)>0:
@@ -102,6 +104,33 @@ def saveCFDataByContest():  #更新cf比赛
                 p.save()
             setcontestsolve(c["cid"])
     return str
+
+def cfcontestsubmitupdatebycontest():       #codeforces补题更新
+    maxsubid = CFContest.objects.all().aggregate(Max('subid'))['subid__max']
+    students = Student.objects.all()
+    cfIDList = []
+    strs = ''
+    stuInfoDic = {}
+    logger = logging.getLogger('log')
+    for stu in students:
+        cfIDList.append(stu.cfID)
+        stuInfoDic[stu.cfID] = stu
+    contestlist = Contest.objects.filter(ctype='cf').order_by("-cdate")
+    lencontest = 10
+    for contest in contestlist:
+        if lencontest == 0:
+            break
+        else:
+            lencontest = lencontest - 1
+        logger.info(contest.cid)
+        datalist = bsdata.contestsubmitgetupdate(contest.cid,cfIDList,maxsubid)
+        if len(datalist)>0:
+            for data in datalist:
+                stu = stuInfoDic[data['cfid']]
+                datautils.saveCFstatu(stu.stuNO,stu.realName,data['cid'],
+                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])        
+        strs += contest.cname + ':' + str(len(datalist)) +'\n'
+    context = {'str': strs }
 
 def saveCFdataByUser(stu):  #   根据学生对象获取cf数据
     if stu.cfID:
@@ -284,10 +313,10 @@ def cftimeStandard():   #cf时间标准化
     return strs
 
 def setcontestsolve(cid):       #比赛解题数重置
-    stucons = StudentContest.objects.filter(cid=cid)
+    stucons = StudentContest.objects.filter(cid=cid,ctype='cf')
     for stucon in stucons:
         submits = CFContest.objects.filter(cid=cid,stuNO=stucon.stuNO)
-        contest = Contest.objects.get(cid=cid)
+        contest = Contest.objects.get(cid=cid,ctype='cf')
         solve = 0
         after = 0
         index = []
@@ -305,15 +334,31 @@ def setcontestsolve(cid):       #比赛解题数重置
 def setaftersolve(stu):     #补题数重置
     allsub = 0
     correctsub = 0
-    StuCFcontests = StudentContest.objects.filter(stuNO=stu.stuNO,ctype='cf')
-    for con in StuCFcontests:
-        cont = Contest.objects.get(cid = con.cid)
-        submitlen = len(CFContest.objects.filter(cid=con.cid,stuNO=stu.stuNO,ctime__gt=cont.endtimestamp))
+    op=[]
+    StuCFcontests = CFContest.objects.filter(stuNO=stu.stuNO)
+    for CFcontest in StuCFcontests:
+        if CFcontest.cid not in op :
+            op.append(CFcontest.cid)
+    for con in op:
+        cont = Contest.objects.get(cid = con,ctype='cf')
+        submitlen = len(CFContest.objects.filter(cid=con,stuNO=stu.stuNO,ctime__gt=cont.endtimestamp))
+        correctlen = correctanslen(stu,con)
         allsub += int(submitlen)
-        correctsub += int(con.aftersolve)
+        correctsub += int(correctlen)
     stu.all_cf_aftersolve= allsub
     stu.correct_cf_aftersolve = correctsub
     stu.save()
+
+def correctanslen(stu,con):
+    ind=[]
+    solve=0
+    cont = Contest.objects.get(cid = con,ctype='cf')
+    submits = CFContest.objects.filter(cid=con,stuNO=stu.stuNO,ctime__gt=cont.endtimestamp,statu='OK')
+    for submit in submits:
+        if submit.index not in ind:
+            ind.append(submit.index)
+            solve=solve+1
+    return solve
 
 def addprizet(request):     #添加比赛获奖记录，未完全开发
     if request.method=="POST":

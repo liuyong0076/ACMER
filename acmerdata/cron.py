@@ -1,4 +1,4 @@
-from acmerdata import bsdata, datautils
+from acmerdata import bsdata, datautils,jsk
 import logging
 import lxml
 from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
@@ -108,7 +108,7 @@ def updataweightratingstatistics():      #更新权重
                     div1=div1+1
                 elif contest.cdiv == '3':
                     div3=div3+1
-        count = stu.cfRating + div1 * 30 + div2 * 20 + div1 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
+        count = stu.cfRating + div1 * 30 + div2 * 20 + div3 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
         datalist={
             'div1':div1,
             'div2':div2,
@@ -123,3 +123,23 @@ def updataweightratingstatistics():      #更新权重
             'acRating':stu.acRating,
         }
         Weightrating.objects.update_or_create(datalist,stuNO=stu.stuNO)
+
+def jskdataupdate(): #计蒜客数据更新
+    students = Student.objects.all()
+    suc = ''
+    fail = ''
+    strs = ''
+    logger = logging.getLogger('log')
+    for stu in students:
+        if stu.jskID:
+            logger.info(stu.realName + "start jsk dataget")
+            p = jsk.getjskdata(stu)
+            if p :
+                suc += stu.realName + '、'
+            else:
+                fail += stu.realName + '、'
+            logger.info(stu.realName + "end jsk dataget")
+    datautils.setContestJoinNumbers()
+    strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
+    logger.info(strs) 
+    

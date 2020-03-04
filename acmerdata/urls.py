@@ -17,6 +17,8 @@ urlpatterns = [
     path('aftercf/<str:stuNO>',views.aftersolve,name='aftersolve'),
     path('addprizet',views.addprizet,name='addprize'),
     path('weightratingstatistic',views.weightratingstatistic,name="weightratingstatistics"),
+    path('monthlyrating/<str:year>/<str:month>',views.monthlyrating,name="monthlyrating"),
+    path('monthlyrating',views.monthlyrating,name="monthlyrating"),
     #group
     path('group',views.group,name='group'),
     path('group/del/<int:groupid>',views.groupdel,name='groupdel'),
@@ -37,6 +39,7 @@ urlpatterns = [
     path('setallcontestsolve',views.setallcontestsolve,name='setallcontestsolve'),
     path('setallaftersolve',views.setallaftersolve,name='setallaftersolve'),
     path('updataweightratingstatistics',views.updataweightratingstatistics,name="updatacfstatistics"),
+    path('jskdataupdate',views.jskdataupdate,name='jskdataupdate'),
     
     # data visualization
     path('cftimeline', views.cftimeline, name='cftimeline'),

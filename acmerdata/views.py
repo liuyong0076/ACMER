@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
-from acmerdata import bsdata, datautils
+from acmerdata import bsdata, datautils ,jsk
 import logging
 import lxml
 from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
@@ -87,6 +87,7 @@ def index(request):   #入口页面
             'acTimes':stu.acTimes,
             'ncTimes':stu.ncTimes,
             'ncRating':stu.ncRating,
+            'jskTimes':stu.jskTimes,
             'school':stu.school,
             'sex':stu.sex,
         })
@@ -125,9 +126,9 @@ def student(request, stuNO):
     stu = Student.objects.get(stuNO=stuNO)
     classname, realname= '',''
     if len(data)>0:
-        classname,realname,cfID,acID,ncID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID
+        classname,realname,cfID,acID,ncID,jskID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID,stu.jskID
 
-    context = {'list': data,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID}
+    context = {'list': data,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID,'jskID':jskID}
     return render(request, 'student.html', context)
 #end数据展示模块
 #数据爬取模块
@@ -202,7 +203,7 @@ def Addstudentdata(request):
                     return render(request,'addstudent.html',{'form': formt,'massage':massage})
             acck=bsdata.cheakacID(str(c['acID']))
             cfck=bsdata.cheakcfID(str(c['cfID']))
-            AddStudentqueue.objects.create(atype=c['atype'],stuNO=c['stuNO'],realName=c['realName'],sex=c['sex'],className=c['className'],school=c['school'],year=c['year'],
+            AddStudentqueue.objects.create(atype=c['atype'],stuNO=c['stuNO'],realName=c['realName'],sex=c['sex'],className=c['className'],school=c['school'],year=c['year'],jskID=c['jskID'],
             acID=c['acID'],accheck=acck,cfID=c['cfID'],cfcheck=cfck,vjID=c['vjID'],ncID=c['ncID'],execution_statu=False,request_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
             formt=Addstudent()
             massage = "申请成功，请等待审核"
@@ -230,6 +231,8 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                         datautils.saveNCData(a)
                     if s.vjID!='':
                         a.vjID=s.vjID
+                    if s.jskID!='':
+                        a.jskID = s.jskID
                     if s.realName!='':
                         a.realName=s.realName
                     if s.className!='':
@@ -244,12 +247,13 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                 elif s.atype=='create':     #判断是否为创建
                     Student.objects.create(
                     stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,sex=s.sex,
-                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,
+                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,jskID = s.jskID
                     )
                     a = Student.objects.get(stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school)
                     datautils.saveCFdataByUser(a)
                     datautils.saveACData(a)
                     datautils.saveNCData(a)
+                    jsk.getjskdata(a)
                     students.append(a)
             s.execution_statu=True      #设置
             s.execution_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
@@ -578,11 +582,15 @@ def setallcontestsolve(request):    #用于手动标准化cf解题数量
     return render(request, 'spiderResults.html', context)
 
 def aftersolve(request,stuNO):      #展示学生补题数
-    cfcontests = StudentContest.objects.filter(ctype='cf',stuNO=stuNO)
+    op=[]
+    StuCFcontests = CFContest.objects.filter(stuNO=stuNO)
+    for CFcontest in StuCFcontests:
+        if CFcontest.cid not in op :
+            op.append(CFcontest.cid)
     data = []
-    for contest in cfcontests:
-        con = Contest.objects.get(cid=contest.cid)
-        submits = CFContest.objects.filter(cid=contest.cid,stuNO=stuNO,ctime__gt=con.endtimestamp)
+    for contest in op:
+        con = Contest.objects.get(cid=contest,ctype='cf')
+        submits = CFContest.objects.filter(cid=contest,stuNO=stuNO,ctime__gt=con.endtimestamp)
         for submit in submits:
             data.append({
                 'stuNO':submit.stuNO,
@@ -624,6 +632,70 @@ def addprizet(request):     #比赛获奖记录功能,此模块尚未开发完�
     return render(request,'addprize.html',{'form': formt})
 
 
+def monthlyrating(request,year='0',month='0'):
+    currYear = datetime.datetime.now().year
+    yearlist = [currYear,currYear-1,currYear-2,currYear-3]
+    if year == '0':
+        year = str(currYear)
+        month = datetime.datetime.now().month
+        if month<10:
+            month = ('0%d') % (month)
+
+    starttime = ("%s-%s-01 00:00:00") % (year, month)
+    endtime = ("%s-%s-31 23:59:59") % (year, month)
+    datalist = StudentContest.objects.filter(cdate__range=(starttime,endtime))
+    studentlist = []
+    for d in datalist:
+        isFind = False        
+        for stu in studentlist:
+            if stu['stuNO'] == d.stuNO:
+                isFind = True
+                break
+        if not isFind:            
+            studentlist.append({
+                'stuNO':d.stuNO,
+                'className':d.className,
+                'realName':d.realName,
+                'cf':0,
+                'cfdiff':0,
+                'cfp':0,
+                'cfpp':0,
+                'ac':0,
+                'acdiff':0,
+                'jsk':0,
+                'jskp':0,
+                'nc':0,
+                'ncp':0,
+                'score':0  # 比赛场次*20 + 解题数*5 + rating diff
+            })
+            stu = studentlist[-1]
+        if d.ctype == 'cf':
+            stu['cf'] += 1
+            stu['cfp'] += int(d.solve)
+            stu['cfpp'] += int(d.aftersolve)
+            stu['cfdiff'] += int(d.diff)
+        elif d.ctype == 'ac':
+            stu['ac'] += 1
+            try:
+                stu['acdiff'] += int(d.diff)
+            except:
+                pass
+        elif d.ctype == 'jsk':
+            stu['jsk'] += 1
+            stu['jskp'] += int(d.solve)
+        elif d.ctype == 'nc':
+            stu['nc'] += 1
+            stu['ncp'] += int(d.solve.split('/')[0])
+    
+    for s in studentlist:
+        s["score"] = (s['cf']+s['ac']+s['jsk']+s['nc']) * 20 + (s['cfp']+s['cfpp']+s['jskp']+s['ncp']) * 5 + (s['cfdiff']+s['acdiff'])
+
+    studentlist = sorted(studentlist, reverse=True, key=lambda x: x['score'])   
+
+    monthlist = ["01","02","03","04","05","06","07","08","09","10","11","12"]
+    context = {'studentlist': studentlist ,"year":int(year), "month":month,"yearlist":yearlist, "monthlist":monthlist}
+    return render(request, 'monthlyrating.html', context)
+
 #权重模块
 def updataweightratingstatistics(request):      #更新权重
     students = Student.objects.all()
@@ -636,14 +708,14 @@ def updataweightratingstatistics(request):      #更新权重
         div3 = 0 
         contests = StudentContest.objects.filter(stuNO = stu.stuNO,ctype='cf')
         for contest in contests :
-            if Contest.objects.get(cid=contest.cid).starttimestamp >= tngap:
+            if Contest.objects.get(cid=contest.cid,ctype='cf').starttimestamp >= tngap:
                 if contest.cdiv == '2':
                     div2=div2+1
                 elif contest.cdiv == '1':
                     div1=div1+1
                 elif contest.cdiv == '3':
                     div3=div3+1
-        count = stu.cfRating + div1 * 30 + div2 * 20 + div1 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
+        count = stu.cfRating + div1 * 30 + div2 * 20 + div3 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
         datalist={
             'div1':div1,
             'div2':div2,
@@ -665,3 +737,23 @@ def weightratingstatistic(request):     #权重展示
     list = Weightrating.objects.order_by("-count").all()
     return render(request,'weightrating.html',{'studentlist': list})
 #权重模块结束
+
+def jskdataupdate(request): #计蒜客数据更新
+    students = Student.objects.all()
+    suc = ''
+    fail = ''
+    strs = ''
+    logger = logging.getLogger('log')
+    for stu in students:
+        if stu.jskID:
+            logger.info(stu.realName + "start jsk dataget")
+            p = jsk.getjskdata(stu)
+            if p :
+                suc += stu.realName + '、'
+            else:
+                fail += stu.realName + '、'
+            logger.info(stu.realName + "end jsk dataget")
+    datautils.setContestJoinNumbers()
+    strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
+    context = {'str': strs }
+    return render(request, 'spiderResults.html', context)

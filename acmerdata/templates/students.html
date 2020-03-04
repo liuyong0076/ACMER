@@ -18,6 +18,7 @@
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
      <!-- TABLE STYLES-->
     <link href="{% static 'assets/js/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet" />
+    <link rel="icon" href="{% static 'favicon.ico' %}">
 </head>
 <body>
     <div id="wrapper">
@@ -63,6 +64,7 @@
                                             <th>#vj</th>
                                             <th>#nc</th>
                                             <th>ncRating</th>  
+                                            <th>#jsk</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,6 +86,7 @@
                                                 <td></td>
                                                 <td>{{s.ncTimes}}</td>
                                                 <td>{{s.ncRating}}</td>
+                                                <td>{{ s.jskTimes }}</td>
                                             </tr>
                                             {% endfor %}
                                         {% endif %}
