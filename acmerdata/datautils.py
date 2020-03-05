@@ -127,7 +127,7 @@ def cfcontestsubmitupdatebycontest():       #codeforces补题更新
         if len(datalist)>0:
             for data in datalist:
                 stu = stuInfoDic[data['cfid']]
-                datautils.saveCFstatu(stu.stuNO,stu.realName,data['cid'],
+                saveCFstatu(stu.stuNO,stu.realName,data['cid'],
                 contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])        
         strs += contest.cname + ':' + str(len(datalist)) +'\n'
     context = {'str': strs }
@@ -258,15 +258,22 @@ def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):      #添
 
 def cfsolvereset(stuNO,cid):    #重置解题数量
     submits = CFContest.objects.filter(stuNO=stuNO,cid=cid)
+    endtime = Contest.objects.get(cid=cid,ctype='cf')
     ok = []
     solve = 0
+    aftersolve= 0 
     for submit in submits:
-        if submit.statu == 'OK' and ok.count(submit.index)==0:
-            solve=solve+1
+        if submit.statu == 'OK' and ok.count(submit.index)==0 :
+            if submit.ctime > endtime:
+                aftersolve=aftersolve+1
+            else:
+                solve = solve + 1
             ok.append(submit.index)
-    contest = StudentContest.objects.get(stuNO=stuNO,cid=cid)
+    contest = StudentContest.objects.get(stuNO=stuNO,cid=cid,ctype='cf')
     contest.solve = str(solve)
+    contest.aftersolve = str(aftersolve)
     contest.save()
+
 def cftimesreset(): #重置参赛次数
     students = Student.objects.all()
     for stu in students:
