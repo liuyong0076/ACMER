@@ -22,7 +22,7 @@ class Addstudent(ModelForm):
             'stuNO' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'realName' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'className' : forms.widgets.TextInput(attrs={'class':'form-control'}),
-            'year' : forms.widgets.NumberInput(attrs={'class':'form-control'}),
+            'year' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'acID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'cfID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'vjID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
@@ -31,18 +31,18 @@ class Addstudent(ModelForm):
             'jskID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
         }
         labels = {
-            'atype' :_('操作类型'),
+            'atype' :_('操作'),
             'sex' :_('性别'),
             'stuNO': _('学号'),
             'realName':_('姓名'),
             'className':_('班别'),
             'year':_('年级'),
-            'acID':_('AtcoderID'),
-            'cfID':_('CodeforcesID'),
-            'vjID':_('VirtualJudgeID'),
-            'ncID':_('牛客网ID'),
+            'acID':_('AcID'),
+            'cfID':_('CfID'),
+            'vjID':_('VJID'),
+            'ncID':_('牛客ID'),
             'school' : _('学校'),
-            'jskID':_('计蒜客ID'),
+            'jskID':_('jskID'),
         }
         help_texts = {
             'cfID': _('codeforces网站ID，请注意不要有多余空格'),
@@ -87,6 +87,7 @@ class addprize(forms.Form):
         ('团体程序设计天梯赛','团体程序设计天梯赛'),
     )
     yearcholce = (
+        ('',''),
         (2019,'2019'),
         (2018,'2018'),
         (2017,'2017'),

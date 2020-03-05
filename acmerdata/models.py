@@ -80,7 +80,7 @@ class AddStudentqueue(models.Model):    #添加学生缓冲队列
     sex = models.CharField(max_length=2,default="",blank=True)
     className = models.CharField(max_length=100, default='',blank=True)
     school = models.CharField(default='',max_length=100,blank=True)
-    year = models.IntegerField(default='2019')
+    year = models.IntegerField(default='')
     acID = models.CharField(max_length=100, default='',blank=True)
     accheck = models.BooleanField()
     cfID = models.CharField(max_length=100, default='',blank=True)

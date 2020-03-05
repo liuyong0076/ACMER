@@ -5,7 +5,7 @@
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BUCTCODER</title>
+    <title>AddStudent-BUCTCODER</title>
 	<!-- Bootstrap Styles-->
     <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FontAwesome Styles-->
@@ -26,15 +26,15 @@
         {% include 'template-menu.html' %}
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-ma-6">
                         <h1 class="page-header">
                             Add student <small>write down your data and join us</small>
                         </h1>
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="panel panel-default">
                             {% if massage %}
                             <div class="panel-heading">
@@ -45,51 +45,55 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                 
-                                <form action="/acmerdata/addstudent" method="post">
-                                        
+                                    <form action="/acmerdata/addstudent" method="post">                                         
+                                        <div class="row">
+                                                {% csrf_token %}
+                                                {%for s in form%}
+                                                <div class="form-group col-md-6">
+                                                    
+                                                    {{ s.errors }}
+                                                    <div class="row">
+                                                        <div class="col-md-4"><span>{{ s.label_tag }}</span></div>
+                                                        <div class="col-md-8">{{s}}</div>
+                                                    </div>
+                                                    <!-- {% if s.help_text %}
+                                                        <p class="help-block">{{ s.help_text|safe }}</p>
+                                                    {% endif %} -->
+                                                </div>
+                                                {% endfor %}
+                                        </div>
                                             
-                                            {% csrf_token %}
-                                            {%for s in form%}
-                                            <div class="form-group">
-                                            {{ s.errors }}
-                                            {{ s.label_tag }}
-                                            {{s}}
-                                            {% if s.help_text %}
-                                            <p class="help-block">{{ s.help_text|safe }}</p>
-                                            {% endif %}
-                                            </div>
-                                            {% endfor %}
-                                        
-                                        <button type="submit" class="btn btn-default">提交</button>
-                                        <a href="/acmerdata/addstudentslist" class="btn btn-primary">审核列表</a>
-                                        </form>
-                                        
-                                         
-                                            
-                                            
-                                        
-                                    
-                                    
-                                    
-
+                                            <button type="submit" class="btn btn-default">提交</button>
+                                            <a href="/acmerdata/addstudentslist" class="btn btn-primary">审核列表</a>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                 
                         
                         </div>
+                        
+                                
+                        <div class="alert alert-success">
+                            注意：牛客ID和jskID需要进入个人主页，从浏览器地址栏中截取
+                        </div>
                     </div>
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-5 col-sm-5">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
-                                申请提示
-                            </div>
+                            <!-- <div class="panel-heading">
+                                提示:
+                            </div> -->
                             <div class="panel-body">
-                                <b>关于新申请:</b><br>请按照左边的提示填写表格并申请，个人信息为必填项,其余账号选填,填写完毕后可进入审核列表进行查看审核相关信息以及填写情况
-                                cfcheck及accheck项供检查codeforces、atcoder网站用户名的正确性,若为True即该账号存在,若为false请检查您填写的账号的正确性。<br>填写完成后请与本站管理员联系说明申请,无认证申请恕不通过
-                                <hr><b>关于更新信息:</b><br>学号必填,但账号信息可选择要更新的信息填写,不更新的信息注意留空,学校\年级等信息如不更新应除去<br>例：需要更新codeforces昵称，填写完成codeforces昵称后,atcoder昵称以及其它账号留空直接提交,这时审核通过后会保留atcoder账号，同时更新codeforces账号<br>
-                                如需申请个人信息更新请直接全量填写,并与管理员联系
-        
+                                <b>关于新申请:</b><br>
+                                <ul>
+                                    <li>操作选择“创建”，学号，班级，性别，班级，学校，年级为必填项,其余账号选填,提交后可进入审核列表进行查看审核相关信息以及填写情况。</li>
+                                    <li>cfcheck及accheck项供检查codeforces、atcoder网站用户名的正确性,若为True即该账号存在,若为false请检查账号是否正确。</li>
+                                </ul>
+                                <hr><b>关于更新信息:</b><br>
+                                <ul>
+                                    <li>学号必填,填写要更新的信息,不更新的信息不填</li>
+                                    <li>例：需要更新codeforces昵称，填写学号和CfID后,其他信息留空。审核通过后会更新codeforces账号，其他账号不变</li>
+                                </ul>
                             </div>
         
                         </div>
