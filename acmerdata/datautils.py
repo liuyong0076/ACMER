@@ -380,6 +380,216 @@ def addprizet(request):     #添加比赛获奖记录，未完全开发
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
 
+def getstumonthly(stu,year,month):
+    starttime = ("%d-%02d-01 00:00:00") % (year, month)
+    endtime = ("%d-%02d-31 23:59:59") % (year, month)
+    contests = StudentContest.objects.filter(cdate__range=(starttime,endtime),stuNO=stu.stuNO)
+    monthdata = {
+                'year':year,
+                'month':"%02d" % (month),
+                'cf':0,
+                'cfdiff':0,
+                'cfp':0,
+                'cfpp':0,
+                'ac':0,
+                'acdiff':0,
+                'jsk':0,
+                'jskp':0,
+                'nc':0,
+                'ncp':0,
+                'score':0  # 比赛场次*20 + 解题数*5 + rating diff
+            }
+    for con in contests:
+        if con.ctype == 'cf':
+            monthdata['cf'] += 1
+            monthdata['cfp'] += int(con.solve)
+            monthdata['cfdiff'] += int(con.diff)
+        elif con.ctype == 'ac':
+            monthdata['ac'] += 1
+            try:
+                monthdata['acdiff'] += int(con.diff)
+            except:
+                pass
+        elif con.ctype == 'jsk':
+            monthdata['jsk'] += 1
+            monthdata['jskp'] += int(con.solve)
+        elif con.ctype == 'nc':
+            monthdata['nc'] += 1
+            monthdata['ncp'] += int(con.solve.split('/')[0])
+    monthdata['cfpp']=getstudentmonthsolve(stu,year,month)
+    monthdata['score'] = (monthdata['cf']+monthdata['ac']+monthdata['jsk']+monthdata['nc']) * 20 + (monthdata['cfp']+monthdata['cfpp']+monthdata['jskp']+monthdata['ncp']) * 5 + (monthdata['cfdiff']+monthdata['acdiff'])
+    return monthdata
+
+def spmonth(datalist,year,mtype):
+    monthdata = {
+                'year':year,
+                'month':mtype,
+                'cf':0,
+                'cfdiff':0,
+                'cfp':0,
+                'cfpp':0,
+                'ac':0,
+                'acdiff':0,
+                'jsk':0,
+                'jskp':0,
+                'nc':0,
+                'ncp':0,
+                'score':0  # 比赛场次*20 + 解题数*5 + rating diff
+            }
+    ls = []
+    if mtype == 'S1':
+        rgs = 1
+        rge = 4
+    elif mtype == 'S2':
+        rgs = 4
+        rge = 7
+    elif mtype == 'S3':
+        rgs = 7
+        rge = 10
+    elif mtype == 'S4':
+        rgs = 10
+        rge = 13
+    elif mtype == 'H1':
+        rgs = 1
+        rge = 7
+    elif mtype == 'H2':
+        rgs = 7
+        rge = 13
+    elif mtype == 'ALL':
+        rgs = 1
+        rge = 13
+    for data in datalist:
+        try:
+            if data['year'] == year and int(data['month']) in range(rgs,rge):
+                ls.append(data)
+        except:
+            pass
+    for data in ls:
+        monthdata['cf'] += data['cf']
+        monthdata['cfdiff'] += data['cfdiff']
+        monthdata['cfp'] += data['cfp']
+        monthdata['cfpp'] += data['cfpp']
+        monthdata['ac'] += data['ac']
+        monthdata['acdiff'] += data['acdiff']
+        monthdata['jsk'] += data['jsk']
+        monthdata['jskp'] += data['jskp']
+        monthdata['nc'] += data['nc']
+        monthdata['ncp'] += data['ncp']
+        monthdata['score'] += data['score']
+    return monthdata
+
+def getstudentmonthsolve(stu,year,month):
+    starttime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (year, month),"%Y-%m-%d %H:%M:%S"))
+    if month == 12:
+        endtime = time.mktime(time.strptime(("%d-01-01 00:00:00") % (year+1),"%Y-%m-%d %H:%M:%S"))
+    else:
+        endtime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (year, month+1),"%Y-%m-%d %H:%M:%S"))
+    contests = CFContest.objects.filter(stuNO = stu.stuNO,statu='OK',ctime__range=(starttime,endtime))
+    end = {}
+    index = {}
+    aftersolve = 0
+    for contest in contests:
+        if not contest.cid in index :
+            index[contest.cid]=[]
+            end[contest.cid]=Contest.objects.get(cid=contest.cid,ctype='cf').endtimestamp
+        if contest.index not in index[contest.cid] and contest.ctime>end[contest.cid]:
+            index[contest.cid].append(contest.index)
+            aftersolve=aftersolve+1
+    return aftersolve
+
+def getbigaftersolve(y1,m1,y2,m2):
+    if m2==13:
+        m2=1
+        y2=y2+1
+    starttime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y1, m1),"%Y-%m-%d %H:%M:%S"))
+    endtime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y2, m2),"%Y-%m-%d %H:%M:%S"))
+    endt = {}
+    contests = CFContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
+    aftersolve={}
+    end = {}
+    index = {}
+    for contest in contests:
+        if not contest.stuNO in aftersolve:
+            aftersolve[contest.stuNO]=0
+        if not contest.cid in index :
+            index[contest.cid]={}
+        if not contest.stuNO in index[contest.cid]:
+            index[contest.cid][contest.stuNO] = []
+        if contest.index not in index[contest.cid][contest.stuNO]:
+            index[contest.cid][contest.stuNO].append(contest.index)
+            aftersolve[contest.stuNO] = aftersolve[contest.stuNO] + 1
+    return aftersolve
+
+def getbigstudentmonth(stu,y1,m1,y2,m2):
+    if m2==13:
+        m2=1
+        y2=y2+1
+    s={}
+    starttime = ("%d-%02d-01 00:00:00") % (y1, m1)
+    endtime = ("%d-%02d-01 00:00:00") % (y2, m2)
+    datas = StudentContest.objects.filter(stuNO=stu.stuNO,cdate__range=(starttime,endtime))
+    for con in datas:
+        date = con.cdate[0:7]
+        year = date.split("-")[0]
+        month = date.split("-")[1]
+        if year not in s:
+            s[year]={}
+        if month not in s[year]:
+            s[year][month]={
+                'year':year,
+                'month':month,
+                'date':year+'-'+month,
+                'cf':0,
+                'cfdiff':0,
+                'cfp':0,
+                'cfpp':0,
+                'ac':0,
+                'acdiff':0,
+                'jsk':0,
+                'jskp':0,
+                'nc':0,
+                'ncp':0,
+                'score':0  # 比赛场次*20 + 解题数*5 + rating diff
+            }
+        if con.ctype == 'cf':
+            s[year][month]['cf'] += 1
+            s[year][month]['cfp'] += int(con.solve)
+            s[year][month]['cfdiff'] += int(con.diff)
+        elif con.ctype == 'ac':
+            s[year][month]['ac'] += 1
+            try:
+                s[year][month]['acdiff'] += int(con.diff)
+            except:
+                pass
+        elif con.ctype == 'jsk':
+            s[year][month]['jsk'] += 1
+            s[year][month]['jskp'] += int(con.solve)
+        elif con.ctype == 'nc':
+            s[year][month]['nc'] += 1
+            s[year][month]['ncp'] += int(con.solve.split('/')[0])
+    start=time.mktime(time.strptime(starttime,"%Y-%m-%d %H:%M:%S"))
+    end = time.mktime(time.strptime(endtime,"%Y-%m-%d %H:%M:%S"))
+    sc = CFContest.objects.filter(stuNO=stu.stuNO,ctime__range=(start,end),statu='OK')
+    index = {}
+    for data in sc:
+        date=time.localtime(data.ctime)
+        year = date.tm_year
+        month = date.tm_mon
+        if data.cid not in index:
+            index[data.cid]=[]
+        if data.index not in index[data.cid]:
+            s[str(year)][("%02d")%(month)]['cfpp'] += 1
+            index[data.cid].append(data.index)
+    datalist = []
+    for ykey in s.keys():
+        for mkey in s[ykey].keys():
+            s[ykey][mkey]['cfpp']=s[ykey][mkey]['cfpp']-s[ykey][mkey]['cfp']
+            s[ykey][mkey]['score'] = (s[ykey][mkey]['cf']+s[ykey][mkey]['ac']+s[ykey][mkey]['jsk']+s[ykey][mkey]['nc']) * 20 + (s[ykey][mkey]['cfp']+s[ykey][mkey]['cfpp']+s[ykey][mkey]['jskp']+s[ykey][mkey]['ncp']) * 5 + (s[ykey][mkey]['cfdiff']+s[ykey][mkey]['acdiff'])
+            datalist.append(s[ykey][mkey])
+    datalist.sort(key=lambda x: x['date'],reverse=True)
+    return datalist
+
+        
 
 #color
 def get_n_hls_colors(num):

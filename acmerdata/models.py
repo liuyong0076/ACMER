@@ -80,7 +80,7 @@ class AddStudentqueue(models.Model):    #添加学生缓冲队列
     sex = models.CharField(max_length=2,default="",blank=True)
     className = models.CharField(max_length=100, default='',blank=True)
     school = models.CharField(default='',max_length=100,blank=True)
-    year = models.IntegerField(default='')
+    year = models.CharField(default='',blank=True,max_length=5)
     acID = models.CharField(max_length=100, default='',blank=True)
     accheck = models.BooleanField()
     cfID = models.CharField(max_length=100, default='',blank=True)
@@ -140,3 +140,5 @@ class Weightrating(models.Model):   #权重模型
     acRating = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     after = models.CharField(default='',max_length=100)
+
+    

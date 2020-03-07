@@ -22,7 +22,7 @@ class Addstudent(ModelForm):
             'stuNO' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'realName' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'className' : forms.widgets.TextInput(attrs={'class':'form-control'}),
-            'year' : forms.widgets.TextInput(attrs={'class':'form-control'}),
+            'year' : forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'2019'}),
             'acID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'cfID' : forms.widgets.TextInput(attrs={'class':'form-control'}),
             'vjID' : forms.widgets.TextInput(attrs={'class':'form-control'}),

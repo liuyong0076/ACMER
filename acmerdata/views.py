@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
 from acmerdata import bsdata, datautils ,jsk
+from django.views.decorators.cache import cache_page
 import logging
 import lxml
 from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
@@ -240,14 +241,14 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                     if s.school != '':
                         a.school=s.school
                     if s.year != '':
-                        a.year=s.year
+                        a.year=int(s.year)
                     if s.sex != '':
                         a.sex = s.sex
                     a.save()
                 elif s.atype=='create':     #判断是否为创建
                     Student.objects.create(
                     stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,sex=s.sex,
-                    year=s.year,acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,jskID = s.jskID
+                    year=int(s.year),acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,jskID = s.jskID
                     )
                     a = Student.objects.get(stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school)
                     datautils.saveCFdataByUser(a)
@@ -631,7 +632,6 @@ def addprizet(request):     #比赛获奖记录功能,此模块尚未开发完�
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
 
-
 def monthlyrating(request,year='0',month='0'):
     currYear = datetime.datetime.now().year
     yearlist = [currYear,currYear-1,currYear-2,currYear-3]
@@ -640,9 +640,31 @@ def monthlyrating(request,year='0',month='0'):
         month = datetime.datetime.now().month
         if month<10:
             month = ('0%d') % (month)
+    if month == 'S1':   #第一季度
+        starttime = ("%s-0%s-01 00:00:00") % (year, 1)
+        endtime = ("%s-0%s-31 23:59:59") % (year, 3)
+    elif month == 'S2':
+        starttime = ("%s-0%s-01 00:00:00") % (year, 4)
+        endtime = ("%s-0%s-31 23:59:59") % (year, 6)
+    elif month == 'S3':
+        starttime = ("%s-0%s-01 00:00:00") % (year, 7)
+        endtime = ("%s-0%s-31 23:59:59") % (year, 9)
+    elif month == 'S4':
+        starttime = ("%s-%s-01 00:00:00") % (year, 10)
+        endtime = ("%s-%s-31 23:59:59") % (year, 12)
+    elif month == 'H1': #上半年
+        starttime = ("%s-0%s-01 00:00:00") % (year, 1)
+        endtime = ("%s-0%s-31 23:59:59") % (year, 6)
+    elif month == 'H2':
+        starttime = ("%s-0%s-01 00:00:00") % (year, 7)
+        endtime = ("%s-%s-31 23:59:59") % (year, 12)
+    elif month == 'ALL':    #全年
+        starttime = ("%s-0%s-01 00:00:00") % (year, 1)
+        endtime = ("%s-%s-31 23:59:59") % (year, 12)
+    else:
+        starttime = ("%s-%s-01 00:00:00") % (year, month)
+        endtime = ("%s-%s-31 23:59:59") % (year, month)
 
-    starttime = ("%s-%s-01 00:00:00") % (year, month)
-    endtime = ("%s-%s-31 23:59:59") % (year, month)
     datalist = StudentContest.objects.filter(cdate__range=(starttime,endtime))
     studentlist = []
     for d in datalist:
@@ -686,15 +708,85 @@ def monthlyrating(request,year='0',month='0'):
         elif d.ctype == 'nc':
             stu['nc'] += 1
             stu['ncp'] += int(d.solve.split('/')[0])
-    
+    if month == 'S1':   #第一季度
+        stasl = datautils.getbigaftersolve(int(year),1,int(year),4)
+    elif month == 'S2':
+        stasl = datautils.getbigaftersolve(int(year),4,int(year),7)
+    elif month == 'S3':
+        stasl = datautils.getbigaftersolve(int(year),7,int(year),10)
+    elif month == 'S4':
+        stasl = datautils.getbigaftersolve(int(year),10,int(year)+1,1)
+    elif month == 'H1': #上半年
+        stasl = datautils.getbigaftersolve(int(year),1,int(year),7)
+    elif month == 'H2':
+        stasl = datautils.getbigaftersolve(int(year),7,int(year)+1,1)
+    elif month == 'ALL':    #全年
+        stasl = datautils.getbigaftersolve(int(year),1,int(year)+1,1)
+    else:
+        stasl = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1)
     for s in studentlist:
+        try:
+            s['cfpp']=stasl[s['stuNO']]-s['cfp']
+        except:
+            s['cfpp']=0
         s["score"] = (s['cf']+s['ac']+s['jsk']+s['nc']) * 20 + (s['cfp']+s['cfpp']+s['jskp']+s['ncp']) * 5 + (s['cfdiff']+s['acdiff'])
 
-    studentlist = sorted(studentlist, reverse=True, key=lambda x: x['score'])   
-
-    monthlist = ["01","02","03","04","05","06","07","08","09","10","11","12"]
+    studentlist = sorted(studentlist, reverse=True, key=lambda x: x['score'])
+    monthlist = ["01","02","03","04","05","06","07","08","09","10","11","12","S1","S2","S3","S4","H1","H2","ALL"]
     context = {'studentlist': studentlist ,"year":int(year), "month":month,"yearlist":yearlist, "monthlist":monthlist}
     return render(request, 'monthlyrating.html', context)
+
+def studentmonthlys(request,stuNO):
+    thisyear = datetime.datetime.now().year
+    thismon = datetime.datetime.now().month
+    years = [thisyear,thisyear-1,thisyear-2,thisyear-3]
+    stu = Student.objects.get(stuNO=stuNO)
+    classname,realname,cfID,acID,ncID,jskID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID,stu.jskID
+    monthlist={}
+    """for year in years:
+        if year not in monthlist:
+            monthlist[year]=[]
+        if year >= stu.year:
+            if year == thisyear:
+                for month in range(thismon,0,-1):
+                    monthlist[year].append(month)
+            elif year == stu.year:
+                for month in range(12,8,-1):
+                    monthlist[year].append(month)
+            else:
+                for month in range(12,0,-1):
+                    monthlist[year].append(month)"""
+    datalist = datautils.getbigstudentmonth(stu,stu.year,9,thisyear,thismon+1)
+    """lent= len(datalist)
+    lists = []
+    for ids,data in enumerate(datalist):
+        if  (str(data['year']) + str(data['month'])) not in lists:
+            if data['month'] == '03' :
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'S1'))
+            elif data['month'] == '06':
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'S2'))
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'H1'))
+            elif data['month'] == '09':
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'S3'))
+            elif data['month'] == '12':
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'S4'))
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'H2'))
+                datalist.insert(ids,datautils.spmonth(datalist,data['year'],'ALL'))
+            lists.append((str(data['year']) + str(data['month'])))"""#季度年度显示
+    datalist.reverse()
+    poplist = []
+    for idx,data in enumerate(datalist):
+        if data['cf']==0 and data['cfpp']==0 and data['ac']==0 and data['jsk']==0 and data['nc']==0 and data['score']==0:
+            poplist.append(idx)
+        else:
+            break
+    poplist.reverse()
+    for idx in poplist:
+        datalist.pop(idx)
+    datalist.reverse()
+    context = {'list': datalist,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID,'jskID':jskID}
+    return render(request, 'studentmonthlys.html',context)
+
 
 #权重模块
 def updataweightratingstatistics(request):      #更新权重

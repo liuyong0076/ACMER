@@ -19,6 +19,7 @@ urlpatterns = [
     path('weightratingstatistic',views.weightratingstatistic,name="weightratingstatistics"),
     path('monthlyrating/<str:year>/<str:month>',views.monthlyrating,name="monthlyrating"),
     path('monthlyrating',views.monthlyrating,name="monthlyrating"),
+    path('studentmonthlys/<str:stuNO>',views.studentmonthlys,name='studentmonthlys'),
     #group
     path('group',views.group,name='group'),
     path('group/del/<int:groupid>',views.groupdel,name='groupdel'),
