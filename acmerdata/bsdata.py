@@ -82,6 +82,8 @@ def getACUserData(acID):    #根据acID获取比赛记录,返回一个字典列�
             diff = tds[5].contents[0]
             if str(newRating).isdigit() == False:
                 newRating = 0
+            if str(diff) == '-':
+                diff = newRating
             # print(date,contest,rank,newRating,diff)
             data_list.append({
                 'date': date,

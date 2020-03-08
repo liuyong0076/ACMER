@@ -90,13 +90,13 @@
                                             {% for s in studentlist %}
                                             <tr class="odd gradeX">
                                                 <td>{{  forloop.counter }}</td>
-                                                <td>{{ s.stuNO }}</td>
-                                                <td><a href="/acmerdata/studentmonthlys/{{ s.stuNO }}">{{ s.realName }}</td>
+                                                <td><a href="/acmerdata/student/{{ s.stuNO }}" title="点击查看其参赛列表">{{s.stuNO}}</a></td>
+                                                <td><a href="/acmerdata/studentmonthlys/{{ s.stuNO }}" title="点击查看其每月积分变化详情">{{ s.realName }}</a></td>
                                                 <td>{{ s.className }}</td>
                                                 <td>{{ s.cf }}</td>
                                                 <td>{{ s.cfdiff }}</td>
-                                                <td>{{ s.cfp }}</td>
-                                                <td>{{ s.cfpp }}</td>
+                                                <td><a href="/acmerdata/monthlysub/before/{{ s.stuNO }}/{{ year }}/{{ month }}" title="点击查看其解题代码">{{ s.cfp }}</a></td>
+                                                <td><a href="/acmerdata/monthlysub/after/{{ s.stuNO }}/{{ year }}/{{ month }}" title="点击查看其解题代码">{{ s.cfpp }}</a></td>
                                                 <td>{{ s.ac }}</td>
                                                 <td>{{ s.acdiff }}</td>
                                                 <td>{{ s.jsk }}</td>

@@ -34,14 +34,28 @@
 }
 
 .A {fill: red;}
-.B {fill: darkred;}
-.C {fill: mediumvioletred;}
-.D {fill: palevioletred;}
-.E {fill: deeppink;}
-.F {fill: indigo;}
-.G {fill: purple;}
-.H {fill: slateblue;}
-.I {fill: mediumorchid;}
-.J {fill: chocolate;}
-.K {fill: darkorange;}
-.L {fill: lime;}
+.B {fill: rgb(173, 106, 106);}
+.C {fill: rgb(224, 25, 151);}
+.D {fill: rgb(238, 124, 162);}
+.E {fill: rgb(231, 15, 131);}
+.F {fill: rgb(128, 7, 214);}
+.G {fill: rgb(180, 9, 180);}
+.H {fill: rgb(43, 16, 221);}
+.I {fill: rgb(190, 16, 238);}
+.J {fill: rgb(236, 101, 5);}
+.K {fill: rgb(139, 80, 8);}
+.L {fill: rgb(223, 95, 9);}
+.M {fill: rgb(44, 12, 185);}
+.N {fill: rgb(42, 4, 102);}
+.O {fill: lime;}
+.P {fill: rgb(190, 191, 235);}
+.Q {fill: rgb(160, 155, 107);}
+.R {fill: rgb(93, 45, 184);}
+.S {fill: rgb(236, 177, 167);}
+.T {fill: rgb(20, 121, 161);}
+.U {fill: rgb(105, 14, 41);}
+.V {fill: rgb(54, 47, 117);}
+.W {fill: rgb(187, 100, 42);}
+.X {fill: rgb(146, 34, 71);}
+.Y {fill: rgb(112, 26, 76);}
+.Z {fill: rgb(173, 156, 101);}

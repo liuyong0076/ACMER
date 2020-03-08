@@ -78,7 +78,12 @@ def cfcontestsubmitupdatebycontest():       #codeforces补题更新
             for data in datalist:
                 stu = stuInfoDic[data['cfid']]
                 datautils.saveCFstatu(stu.stuNO,stu.realName,data['cid'],
-                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])        
+                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])
+        for stu in students:
+            try:
+                datautils.cfsolvereset(stuNO,cid)
+            except:
+                pass
         strs += contest.cname + ':' + str(len(datalist)) +'\n'
     context = {'str': strs }
 

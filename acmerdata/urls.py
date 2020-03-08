@@ -20,6 +20,7 @@ urlpatterns = [
     path('monthlyrating/<str:year>/<str:month>',views.monthlyrating,name="monthlyrating"),
     path('monthlyrating',views.monthlyrating,name="monthlyrating"),
     path('studentmonthlys/<str:stuNO>',views.studentmonthlys,name='studentmonthlys'),
+    path('monthlysub/<str:type>/<str:stuNO>/<str:year>/<str:month>',views.monthlysub,name='monthlysub'),
     #group
     path('group',views.group,name='group'),
     path('group/del/<int:groupid>',views.groupdel,name='groupdel'),
@@ -41,9 +42,9 @@ urlpatterns = [
     path('setallaftersolve',views.setallaftersolve,name='setallaftersolve'),
     path('updataweightratingstatistics',views.updataweightratingstatistics,name="updatacfstatistics"),
     path('jskdataupdate',views.jskdataupdate,name='jskdataupdate'),
+    path('fixacdiff',views.fixacdiff,name='fixacdiff'),
     
     # data visualization
-    path('cftimeline', views.cftimeline, name='cftimeline'),
     path('groupRatingLine', views.groupRatingLine, name='groupRatingLine'),
     path('timeline', views.timeline, name='timeline'),
     #etc

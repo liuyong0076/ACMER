@@ -152,11 +152,13 @@ def saveCFdataByUser(stu):  #   根据学生对象获取cf数据
 
 def saveACData_fixbug(stu):
     pass
-def getLatestCFRating(stuNO,date):
-    sclist = StudentContest.objects.filter(cdate__startswith=date,stuNO=stuNO,ctype='cf')        
+
+def getLatestCFRating_fasterVersion(StuContestList,stuNO,date):
+    # sclist = StudentContest.objects.filter(cdate__startswith=date,stuNO=stuNO,ctype='cf')        
     rating = 0
-    for sc in sclist:
-        rating = sc.newRating
+    for c in StuContestList:
+        if c.stuNO == stuNO and c.cdate.startswith(date):
+            rating = c.newRating
     return rating
 
 def saveACData(stu):    #   根据学生对象获取atcoder数据
@@ -165,9 +167,8 @@ def saveACData(stu):    #   根据学生对象获取atcoder数据
         stu.acTimes = len(dataList)
         if(stu.acTimes > 0):
             stu.acRating = dataList[-1]["newRating"]
-            for data in dataList:
-                addContest(data["contestID"],data["date"],data["contest"],"ac")
-                addStudentContest(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac")
+            addContest(data["contestID"],data["date"],data["contest"],"ac")
+            addStudentContest(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac")
         else:
             stu.acRating = 0
     else:
@@ -245,16 +246,13 @@ def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):      #添
                 code='get error'
                 break
     cdiv = cdiv = getDivByName(cname)
-    try:
-        CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
-            cdiv = cdiv,code = code,tag = tags,statu = statu,ctime=time)
-    except:
-        CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
-            cdiv = cdiv,code = 'get error',tag = tags,statu = statu,ctime=time)
-    try:
-        cfsolvereset(stuNO,cid)
-    except:
-        pass
+    if CFContest.objects.count(subid=subid)==0:
+        try:
+            CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
+                cdiv = cdiv,code = code,tag = tags,statu = statu,ctime=time)
+        except:
+            CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
+                cdiv = cdiv,code = 'get error',tag = tags,statu = statu,ctime=time)
 
 def cfsolvereset(stuNO,cid):    #重置解题数量
     submits = CFContest.objects.filter(stuNO=stuNO,cid=cid)
@@ -380,7 +378,7 @@ def addprizet(request):     #添加比赛获奖记录，未完全开发
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
 
-def getstumonthly(stu,year,month):
+def getstumonthly(stu,year,month):      #按月获取学生数据,效率过低暂时弃用
     starttime = ("%d-%02d-01 00:00:00") % (year, month)
     endtime = ("%d-%02d-31 23:59:59") % (year, month)
     contests = StudentContest.objects.filter(cdate__range=(starttime,endtime),stuNO=stu.stuNO)
@@ -420,7 +418,7 @@ def getstumonthly(stu,year,month):
     monthdata['score'] = (monthdata['cf']+monthdata['ac']+monthdata['jsk']+monthdata['nc']) * 20 + (monthdata['cfp']+monthdata['cfpp']+monthdata['jskp']+monthdata['ncp']) * 5 + (monthdata['cfdiff']+monthdata['acdiff'])
     return monthdata
 
-def spmonth(datalist,year,mtype):
+def spmonth(datalist,year,mtype):       #特殊时间段获取,暂时无使用
     monthdata = {
                 'year':year,
                 'month':mtype,
@@ -478,7 +476,7 @@ def spmonth(datalist,year,mtype):
         monthdata['score'] += data['score']
     return monthdata
 
-def getstudentmonthsolve(stu,year,month):
+def getstudentmonthsolve(stu,year,month):       #按月获取学生补题数据,效率过低暂时弃用
     starttime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (year, month),"%Y-%m-%d %H:%M:%S"))
     if month == 12:
         endtime = time.mktime(time.strptime(("%d-01-01 00:00:00") % (year+1),"%Y-%m-%d %H:%M:%S"))
@@ -497,7 +495,7 @@ def getstudentmonthsolve(stu,year,month):
             aftersolve=aftersolve+1
     return aftersolve
 
-def getbigaftersolve(y1,m1,y2,m2):
+def getbigaftersolve(y1,m1,y2,m2):      #大范围获取全部学生月补题数据，返回一个字典,对应学生号和解题数
     if m2==13:
         m2=1
         y2=y2+1
@@ -520,7 +518,7 @@ def getbigaftersolve(y1,m1,y2,m2):
             aftersolve[contest.stuNO] = aftersolve[contest.stuNO] + 1
     return aftersolve
 
-def getbigstudentmonth(stu,y1,m1,y2,m2):
+def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)代表数据起始年月,(y2,m2)代表截止年月,返回记录着学生从起始到截止年月的每月数据的字典列表
     if m2==13:
         m2=1
         y2=y2+1
@@ -589,7 +587,17 @@ def getbigstudentmonth(stu,y1,m1,y2,m2):
     datalist.sort(key=lambda x: x['date'],reverse=True)
     return datalist
 
-        
+def cfstatureset():
+    datas = CFContest.objects.all()
+    sub = []
+    dells = []
+    for data in datas:
+        if data.subid not in sub:
+            sub.append(data.subid)
+        else:
+            dells.append(data.id)
+    for idtd in dells:
+        CFContest.objects.filter(id = idtd).delete()
 
 #color
 def get_n_hls_colors(num):

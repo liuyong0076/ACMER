@@ -16,13 +16,16 @@ Thanks for the original author and the project!
     <meta name="viewport" content="width=device-width">
     <script src="{% static 'cftimeline/d3.v5.min.js' %}"></script>
     <script src="{% static 'cftimeline/jquery-3.2.1.slim.min.js' %}"></script>
-    <title>Per month cf rating Columns Animation</title>
+    <title>timeline-BUCTCODER</title>
 </head>
 
 <body>
     <center>
-		<h1>BUCTCODER: cf Rating Animation(2015-01~2020-01)</h1>
-        <script src="{% static 'cftimeline/data.js' %}"></script>
+        <h3>BUCTCODER: cf Rating Animation</h3>
+        <script type="text/javascript">
+            var TotalData = JSON.parse('{{str|safe}}');
+        </script>
+        <!-- <script src="{% static 'cftimeline/data.js' %}"></script> -->
         <script src="{% static 'cftimeline/config.js' %}"></script>
         <script src="{% static 'cftimeline/visual.js' %}"></script>
         <link rel="stylesheet" href="{% static 'cftimeline/stylesheet.css' %}">

@@ -24,18 +24,22 @@ def contact(request):   #contact页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'contact.html', context)
 
+@cache_page(60 * 60 * 24) # 单位：秒，这里表示缓存一天
 def timeline(request):  #时间线页面接口
-    context = {} #{'studentlist': studentlist}
-    return render(request, 'timeline.html', context)
-
-def cftimeline(request):
-    # fix the diff is 0 of ac data
-    studentlist = Student.objects.all()
+    studentlist = Student.objects.filter(school='北京化工大学')
+    StuContestList = StudentContest.objects.all().order_by('cdate')
     dic = {'name':'name',"value":"v","date":"d"}
     datalist = []
     str = ""
     logger = logging.getLogger('log')
     yearlist = ['2015','2016','2017','2018','2019','2020']
+    
+    yeartemp = 2020
+    currYear = datetime.datetime.now().year
+    while yeartemp < currYear:
+        yearlist.append(str(yeartemp))
+        yeartemp += 1
+
     monthlist = ['01','02','03','04','05','06','07','08','09','10','11','12']
     stuRatingList = {}
     for year in yearlist:
@@ -44,7 +48,8 @@ def cftimeline(request):
             for stu in studentlist:
                 date = year+'-'+month
                 name = stu.realName
-                value = datautils.getLatestCFRating(stu.stuNO,date)
+                # value = datautils.getLatestCFRating(stu.stuNO,date)
+                value = datautils.getLatestCFRating_fasterVersion(StuContestList,stu.stuNO,date)
                 if value > 0:
                     isChange = 1
                     stuRatingList[stu.realName] = value
@@ -55,8 +60,8 @@ def cftimeline(request):
                         datalist.append({
                             'name':k[0],"value":k[1],"date":year+month
                         })
-    context = {'str': datalist}
-    return render(request, 'cftimeline.html', context)
+    context = {'str': json.dumps(datalist)}
+    return render(request, 'timeline.html', context)
 
 def fixbug(request):
     # fix the diff is 0 of ac data
@@ -631,7 +636,7 @@ def addprizet(request):     #比赛获奖记录功能,此模块尚未开发完�
     else:
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
-
+#月排名模块
 def monthlyrating(request,year='0',month='0'):
     currYear = datetime.datetime.now().year
     yearlist = [currYear,currYear-1,currYear-2,currYear-3]
@@ -787,6 +792,73 @@ def studentmonthlys(request,stuNO):
     context = {'list': datalist,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID,'jskID':jskID}
     return render(request, 'studentmonthlys.html',context)
 
+def monthlysub(request,type,stuNO,year,month):
+    contest = Contest.objects.filter(ctype="cf")
+    end = {}
+    names = {}
+    for con in contest:
+        end[con.cid]=con.endtimestamp
+        names[con.cid] = con.cname
+    if month == 's1':
+        starttime = time.mktime(time.strptime(("%s-01-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-04-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 's2':
+        starttime = time.mktime(time.strptime(("%s-04-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-07-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 's3':
+        starttime = time.mktime(time.strptime(("%s-07-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-10-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 's4':
+        starttime = time.mktime(time.strptime(("%s-10-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-12-31 23:59:59") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 'h1':
+        starttime = time.mktime(time.strptime(("%s-01-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-07-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 'h2':
+        starttime = time.mktime(time.strptime(("%s-07-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-12-31 23:59:59") % (year),"%Y-%m-%d %H:%M:%S"))
+    elif month == 'all':
+        starttime = time.mktime(time.strptime(("%s-01-01 00:00:00") % (year),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%s-12-31 23:59:59") % (year),"%Y-%m-%d %H:%M:%S"))
+    else:
+        if month == '12':
+            eyear = int(year) + 1
+            emonth = 1
+        else:
+            eyear = int(year)
+            emonth = int(month) + 1
+        starttime = time.mktime(time.strptime(("%s-%s-01 00:00:00") % (year,month),"%Y-%m-%d %H:%M:%S"))
+        endtime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (eyear,emonth),"%Y-%m-%d %H:%M:%S"))
+    datalist = []
+    cfcons = CFContest.objects.filter(stuNO=stuNO,ctime__range=(starttime,endtime))
+    if type=='after':
+        for submit in cfcons:
+            if submit.ctime > end[submit.cid]:
+                datalist.append({
+            'stuNO':submit.stuNO,
+            'contestname':names[submit.cid],
+            'subid':submit.subid,
+            'index':submit.index,
+            'tag':submit.tag,
+            'statu':submit.statu,
+            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
+        })
+    if type == 'before':
+        for submit in cfcons:
+            if submit.ctime <= end[submit.cid]:
+                datalist.append({
+                'stuNO':submit.stuNO,
+                'contestname':names[submit.cid],
+                'subid':submit.subid,
+                'index':submit.index,
+                'tag':submit.tag,
+                'statu':submit.statu,
+                'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
+                })
+    content = {'list':datalist,'name':Student.objects.get(stuNO=stuNO).realName}
+    return render(request,"monthlysubmit.html",content)
+    
+#end月排名
 
 #权重模块
 def updataweightratingstatistics(request):      #更新权重
@@ -847,5 +919,16 @@ def jskdataupdate(request): #计蒜客数据更新
             logger.info(stu.realName + "end jsk dataget")
     datautils.setContestJoinNumbers()
     strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
+    context = {'str': strs }
+    return render(request, 'spiderResults.html', context)
+
+def fixacdiff(request):
+    contest = StudentContest.objects.all()
+    strs = ''
+    for con in contest:
+        if con.diff == '-':
+            strs += con.realName + ' & '
+            con.diff = con.newRating
+            con.save()
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
