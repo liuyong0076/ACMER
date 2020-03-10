@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
-from acmerdata import bsdata, datautils ,jsk
+from acmerdata import bsdata, datautils ,jsk,atcoder
 from django.views.decorators.cache import cache_page
 import logging
 import lxml
-from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
+from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating,ACContest
 from .forms import Addstudent,Addgroup,addprize
 import time,datetime,json
 import re
@@ -18,6 +18,7 @@ import operator
 #数据展示模块
 def spider(request):    #spider页面接口
     context = {} #{'studentlist': studentlist}
+    atcoder.resetACContestSolveAll()
     return render(request, 'spider.html', context)
 
 def contact(request):   #contact页面接口
@@ -88,7 +89,8 @@ def index(request):   #入口页面
             'year':stu.year,
             'cfRating':stu.cfRating,
             'cfTimes':stu.cfTimes,
-            'after':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
+            'CFafter':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
+            'ACafter':str(stu.correct_ac_aftersolve) + '/' + str(stu.all_ac_aftersolve),
             'acRating':stu.acRating,
             'acTimes':stu.acTimes,
             'ncTimes':stu.ncTimes,
@@ -118,12 +120,13 @@ def contest(request, contest_id=-1,studentcontest_id=-1):   #比赛详情,分别
     list = []
     if len(ct)>0:
         #list = StudentContest.objects.order_by('rank').filter(cname=ct[0].cname)
-        list = datautils.contestdatasolve(cname=ct[0].cname)
-        if ct[0].ctype == 'cf':
+        if ct[0].ctype == 'cf' or ct[0].ctype == 'jsk':
             cid = ct[0].cid
+            list = datautils.contestdatasolve(cname=ct[0].cname,cid=ct[0].cid)
         else:
+            list = datautils.contestdatasolve(cname=ct[0].cname)
             cid = ''
-    context = {'list': list,"cname":ct[0].cname,"cdate":ct[0].cdate,'cid':cid}
+    context = {'list': list,"cname":ct[0].cname,"cdate":ct[0].cdate,'cid':cid,'nickName':ct[0].nickName}
     return render(request, 'contest.html', context)
 
 def student(request, stuNO):
@@ -147,6 +150,19 @@ def updateCFDataByContest(request):
     return render(request, 'spiderResults.html', context)   
 
 # update cf data by all user, start from zero
+def updateACDataByContest(request):
+    studentlist = Student.objects.all()
+    str = "AC Data, successed list:"
+    logger = logging.getLogger('log')
+    for stu in studentlist:
+        logger.info(stu.realName + "start ac data Incrementally")
+        atcoder.saveACDataIncrementally(stu)
+        str += stu.realName + ","
+        logger.info(stu.realName + "end ac data Incrementally")
+    datautils.setContestJoinNumbers()
+    context = {'str': str}
+    return render(request, 'spiderResults.html', context)
+
 def getCFData(request):     #全量抓取codeforce数据；注意根据网络情况可能极慢！！！
     studentlist = Student.objects.all()
     str = "CF Data, successed list:"
@@ -166,20 +182,43 @@ def getCFData(request):     #全量抓取codeforce数据；注意根据网络情
     contests = Contest.objects.filter(ctype='cf')
     for contest in contests:
         datautils.setcontestsolve(contest.cid)
-    return render(request, 'spiderResults.html', context)    
+    return render(request, 'spiderResults.html', context)
 
+def getACCode(request,utype):
+    if utype == 'fixbug':
+        count = atcoder.getCodeFixBug()
+    elif utype == 'update':
+        count = atcoder.getCodeUpdate()
+    else:
+        return render(request, 'spiderResults.html', {'str': "Unknown Update Type"})
+    message = "get code success num :"+ str(count)
+    return render(request, 'spiderResults.html', {'str': message})
 def getACData(request):    #手动抓取atcoder数据
     studentlist = Student.objects.all()
     str = "AC Data, successed list:"
     logger = logging.getLogger('log')
     for stu in studentlist:
         logger.info(stu.realName + "start ac data")
-        datautils.saveACData(stu)
+        atcoder.saveACDataAll(stu)
         str += stu.realName + ","
         logger.info(stu.realName + "end ac data")
     datautils.setContestJoinNumbers()
     context = {'str': str}
     return render(request, 'spiderResults.html', context)
+
+def updateACData(request):
+    studentlist = Student.objects.all()
+    str = "AC Data, successed list:"
+    logger = logging.getLogger('log')
+    for stu in studentlist:
+        logger.info(stu.realName + "start ac data")
+        atcoder.saveACDataIncrementally(stu)
+        str += stu.realName + ","
+        logger.info(stu.realName + "end ac data")
+    datautils.setContestJoinNumbers()
+    context = {'str': str}
+    return render(request, 'spiderResults.html', context)
+
 
 def getNCData(request):    #手动抓取newcoder数据；受工具限制较慢
     studentlist = Student.objects.all()
@@ -227,7 +266,8 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                     a = Student.objects.get(stuNO=s.stuNO)
                     if s.acID!='':
                         a.acID=s.acID
-                        datautils.saveACData(a)
+                        atcoder.saveACDataAll(a)
+                        atcoder.resetACContestSolveStu(a)
                     if s.cfID!='':
                         a.cfID=s.cfID
                         datautils.saveCFdataByUser(a)
@@ -257,7 +297,7 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                     )
                     a = Student.objects.get(stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school)
                     datautils.saveCFdataByUser(a)
-                    datautils.saveACData(a)
+                    atcoder.saveACDataAll(a)
                     datautils.saveNCData(a)
                     jsk.getjskdata(a)
                     students.append(a)
@@ -434,6 +474,7 @@ def cfcontestsubmit(request,cid):   #比赛提交记录视图函数,传入cf比�
             'index':submit.index,
             'tag':submit.tag,
             'statu':submit.statu,
+            'language':submit.language,
             'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
         })
     context = {
@@ -443,13 +484,95 @@ def cfcontestsubmit(request,cid):   #比赛提交记录视图函数,传入cf比�
     }
     return render(request,"cfcontestsubmit.html",context)
 
+def acContestSubmit(request,nickName):
+    contest = Contest.objects.get(nickName=nickName)
+    cname = contest.cname
+    cdate = contest.cdate
+    list = ACContest.objects.order_by("-subid").filter(nickName=nickName)
+    data=[]
+    for submit in list:
+        data.append({
+            'stuNO':submit.stuNO,
+            'realName':submit.realName,
+            'subid':submit.subid,
+            'task':submit.task,
+            'language':submit.language,
+            'statu':submit.statu,
+            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
+        })
+    context = {
+        'cname':cname,
+        'cdate':cdate,
+        'list':data,
+        'nickName':nickName,
+    }
+    return render(request,"acContestSubmit.html",context)
+
+def viewACCode(request,submitID):
+    acct = ACContest.objects.get(subid=submitID)
+    name = acct.realName
+    statu = acct.statu
+    task = acct.task
+    subid = acct.subid
+    language = "c++"
+    if "Py" in acct.language:
+        language="python"
+    elif "Java" in acct.language:
+        language="java"
+    code = "```"+language+"\n"+ acct.code +"\n```"
+    print(code)
+    code = markdown.markdown(code,extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
+    ])
+    context={
+        'code':code,
+        'name':name,
+        'index':task,
+        'subid':subid,
+        'statu':statu,
+    }
+    return render(request,"codeshow.html",context)
+    
+def afterSolveAC(request,stuNO):
+    op=[]
+    StuACcontests = ACContest.objects.filter(stuNO=stuNO)
+    for ACcontest in StuACcontests:
+        if ACcontest.nickName not in op :
+            op.append(ACcontest.nickName)
+    data = []
+    for contest in op:
+        con = Contest.objects.get(nickName=contest,ctype='ac')
+        submits = ACContest.objects.filter(nickName=contest,stuNO=stuNO,ctime__gt=con.endtimestamp)
+        for submit in submits:
+            data.append({
+                'stuNO':submit.stuNO,
+                'realName':submit.realName,
+                'contestname':con.cname,
+                'subid':submit.subid,
+                'index':submit.task,
+                'language':submit.language,
+                'statu':submit.statu,
+                'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
+            })
+    context = {
+        'name':Student.objects.get(stuNO=stuNO).realName,
+        'list':data,
+    }
+    return render(request,"ACaftersubmit.html",context)
 def viewcode(request,submitid):     #代码展示视图函数,传入cf提交代码展示学生代码页面
     cfct = CFContest.objects.get(subid=submitid)
     name = cfct.realName
     statu = cfct.statu
     index = cfct.index
     subid = cfct.subid
-    code = "```c++\n"+ cfct.code +"\n```"
+    language = "c++"
+    if "Py" in cfct.language:
+        language="python"
+    elif "Java" in cfct.language:
+        language="java"
+    code = "```"+language+"\n"+ cfct.code +"\n```"
     print(code)
     code = markdown.markdown(code,extensions=[
         'markdown.extensions.extra',

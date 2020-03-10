@@ -21,6 +21,8 @@ class Student(models.Model):    #学生模型
     jskTimes = models.IntegerField(default=0)
     all_cf_aftersolve = models.IntegerField(default=0)
     correct_cf_aftersolve = models.IntegerField(default=0)
+    all_ac_aftersolve = models.IntegerField(default=0)
+    correct_ac_aftersolve = models.IntegerField(default=0)
     isActive = models.IntegerField(default=1)
     school = models.CharField(default='',max_length=100)
 
@@ -36,7 +38,7 @@ class Contest(models.Model):    #比赛模型
     cnumber = models.IntegerField(default=-1)
     starttimestamp = models.IntegerField(default=0)
     endtimestamp = models.IntegerField(default=0)
-    
+    nickName = models.CharField(default='',max_length=100,blank=True)
     def __str__(self):
         return self.cdate + self.cname
 
@@ -54,6 +56,7 @@ class StudentContest(models.Model):     #学生参赛记录模型
     diff = models.CharField(max_length=100,default=0) # you should use char to save diff like '+20' or '-20'
     solve = models.CharField(max_length=100,default="no data")#牛客数据与cf数据不相同，故用char进行存储
     aftersolve = models.CharField(max_length=100,default="no data")
+    nickName = models.CharField(default='',max_length=100,blank=True)
     def __str__(self):
         return self.stuNO + self.cname
 
@@ -69,10 +72,23 @@ class CFContest(models.Model):  #codeforce提交代码模型
     tag = models.CharField(default='',max_length=200)
     index = models.CharField(default='',max_length=200)
     statu = models.CharField(default='',max_length=100)
+    language = models.CharField(default='',max_length=100)
     def __str__(self):
         return self.stuNO + self.cname + self.index +self.statu
 
-
+class ACContest(models.Model):
+    stuNO = models.CharField(max_length=100)
+    realName = models.CharField(max_length=100, default='')
+    ctime = models.IntegerField(default=0)
+    nickName = models.CharField(default='',max_length=100)
+    cname = models.CharField(max_length=1000)
+    subid = models.IntegerField(default=0)
+    code = models.TextField(default='')
+    task = models.CharField(default='',max_length=200)
+    statu = models.CharField(default='',max_length=100)
+    language = models.CharField(default='',max_length=100)
+    def __str__(self):
+        return self.stuNO + self.cname + self.index +self.statu
 
 class AddStudentqueue(models.Model):    #添加学生缓冲队列
     stuNO = models.CharField(max_length=100, default='')

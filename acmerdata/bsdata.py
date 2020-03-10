@@ -11,7 +11,7 @@ from selenium.webdriver.chrome.options import Options
 def getUrlText(url):    #根据url获取html资源,返回html文本
     while True:
         try:
-            html = requests.get(url,timeout=60)
+            html = requests.get(url)
             html = html.text
             break
         except requests.exceptions.ConnectionError:
@@ -89,8 +89,8 @@ def getACUserData(acID):    #根据acID获取比赛记录,返回一个字典列�
                 'date': date,
                 'contestID': -1,
                 'contest': contest, 
-                'rank': rank, 
-                'newRating': newRating, 
+                'rank': rank,
+                'newRating': newRating,
                 'diff':diff
             })
 
@@ -196,6 +196,11 @@ def getNCUserData(ncID):    #根据ncid获取牛客数据,同样返回字典列�
                 diff = "0"
             rank = exeNCrank(state[1].text)
             acnum = state[2].text
+            demo = int(acnum.split('/')[1].replace(' ',''))
+            if demo >=100 :
+                ac = int(int(acnum.split('/')[0].replace(' ',''))/100)
+                demo = int(int(demo)/100)
+                acnum = str(ac) +' / '+ str(demo)
             datalist.append({'contest':name,'contestID':-1,'date':date,'rank':rank,'acnum':acnum,'newrating':newrating,'diff':diff})
         pages = pages - 1
         if pages:
@@ -246,6 +251,7 @@ def getsubmitdata(cid,cfID):    #根据比赛id与cfid获取该学生在此场�
                 'index':submit['problem']['index'],
                 'code':code,
                 'tags':tags,
+                'language':submit['programmingLanguage'],
                 'statu':submit['verdict'],
             }
         )
@@ -288,6 +294,7 @@ def contestsubmitgetupdate(cid,cfidlist,maxsubid):  #根据最大提交id进行�
                     'cid':cid,
                     'index':submit['problem']['index'],
                     'tags':tags,
+                    'language':submit['programmingLanguage'],
                     'statu':submit['verdict'],
                     'time':submit['creationTimeSeconds'],
                 })

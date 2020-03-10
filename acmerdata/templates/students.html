@@ -61,6 +61,7 @@
                                             <th>#cf++</th>
                                             <th>acRating</th>
                                             <th>#ac</th>
+                                            <th>#ac++</th>
                                             <th>#vj</th>
                                             <th>#nc</th>
                                             <th>ncRating</th>  
@@ -80,9 +81,10 @@
                                                 <td>{{ s.year }}</td>
                                                 <td>{{ s.cfRating }}</td>
                                                 <td>{{ s.cfTimes }}</td>
-                                                <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.after }}</a></td>
+                                                <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.CFafter }}</a></td>
                                                 <td>{{ s.acRating }}</td>
                                                 <td>{{ s.acTimes }}</td>
+                                                <td><a href="/acmerdata/afterac/{{ s.stuNO }}">{{ s.ACafter }}</a></td>
                                                 <td></td>
                                                 <td>{{s.ncTimes}}</td>
                                                 <td>{{s.ncRating}}</td>

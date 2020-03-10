@@ -9,11 +9,15 @@ import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import colorsys,random
+import json
 
 def setContestJoinNumbers():    #重置参赛人数
     list = Contest.objects.all()
     for l in list:
-        sc = StudentContest.objects.filter(cname=l.cname)
+        if l.ctype=='cf' or l.ctype == 'jsk':
+            sc = StudentContest.objects.filter(cname=l.cname,cid=l.cid)
+        else:
+            sc = StudentContest.objects.filter(cname=l.cname)
         l.cnumber = len(sc)
         l.save()
 
@@ -28,9 +32,9 @@ def getDivByName(contestname):  #获取div等级
 
 def addContest(contestID,date,contest,ctype,cnumber=0,starttime=0,endtime=0):   #添加比赛
     if contestID and int(contestID)>0:
-        ct = Contest.objects.filter(cid=contestID)
+        ct = Contest.objects.filter(cid=contestID,ctype=ctype)
     else:
-        ct = Contest.objects.filter(cname=contest)
+        ct = Contest.objects.filter(cname=contest,ctype=ctype)
     if len(ct) == 0:
         div = getDivByName(contest)
         Contest.objects.create(cid=contestID,cname=contest,cdate=date,cdiv=div,ctype=ctype,cnumber=cnumber,starttimestamp=starttime,endtimestamp=endtime)
@@ -54,10 +58,10 @@ def addCFStatu(stuNO,realname,cid,cname,cfID):      #添加学生提交代码
             cdiv = cdiv = getDivByName(cname)
             try:
                 CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=data['subid'],index=data['index'],
-                    cdiv = cdiv,code = data['code'],tag = data['tags'],statu = data['statu'],ctime=data['time'])
+                    cdiv = cdiv,code = data['code'],tag = data['tags'],statu = data['statu'],ctime=data['time'],language=data['language'])
             except:
                 CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=data['subid'],index=data['index'],
-                cdiv = cdiv,code = 'get error',tag = data['tags'],statu = data['statu'],ctime=data['time'])
+                cdiv = cdiv,code = 'get error',tag = data['tags'],statu = data['statu'],ctime=data['time'],language=data['language'])
         elif sc[0].code == 'get error':
             op = CFContest.objects.get(subid=data['subid'])
             op.code = data['code']
@@ -128,7 +132,7 @@ def cfcontestsubmitupdatebycontest():       #codeforces补题更新
             for data in datalist:
                 stu = stuInfoDic[data['cfid']]
                 saveCFstatu(stu.stuNO,stu.realName,data['cid'],
-                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])        
+                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'],data['language'])        
         strs += contest.cname + ':' + str(len(datalist)) +'\n'
     context = {'str': strs }
 
@@ -166,9 +170,10 @@ def saveACData(stu):    #   根据学生对象获取atcoder数据
         dataList = bsdata.getACUserData(stu.acID)
         stu.acTimes = len(dataList)
         if(stu.acTimes > 0):
-            stu.acRating = dataList[-1]["newRating"]
-            addContest(data["contestID"],data["date"],data["contest"],"ac")
-            addStudentContest(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac")
+            for data in dataList:
+                stu.acRating = dataList[-1]["newRating"]
+                addContest(data["contestID"],data["date"],data["contest"],"ac")
+                addStudentContest(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac")
         else:
             stu.acRating = 0
     else:
@@ -195,9 +200,12 @@ def saveNCData(stu):    #   根据学生对象获取newcoder数据
         stu.ncTimes=0
     stu.save()
 
-def contestdatasolve(cname=0,stuNO=0):      #比赛数据展示规范函数,用于过滤数据并输出字典列表供展示
+def contestdatasolve(cname=0,stuNO=0,cid=-1):      #比赛数据展示规范函数,用于过滤数据并输出字典列表供展示
     if(cname):
-        list = StudentContest.objects.order_by('rank').filter(cname=cname)
+        if cid !=-1:
+            list = StudentContest.objects.order_by('rank').filter(cname=cname,cid=cid)
+        else:
+            list = StudentContest.objects.order_by('rank').filter(cname=cname)
     if(stuNO):
         list = StudentContest.objects.order_by('-cdate').filter(stuNO=stuNO)
     data =[]
@@ -228,7 +236,7 @@ def contestdatasolve(cname=0,stuNO=0):      #比赛数据展示规范函数,用�
         })
     return data
 
-def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):      #添加提交记录
+def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid,language):      #添加提交记录
     print(subid)
     t=0
     while True:
@@ -246,13 +254,13 @@ def saveCFstatu(stuNO,realname,cid,cname,time,tags,statu,index,subid):      #添
                 code='get error'
                 break
     cdiv = cdiv = getDivByName(cname)
-    if CFContest.objects.count(subid=subid)==0:
+    if CFContest.objects.filter(subid=subid).count()==0:
         try:
             CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
-                cdiv = cdiv,code = code,tag = tags,statu = statu,ctime=time)
+                cdiv = cdiv,code = code,tag = tags,statu = statu,ctime=time,language=language)
         except:
             CFContest.objects.create(stuNO=stuNO,realName=realname,cid=cid,cname=cname,subid=subid,index=index,
-                cdiv = cdiv,code = 'get error',tag = tags,statu = statu,ctime=time)
+                cdiv = cdiv,code = 'get error',tag = tags,statu = statu,ctime=time,language=language)
 
 def cfsolvereset(stuNO,cid):    #重置解题数量
     submits = CFContest.objects.filter(stuNO=stuNO,cid=cid)
@@ -598,6 +606,7 @@ def cfstatureset():
             dells.append(data.id)
     for idtd in dells:
         CFContest.objects.filter(id = idtd).delete()
+
 
 #color
 def get_n_hls_colors(num):

@@ -58,7 +58,6 @@
                                             <th>SubmitID</th>
                                             <th>submittime</th>      
                                             <th>Question</th>
-                                            <th>tags</th>
                                             <th>Language</th>   
                                             <th>Statu</th>
                                             <th>code</th>                                              
@@ -73,11 +72,10 @@
                                                 <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
                                                 <td>{{ s.subid }}</td>
                                                 <td>{{ s.time }}</td>
-                                                <td>{{ s.index }}</td>
-                                                <td>{{ s.tag }}</td>
-                                                <td>{{ s.language }}</td> 
+                                                <td>{{ s.task }}</td>
+                                                <td>{{ s.language }}</td>
                                                 <td>{{ s.statu }}</td>
-                                                <td><a href="/acmerdata/cfsubmit/{{ s.subid }}" class="btn btn-primary btn-sm">view</a></td>
+                                                <td><a href="/acmerdata/acsubmit/{{ s.subid }}" class="btn btn-primary btn-sm">view</a></td>
                                             </tr>
                                             {% endfor %}
                                         {% endif %}

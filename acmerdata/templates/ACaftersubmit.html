@@ -43,7 +43,7 @@
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{cname}}({{cdate}})
+                            {{name}}
                         </div>
  
 </table>
@@ -53,13 +53,11 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>stuNO</th>
-                                            <th>Realname</th>
+                                            <th>contestname</th>
                                             <th>SubmitID</th>
                                             <th>submittime</th>      
                                             <th>Question</th>
-                                            <th>tags</th>
-                                            <th>Language</th>   
+                                            <th>Language</th>     
                                             <th>Statu</th>
                                             <th>code</th>                                              
                                         </tr>
@@ -68,16 +66,14 @@
                                         {% if list %}
                                             {% for s in list %}
                                             <tr class="odd gradeX">
-                                                <td class="center">{{  forloop.counter }}</td>                                                
-                                                <td>{{ s.stuNO }}</td>  
-                                                <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                <td class="center">{{  forloop.counter }}</td>
+                                                <td>{{ s.contestname }}</td>
                                                 <td>{{ s.subid }}</td>
                                                 <td>{{ s.time }}</td>
                                                 <td>{{ s.index }}</td>
-                                                <td>{{ s.tag }}</td>
-                                                <td>{{ s.language }}</td> 
+                                                <td>{{ s.language }}</td>
                                                 <td>{{ s.statu }}</td>
-                                                <td><a href="/acmerdata/cfsubmit/{{ s.subid }}" class="btn btn-primary btn-sm">view</a></td>
+                                                <td><a href="/acmerdata/acsubmit/{{ s.subid }}" class="btn btn-primary btn-sm">view</a></td>
                                             </tr>
                                             {% endfor %}
                                         {% endif %}

@@ -49,6 +49,9 @@
                             {% if cid %}
                             <span style="float: right;"><a href="/acmerdata/cf/{{cid}}" class="btn btn-primary btn-sm" >status</a></span>
                             {% endif %}
+                            {% if nickName %}
+                            <span style="float: right;"><a href="/acmerdata/ac/{{nickName}}" class="btn btn-primary btn-sm" >status</a></span>
+                            {% endif %}
                             
                             
                         </div>
@@ -68,7 +71,10 @@
                                             <th>solve</th>
                                             {% if cid %}
                                             <th>补题</th>
-                                            {% endif %}                                              
+                                            {% endif %}
+                                            {% if nickName %}
+                                            <th>补题</th>
+                                            {% endif %}                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -87,6 +93,9 @@
                                                 {% endif %}
                                                 <td>{{ s.solve }}</td>
                                                 {% if cid %}
+                                                <td>{{ s.after }}</td>
+                                                {% endif %}
+                                                {% if nickName %}
                                                 <td>{{ s.after }}</td>
                                                 {% endif %} 
                                             </tr>

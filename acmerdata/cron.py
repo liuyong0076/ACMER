@@ -1,4 +1,4 @@
-from acmerdata import bsdata, datautils,jsk
+from acmerdata import bsdata, datautils,jsk,atcoder
 import logging
 import lxml
 from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
@@ -16,9 +16,10 @@ def getACData():    #atcoder信息更新
     logger = logging.getLogger('log')
     for stu in studentlist:
         logger.info(stu.realName + "start ac data")
-        datautils.saveACData(stu)
+        atcoder.saveACDataIncrementally(stu)
         str += stu.realName + ","
         logger.info(stu.realName + "end ac data")
+    atcoder.resetACContestSolveAll()
     datautils.setContestJoinNumbers()
     context = {'str': str}
 
@@ -78,7 +79,7 @@ def cfcontestsubmitupdatebycontest():       #codeforces补题更新
             for data in datalist:
                 stu = stuInfoDic[data['cfid']]
                 datautils.saveCFstatu(stu.stuNO,stu.realName,data['cid'],
-                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'])
+                contest.cname,data['time'],data['tags'],data['statu'],data['index'],data['subid'],data['language'])
         for stu in students:
             try:
                 datautils.cfsolvereset(stuNO,cid)
@@ -148,3 +149,15 @@ def jskdataupdate(): #计蒜客数据更新
     strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
     logger.info(strs) 
     
+def updateACSubmit():
+    logger = logging.getLogger("log")
+    logger.info("start updateACSubmit")
+    atcoder.UpdateACAfterSolve()
+    atcoder.resetACContestSolveAll()
+    logger.info("end updateACSubmit")
+
+def updateACCode():
+    logger = logging.getLogger("log")
+    logger.info("start updateACCode")
+    atcoder.getCodeUpdate()
+    logger.info("end updateACCode")

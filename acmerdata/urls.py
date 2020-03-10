@@ -21,6 +21,9 @@ urlpatterns = [
     path('monthlyrating',views.monthlyrating,name="monthlyrating"),
     path('studentmonthlys/<str:stuNO>',views.studentmonthlys,name='studentmonthlys'),
     path('monthlysub/<str:type>/<str:stuNO>/<str:year>/<str:month>',views.monthlysub,name='monthlysub'),
+    path('ac/<str:nickName>',views.acContestSubmit,name='acContestSubmit'),
+    path('acsubmit/<int:submitID>',views.viewACCode,name='viewACCode'),
+    path('afterac/<str:stuNO>',views.afterSolveAC,name='afterSolveAC'),
     #group
     path('group',views.group,name='group'),
     path('group/del/<int:groupid>',views.groupdel,name='groupdel'),
@@ -43,6 +46,8 @@ urlpatterns = [
     path('updataweightratingstatistics',views.updataweightratingstatistics,name="updatacfstatistics"),
     path('jskdataupdate',views.jskdataupdate,name='jskdataupdate'),
     path('fixacdiff',views.fixacdiff,name='fixacdiff'),
+    path('getaccode/<str:utype>',views.getACCode,name="getACCode"),
+    path('updateACDataByContest',views.updateACDataByContest,name='updateACDataByContest'),
     
     # data visualization
     path('groupRatingLine', views.groupRatingLine, name='groupRatingLine'),
