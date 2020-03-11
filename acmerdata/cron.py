@@ -21,6 +21,9 @@ def getACData():    #atcoder信息更新
         logger.info(stu.realName + "end ac data")
     atcoder.resetACContestSolveAll()
     datautils.setContestJoinNumbers()
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     context = {'str': str}
 
 def getNCData():    #newcoder信息更新
@@ -34,6 +37,9 @@ def getNCData():    #newcoder信息更新
         logger.info(stu.realName + "end nc data")
     context = {'str': str}
     datautils.setContestJoinNumbers()
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['ncUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
 
 def updateforecastlist():   #比赛预告信息更新
     ntime = time.time()
@@ -86,6 +92,10 @@ def cfcontestsubmitupdatebycontest():       #codeforces补题更新
             except:
                 pass
         strs += contest.cname + ':' + str(len(datalist)) +'\n'
+    datautils.cfstatureset()
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['cfAfterContestSubmitUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     context = {'str': strs }
 
 def updateCFDataByContest(): #codeforces比赛更新
@@ -95,6 +105,9 @@ def updateCFDataByContest(): #codeforces比赛更新
     datautils.cftimesreset()#供测试阶段调试使用，正式上线请将cftimes调整至准确再使用递增方法
     logger.info(str)
     context = {'str': str}
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['cfContestUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
 
 def updataweightratingstatistics():      #更新权重
     students = Student.objects.all()
@@ -147,7 +160,10 @@ def jskdataupdate(): #计蒜客数据更新
             logger.info(stu.realName + "end jsk dataget")
     datautils.setContestJoinNumbers()
     strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
-    logger.info(strs) 
+    logger.info(strs)
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['jskUpdatTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w")) 
     
 def updateACSubmit():
     logger = logging.getLogger("log")
@@ -155,9 +171,15 @@ def updateACSubmit():
     atcoder.UpdateACAfterSolve()
     atcoder.resetACContestSolveAll()
     logger.info("end updateACSubmit")
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acAfterContestSubmitUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w")) 
 
 def updateACCode():
     logger = logging.getLogger("log")
     logger.info("start updateACCode")
     atcoder.getCodeUpdate()
     logger.info("end updateACCode")
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acCodeUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w")) 

@@ -13,22 +13,23 @@ import random
 import markdown
 from django.db.models import Max
 import operator
+import os
+
 
 # Create your views here.
 #数据展示模块
 def spider(request):    #spider页面接口
     context = {} #{'studentlist': studentlist}
-    atcoder.resetACContestSolveAll()
     return render(request, 'spider.html', context)
 
 def contact(request):   #contact页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'contact.html', context)
 
-@cache_page(60 * 60 * 24) # 单位：秒，这里表示缓存一天
+# @cache_page(60 * 60 * 24) # 单位：秒，这里表示缓存一天
 def timeline(request):  #时间线页面接口
     studentlist = Student.objects.filter(school='北京化工大学')
-    StuContestList = StudentContest.objects.all().order_by('cdate')
+    StuContestList = StudentContest.objects.all().filter(ctype='cf').order_by('cdate')
     dic = {'name':'name',"value":"v","date":"d"}
     datalist = []
     str = ""
@@ -42,13 +43,14 @@ def timeline(request):  #时间线页面接口
         yeartemp += 1
 
     monthlist = ['01','02','03','04','05','06','07','08','09','10','11','12']
+
     stuRatingList = {}
     for year in yearlist:
         for month in monthlist:
             isChange = 0            
             for stu in studentlist:
                 date = year+'-'+month
-                name = stu.realName
+                # name = stu.realName
                 # value = datautils.getLatestCFRating(stu.stuNO,date)
                 value = datautils.getLatestCFRating_fasterVersion(StuContestList,stu.stuNO,date)
                 if value > 0:
@@ -108,7 +110,8 @@ def contests(request):  #比赛页面
         c.cdate = c.cdate[0:16]
         if len(c.cname) > 50:
             c.cname = c.cname[0:50] + "..."
-    context = {'contestlist': contestlist}
+    times = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    context = {'contestlist': contestlist,"time":times}
     return render(request, 'contests.html', context)
 
 def contest(request, contest_id=-1,studentcontest_id=-1):   #比赛详情,分别从学生页面与比赛页面进入
@@ -147,6 +150,9 @@ def updateCFDataByContest(request):
     str += datautils.saveCFDataByContest()
     datautils.cftimesreset()#供测试阶段调试使用，正式上线请将cftimes调整至准确再使用递增方法
     context = {'str': str}
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['cfContestUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     return render(request, 'spiderResults.html', context)   
 
 # update cf data by all user, start from zero
@@ -161,6 +167,9 @@ def updateACDataByContest(request):
         logger.info(stu.realName + "end ac data Incrementally")
     datautils.setContestJoinNumbers()
     context = {'str': str}
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     return render(request, 'spiderResults.html', context)
 
 def getCFData(request):     #全量抓取codeforce数据；注意根据网络情况可能极慢！！！
@@ -192,6 +201,9 @@ def getACCode(request,utype):
     else:
         return render(request, 'spiderResults.html', {'str': "Unknown Update Type"})
     message = "get code success num :"+ str(count)
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acCodeUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     return render(request, 'spiderResults.html', {'str': message})
 def getACData(request):    #手动抓取atcoder数据
     studentlist = Student.objects.all()
@@ -205,6 +217,9 @@ def getACData(request):    #手动抓取atcoder数据
     datautils.setContestJoinNumbers()
     context = {'str': str}
     return render(request, 'spiderResults.html', context)
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
 
 def updateACData(request):
     studentlist = Student.objects.all()
@@ -216,6 +231,9 @@ def updateACData(request):
         str += stu.realName + ","
         logger.info(stu.realName + "end ac data")
     datautils.setContestJoinNumbers()
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['acUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     context = {'str': str}
     return render(request, 'spiderResults.html', context)
 
@@ -231,6 +249,9 @@ def getNCData(request):    #手动抓取newcoder数据；受工具限制较慢
         logger.info(stu.realName + "end nc data")
     context = {'str': str}
     datautils.setContestJoinNumbers()
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['ncUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
     return render(request, 'spiderResults.html', context)
 #end数据爬取模块
 #学生信息修改模块
@@ -811,6 +832,8 @@ def monthlyrating(request,year='0',month='0'):
                 'cfp':0,
                 'cfpp':0,
                 'ac':0,
+                'acp':0,
+                'acpp':0,
                 'acdiff':0,
                 'jsk':0,
                 'jskp':0,
@@ -826,6 +849,8 @@ def monthlyrating(request,year='0',month='0'):
             stu['cfdiff'] += int(d.diff)
         elif d.ctype == 'ac':
             stu['ac'] += 1
+            stu['acp'] += int(d.solve)
+            stu['acpp'] += int(d.aftersolve)
             try:
                 stu['acdiff'] += int(d.diff)
             except:
@@ -837,27 +862,36 @@ def monthlyrating(request,year='0',month='0'):
             stu['nc'] += 1
             stu['ncp'] += int(d.solve.split('/')[0])
     if month == 'S1':   #第一季度
-        stasl = datautils.getbigaftersolve(int(year),1,int(year),4)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),4)
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),4,type='ac')
     elif month == 'S2':
-        stasl = datautils.getbigaftersolve(int(year),4,int(year),7)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),4,int(year),7)
+        datalist_acpp = datautils.getbigaftersolve(int(year),4,int(year),7,type='ac')
     elif month == 'S3':
-        stasl = datautils.getbigaftersolve(int(year),7,int(year),10)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year),10)
+        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year),10,type='ac')
     elif month == 'S4':
-        stasl = datautils.getbigaftersolve(int(year),10,int(year)+1,1)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1)
+        datalist_acpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1,type='ac')
     elif month == 'H1': #上半年
-        stasl = datautils.getbigaftersolve(int(year),1,int(year),7)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),7)
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),7,type='ac')
     elif month == 'H2':
-        stasl = datautils.getbigaftersolve(int(year),7,int(year)+1,1)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1)
+        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1,type='ac')
     elif month == 'ALL':    #全年
-        stasl = datautils.getbigaftersolve(int(year),1,int(year)+1,1)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1)
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1,type='ac')
     else:
-        stasl = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1)
+        datalist_cfpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1)
+        datalist_acpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1,type='ac')
     for s in studentlist:
         try:
-            s['cfpp']=stasl[s['stuNO']]-s['cfp']
+            s['cfpp']=datalist_cfpp[s['stuNO']]-s['cfp']
+            s['acpp']=datalist_acpp[s['stuNO']]-s['acp']
         except:
             s['cfpp']=0
-        s["score"] = (s['cf']+s['ac']+s['jsk']+s['nc']) * 20 + (s['cfp']+s['cfpp']+s['jskp']+s['ncp']) * 5 + (s['cfdiff']+s['acdiff'])
+        s["score"] = (s['cf']+s['ac']+s['jsk']+s['nc']) * 20 + (s['cfp']+s['cfpp']+s['jskp']+s['ncp']+s['acp']+s['acpp']) * 5 + (s['cfdiff']+s['acdiff'])
 
     studentlist = sorted(studentlist, reverse=True, key=lambda x: x['score'])
     monthlist = ["01","02","03","04","05","06","07","08","09","10","11","12","S1","S2","S3","S4","H1","H2","ALL"]
@@ -1043,6 +1077,9 @@ def jskdataupdate(request): #计蒜客数据更新
     datautils.setContestJoinNumbers()
     strs = "successlist:\n" + suc + "\nerrorlist:\n" + fail
     context = {'str': strs }
+    timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
+    timelist['jskUpdatTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+    json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w")) 
     return render(request, 'spiderResults.html', context)
 
 def fixacdiff(request):

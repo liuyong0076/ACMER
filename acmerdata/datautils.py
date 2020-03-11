@@ -1,7 +1,7 @@
 # commonly used functions to write data into database
 
 from acmerdata import bsdata
-from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,Weightrating
+from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,Weightrating,ACContest
 from django.db.models import Max
 import logging
 import time
@@ -161,7 +161,7 @@ def getLatestCFRating_fasterVersion(StuContestList,stuNO,date):
     # sclist = StudentContest.objects.filter(cdate__startswith=date,stuNO=stuNO,ctype='cf')        
     rating = 0
     for c in StuContestList:
-        if c.stuNO == stuNO and c.cdate.startswith(date):
+        if c.stuNO == stuNO and c.cdate.startswith(date) and c.ctype == 'cf':
             rating = c.newRating
     return rating
 
@@ -503,14 +503,17 @@ def getstudentmonthsolve(stu,year,month):       #按月获取学生补题数据,
             aftersolve=aftersolve+1
     return aftersolve
 
-def getbigaftersolve(y1,m1,y2,m2):      #大范围获取全部学生月补题数据，返回一个字典,对应学生号和解题数
+def getbigaftersolve(y1,m1,y2,m2,type='cf'):      #大范围获取全部学生月补题数据，返回一个字典,对应学生号和解题数
     if m2==13:
         m2=1
         y2=y2+1
     starttime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y1, m1),"%Y-%m-%d %H:%M:%S"))
     endtime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y2, m2),"%Y-%m-%d %H:%M:%S"))
     endt = {}
-    contests = CFContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
+    if type =='cf':
+        contests = CFContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
+    elif type == 'ac':
+        contests = ACContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
     aftersolve={}
     end = {}
     index = {}
