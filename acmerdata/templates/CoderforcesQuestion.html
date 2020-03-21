@@ -1,0 +1,138 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codeforces Problems - BUCTCODER</title>
+	<!-- Bootstrap Styles-->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/code.css' %}"/>
+     <!-- Morris Chart Styles-->
+   
+        <!-- Custom Styles-->
+    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link href="{% static 'assets/js/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet" />
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+    <div id="wrapper">
+        
+        
+        {% include 'template-menu.html' %}
+        
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-8" style="white-space: pre-line;">
+                        <div class="well">
+                                {{ text | safe}}
+                        </div>   
+                    </div>
+                    <div class="col-md-4">
+                        <div class="well">
+                        <div id="submitdata" style="height: 300%;width: 100%;"></div>
+                    </div>
+                    <div class="col-md-4" style="height: 300%;width: 100%;">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading">
+                                 通过代码
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                        <thead>
+                                            <tr>
+                                                <th>提交时间</th>
+                                                <th>姓名</th>
+                                                <th>代码</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {%for data in acsub%}
+                                        <tr>
+                                            <td>{{data.time}}</td>
+                                            <td>{{data.realName}}</td>
+                                            <td><a href="/acmerdata/cfsubmit/{{data.subid}}" class="btn btn-primary btn-sm">view</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
+      <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Metis Menu Js -->
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="{% static 'assets/js/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables/dataTables.bootstrap.js' %}"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript">
+    var chart = echarts.init(document.getElementById("submitdata"));
+option = {
+    title: {
+        text: '提交情况',
+        subtext: '{{cname}}-{{index}}',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    legend: {
+        // orient: 'vertical',
+        // top: 'middle',
+        bottom: 10,
+        left: 'center',
+        data: ['通过数', '未通过数']
+    },
+    series: [
+        {
+            type: 'pie',
+            radius: '65%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
+            data: [
+                {value: {{acnum}},name: '通过数'},
+                {value: {{failnum}}, name: '未通过数'},
+            ],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+chart.setOption(option);
+    </script>
+         <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+    
+   
+</body>
+</html>

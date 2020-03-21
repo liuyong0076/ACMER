@@ -51,7 +51,12 @@
                                             {% for s in cflist %}
                                             <tr>
                                                 <td>{{  forloop.counter }}</td>
-                                                <td>{{s.cname}}</td>
+                                                <td>{% if s.link %}
+                                                    <a href='{{s.link}}' target="_blank">{{s.cname}}</a>
+                                                    {% else %}
+                                                    {{s.cname}}
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{s.starttime}}</td>
                                                 <td>{{s.during}}</td>
                                             </tr>

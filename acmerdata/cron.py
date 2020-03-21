@@ -1,7 +1,7 @@
-from acmerdata import bsdata, datautils,jsk,atcoder
+from acmerdata import bsdata, datautils,jsk,atcoder,CodeforcesQuestion
 import logging
 import lxml
-from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating
+from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize
 from .forms import Addstudent,Addgroup,addprize
 import time,datetime,json
 import re
@@ -9,6 +9,7 @@ import random
 import markdown
 from django.db.models import Max
 import operator
+import os
 
 def getACData():    #atcoder信息更新
     studentlist = Student.objects.all()
@@ -43,8 +44,13 @@ def getNCData():    #newcoder信息更新
 
 def updateforecastlist():   #比赛预告信息更新
     ntime = time.time()
+    ttime = ntime - 172800
     strs = ''
-    Contestforecast.objects.filter(starttime__lte=ntime).delete()
+    passCons = Contestforecast.objects.filter(starttime__lte=ntime,ctype = "cf")
+    for passcon in passCons:
+        passcon.link = "https://codeforces.com/api/contest.ratingChanges?contestId=" + str(passcon.cid)
+        passcon.save()
+    Contestforecast.objects.filter(starttime__lte=ttime).delete()
     logger = logging.getLogger('log')
     cfdatalist = bsdata.cfforecastget()
     ncdatelist = bsdata.ncforecastget()
@@ -103,45 +109,12 @@ def updateCFDataByContest(): #codeforces比赛更新
     str = "CF Data, successed list:"
     str += datautils.saveCFDataByContest()
     datautils.cftimesreset()#供测试阶段调试使用，正式上线请将cftimes调整至准确再使用递增方法
+    datautils.cfstatureset()
     logger.info(str)
     context = {'str': str}
     timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
     timelist['cfContestUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
     json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
-
-def updataweightratingstatistics():      #更新权重
-    students = Student.objects.all()
-    strs=''
-    tngap = time.time() - 8035200
-    for stu in students:
-        strs += stu.realName +"、"
-        div2 = 0
-        div1 = 0
-        div3 = 0 
-        contests = StudentContest.objects.filter(stuNO = stu.stuNO,ctype='cf')
-        for contest in contests :
-            if Contest.objects.get(cid=contest.cid).starttimestamp >= tngap:
-                if contest.cdiv == '2':
-                    div2=div2+1
-                elif contest.cdiv == '1':
-                    div1=div1+1
-                elif contest.cdiv == '3':
-                    div3=div3+1
-        count = stu.cfRating + div1 * 30 + div2 * 20 + div3 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
-        datalist={
-            'div1':div1,
-            'div2':div2,
-            'div3':div3,
-            'stuNO':stu.stuNO,
-            'realName':stu.realName,
-            'className':stu.className,
-            'year':stu.year,
-            'after':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
-            'count':count,
-            'cfRating':stu.cfRating,
-            'acRating':stu.acRating,
-        }
-        Weightrating.objects.update_or_create(datalist,stuNO=stu.stuNO)
 
 def jskdataupdate(): #计蒜客数据更新
     students = Student.objects.all()
@@ -183,3 +156,6 @@ def updateACCode():
     timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
     timelist['acCodeUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
     json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w")) 
+
+def updateCodeforcesQuestion():
+    CodeforcesQuestion.updateContestQuestion()

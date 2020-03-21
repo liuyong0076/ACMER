@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
-from acmerdata import bsdata, datautils ,jsk,atcoder
+from acmerdata import bsdata, datautils ,jsk,atcoder,CodeforcesQuestion
+from acmerdata import CodeforcesQuestion as CQ
 from django.views.decorators.cache import cache_page
 import logging
 import lxml
-from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,Weightrating,ACContest
+from .models import Student, Contest, StudentContest,AddStudentqueue,studentgroup,CFContest,Contestforecast,AddContestprize,ACContest,CodeforcesQuestion
 from .forms import Addstudent,Addgroup,addprize
 import time,datetime,json
 import re
@@ -26,46 +27,6 @@ def contact(request):   #contact页面接口
     context = {} #{'studentlist': studentlist}
     return render(request, 'contact.html', context)
 
-# @cache_page(60 * 60 * 24) # 单位：秒，这里表示缓存一天
-def timeline(request):  #时间线页面接口
-    studentlist = Student.objects.filter(school='北京化工大学')
-    StuContestList = StudentContest.objects.all().filter(ctype='cf').order_by('cdate')
-    dic = {'name':'name',"value":"v","date":"d"}
-    datalist = []
-    str = ""
-    logger = logging.getLogger('log')
-    yearlist = ['2015','2016','2017','2018','2019','2020']
-    
-    yeartemp = 2020
-    currYear = datetime.datetime.now().year
-    while yeartemp < currYear:
-        yearlist.append(str(yeartemp))
-        yeartemp += 1
-
-    monthlist = ['01','02','03','04','05','06','07','08','09','10','11','12']
-
-    stuRatingList = {}
-    for year in yearlist:
-        for month in monthlist:
-            isChange = 0            
-            for stu in studentlist:
-                date = year+'-'+month
-                # name = stu.realName
-                # value = datautils.getLatestCFRating(stu.stuNO,date)
-                value = datautils.getLatestCFRating_fasterVersion(StuContestList,stu.stuNO,date)
-                if value > 0:
-                    isChange = 1
-                    stuRatingList[stu.realName] = value
-            if isChange == 1:
-                newList = sorted(stuRatingList.items(), key=lambda item:item[1], reverse=True)
-                for k in newList:
-                    if int(k[1]) > 0:
-                        datalist.append({
-                            'name':k[0],"value":k[1],"date":year+month
-                        })
-    context = {'str': json.dumps(datalist)}
-    return render(request, 'timeline.html', context)
-
 def fixbug(request):
     # fix the diff is 0 of ac data
     studentlist = Student.objects.all()
@@ -80,9 +41,12 @@ def fixbug(request):
     context = {'str': str}
     return render(request, 'fixbug.html', context)
 
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def index(request):   #入口页面
     studentlist = Student.objects.order_by("-cfRating").all()
-    data=[]
+    retire = []
+    data = []
+    active = []
     for stu in studentlist:
         data.append({
             'stuNO':stu.stuNO,
@@ -101,9 +65,47 @@ def index(request):   #入口页面
             'school':stu.school,
             'sex':stu.sex,
         })
-    context = {'studentlist': data}
+        if stu.isActive == 1:
+            active.append({
+            'stuNO':stu.stuNO,
+            'realName':stu.realName,
+            'className':stu.className,
+            'year':stu.year,
+            'cfRating':stu.cfRating,
+            'cfTimes':stu.cfTimes,
+            'CFafter':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
+            'ACafter':str(stu.correct_ac_aftersolve) + '/' + str(stu.all_ac_aftersolve),
+            'acRating':stu.acRating,
+            'acTimes':stu.acTimes,
+            'ncTimes':stu.ncTimes,
+            'ncRating':stu.ncRating,
+            'jskTimes':stu.jskTimes,
+            'school':stu.school,
+            'sex':stu.sex,
+            })
+        if stu.isActive == 0:
+            retire.append({
+                'stuNO':stu.stuNO,
+                'realName':stu.realName,
+                'className':stu.className,
+                'year':stu.year,
+                'cfRating':stu.cfRating,
+                'cfTimes':stu.cfTimes,
+                'CFafter':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
+                'ACafter':str(stu.correct_ac_aftersolve) + '/' + str(stu.all_ac_aftersolve),
+                'acRating':stu.acRating,
+                'acTimes':stu.acTimes,
+                'ncTimes':stu.ncTimes,
+                'ncRating':stu.ncRating,
+                'jskTimes':stu.jskTimes,
+                'school':stu.school,
+                'sex':stu.sex,
+            })
+    context = {'studentlist': data,"active":active,"retire":retire}
     return render(request, 'students.html', context)
 
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def contests(request):  #比赛页面
     contestlist = Contest.objects.order_by('-cdate').all()
     for c in contestlist:
@@ -114,6 +116,8 @@ def contests(request):  #比赛页面
     context = {'contestlist': contestlist,"time":times}
     return render(request, 'contests.html', context)
 
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def contest(request, contest_id=-1,studentcontest_id=-1):   #比赛详情,分别从学生页面与比赛页面进入
     if contest_id > 0:
         ct = Contest.objects.filter(id=contest_id)  
@@ -132,15 +136,16 @@ def contest(request, contest_id=-1,studentcontest_id=-1):   #比赛详情,分别
     context = {'list': list,"cname":ct[0].cname,"cdate":ct[0].cdate,'cid':cid,'nickName':ct[0].nickName}
     return render(request, 'contest.html', context)
 
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def student(request, stuNO):
     #list = StudentContest.objects.order_by('-cdate').filter(stuNO=stuNO)
     data = datautils.contestdatasolve(stuNO=stuNO)
     stu = Student.objects.get(stuNO=stuNO)
     classname, realname= '',''
-    if len(data)>0:
-        classname,realname,cfID,acID,ncID,jskID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID,stu.jskID
-
+    classname,realname,cfID,acID,ncID,jskID = stu.className, stu.realName, stu.cfID, stu.acID, stu.ncID,stu.jskID
     context = {'list': data,'classname':classname, 'realname':realname,'cfID':cfID,'acID':acID,'ncID':ncID,'jskID':jskID}
+
     return render(request, 'student.html', context)
 #end数据展示模块
 #数据爬取模块
@@ -216,10 +221,10 @@ def getACData(request):    #手动抓取atcoder数据
         logger.info(stu.realName + "end ac data")
     datautils.setContestJoinNumbers()
     context = {'str': str}
-    return render(request, 'spiderResults.html', context)
     timelist  = json.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"r"))
     timelist['acUpdateTime'] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
     json.dump(timelist,open(os.path.join(os.path.abspath(os.path.dirname(__file__)),"updatetime.json"),"w"))
+    return render(request, 'spiderResults.html', context)
 
 def updateACData(request):
     studentlist = Student.objects.all()
@@ -312,6 +317,9 @@ def updatestudentlist(request):     #更新学生名单函数,对后台审核操
                         a.sex = s.sex
                     a.save()
                 elif s.atype=='create':     #判断是否为创建
+                    if Student.objects.filter(stuNO=s.stuNO,realName=s.realName).count()!=0:
+                        context = {"str":"已有重复数据:"+s.stuNO+"-"+s.realName+"-"+s.className+"-"+s.school}
+                        return render(request,'spiderResults.html',context)
                     Student.objects.create(
                     stuNO=s.stuNO,realName=s.realName,className=s.className,school=s.school,sex=s.sex,
                     year=int(s.year),acID=s.acID,cfID=s.cfID,vjID=s.vjID,ncID=s.ncID,jskID = s.jskID
@@ -339,146 +347,7 @@ def addstatu(request):      #添加详情页面函数
     studentlist = AddStudentqueue.objects.order_by("-request_time").all()
     context = {'studentlist': studentlist}
     return render(request, 'addstudentslist.html', context)
-#比较组展示模块
-def group(request):     #组页面函数,提供未被删除的组进行浏览,同时使用POST进行增加组
-    massage = ''
-    grouplist = studentgroup.objects.filter(enable=True)
-    if request.method == "POST":
-        form = Addgroup(request.POST)
-        if form.is_valid():
-            name = ''
-            c = form.clean()
-            pattern = re.compile(r'\d+')
-            s = pattern.findall(c['groupstuID'])
-            try:
-                for sid in s:
-                    print(str(sid))
-                    student = Student.objects.get(stuNO=str(sid))
-                    if name == '':
-                        name = ''.join([name,str(student.realName)])
-                    else :
-                        name="&".join([name,str(student.realName)])
-                studentgroup.objects.create(groupstuID=c['groupstuID'],remark = c['remark'],studentNames = name)
-                form=Addgroup()
-                massage = "Add success"
-            except:
-                massage = "Error:no student-" + str(sid)
-            grouplist = studentgroup.objects.filter(enable=True)
-            return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})            
-    else:
-        form=Addgroup()
-    return render(request,"group.html",{'form':form,'massage':massage,'grouplist':grouplist})
 
-def groupdel(request,groupid):      #组删除视图函数,传入组id,但此删除为伪删除,删除之后此比较组不可用,但仍能在数据库中查询到相关信息
-    qs = studentgroup.objects.get(id=groupid)
-    massage = "您已删除id为" + str(qs.id) +"的组" 
-    qs.enable = False
-    qs.save()
-    return render(request,"groupdeleteresult.html",{'massage':massage})
-
-def groupRatingLine(request,groupid):   #队时间线页面接口
-    group = studentgroup.objects.get(id=groupid)
-    pattern = re.compile(r'\d+')
-    s = pattern.findall(str(group.groupstuID))
-    stuNOList = []
-    for sid in s:
-        stuNOList.append(int(sid))
-    logger = logging.getLogger('log')
-
-    stuList = Student.objects.filter(stuNO__in = stuNOList)
-    color = datautils.ncolors(len(stuList))
-    stuNOList = []
-    lineX = []
-    names = []
-    dic_stuNO_rating = {}
-    dic_stuNO_year = {}
-    for stu in stuList:
-        stuNOList.append(stu.stuNO)
-        names.append(stu.realName)
-        dic_stuNO_rating[stu.stuNO] = []   
-        dic_stuNO_year[stu.stuNO] = stu.year     
-    yearlist = ['Freshman','Sophomore','Junior']
-    monthlist = ['09','10','11','12','01','02','03','04','05','06','07','08']
-    dic_year_gap = {'Freshman':0,'Sophomore':1,'Junior':2}
-    dic_month_gap = {'09':0,'10':0,'11':0,'12':0,'01':1,'02':1,'03':1,'04':1,'05':1,'06':1,'07':1,'08':1}
-    for year in yearlist:
-        for month in monthlist:
-            if month == '09':
-                lineX.append(year+month)
-            else:
-                lineX.append(month)
-            for stuNO in stuNOList:
-                date = str(dic_stuNO_year[stuNO] + dic_year_gap[year] + dic_month_gap[month]) + "-" + month
-                value = datautils.getLatestCFRating(stuNO,date)
-                if value == 0 and len(dic_stuNO_rating[stuNO])>0:
-                    value = dic_stuNO_rating[stuNO][-1]
-                logger.info(date + ":" + str(value))
-                dic_stuNO_rating[stuNO].append(value)
-    context = {
-        "lineX":json.dumps(lineX),
-        "names":json.dumps(names),
-        "stuNOList":json.dumps(stuNOList),
-        "dic_stuNO_rating":json.dumps(dic_stuNO_rating),
-        "color":json.dumps(color)
-    } 
-    return render(request, 'groupRatingLine.html', context)
-
-def groupdata(request,groupid):   #队数据
-    group = studentgroup.objects.get(id=groupid)
-    pattern = re.compile(r'\d+')
-    s = pattern.findall(str(group.groupstuID))
-    stuNOList = []
-    for sid in s:
-        stuNOList.append(int(sid))
-    logger = logging.getLogger('log')
-
-    stuList = Student.objects.filter(stuNO__in = stuNOList)
-    color = datautils.ncolors(len(stuList))
-    stuNOList = []
-    lineX = []
-    names = []
-    dic_stuNO_rating = {}
-    dic_stuNO_year = {}
-    for stu in stuList:
-        stuNOList.append(stu.stuNO)
-        names.append(stu.realName)
-        dic_stuNO_rating[stu.stuNO] = []   
-        dic_stuNO_year[stu.stuNO] = stu.year     
-    yearlist = ['Freshman','Sophomore','Junior']
-    monthlist = ['09','10','11','12','01','02','03','04','05','06','07','08']
-    dic_year_gap = {'Freshman':0,'Sophomore':1,'Junior':2}
-    dic_month_gap = {'09':0,'10':0,'11':0,'12':0,'01':1,'02':1,'03':1,'04':1,'05':1,'06':1,'07':1,'08':1}
-    for year in yearlist:
-        for month in monthlist:
-            if month == '09':
-                lineX.append(year+month)
-            else:
-                lineX.append(month)
-            for stuNO in stuNOList:
-                date = str(dic_stuNO_year[stuNO] + dic_year_gap[year] + dic_month_gap[month]) + "-" + month
-                value = datautils.getLatestCFRating(stuNO,date)
-                if value == 0 and len(dic_stuNO_rating[stuNO])>0:
-                    value = dic_stuNO_rating[stuNO][-1]
-                logger.info(date + ":" + str(value))
-                dic_stuNO_rating[stuNO].append(value)
-    grouplist = studentgroup.objects.filter(enable=True)
-
-    
-    # logger.info(lineX)
-    # logger.info(names)
-    # logger.info(dic_stuNO_rating)
-
-    context = {
-        "lineX":json.dumps(lineX),
-        "names":json.dumps(names),
-        "stuNOList":json.dumps(stuNOList),
-        "dic_stuNO_rating":json.dumps(dic_stuNO_rating),
-        "color":json.dumps(color),
-        "grouplist":grouplist,
-        "students":stuList,
-        "groupid":groupid,
-    } 
-    return render(request, 'groupdata.html', context)
 #end比较组展示模块
 #代码及解题数模块
 def cfcontestsubmit(request,cid):   #比赛提交记录视图函数,传入cf比赛id进行查询
@@ -594,7 +463,6 @@ def viewcode(request,submitid):     #代码展示视图函数,传入cf提交代�
     elif "Java" in cfct.language:
         language="java"
     code = "```"+language+"\n"+ cfct.code +"\n```"
-    print(code)
     code = markdown.markdown(code,extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.codehilite',
@@ -670,8 +538,13 @@ def cfcontestsubmitupdatebycontest(request): #此视图函数用于更新codefor
 
 def updateforecastlist(request):    #此视图函数用于增量更新比赛预告,过期预告会自动删除,但官方主动删除的比赛会保留
     ntime = time.time()
+    ttime = ntime - 172800
     strs = ''
-    Contestforecast.objects.filter(starttime__lte=ntime).delete()
+    passCons = Contestforecast.objects.filter(starttime__lte=ntime,ctype = "cf")
+    for passcon in passCons:
+        passcon.link = "https://codeforces.com/api/contest.ratingChanges?contestId=" + str(passcon.cid)
+        passcon.save()
+    Contestforecast.objects.filter(starttime__lte=ttime).delete()
     cfdatalist = bsdata.cfforecastget()
     ncdatelist = bsdata.ncforecastget()
     acdatalist = bsdata.acforecastget()
@@ -705,7 +578,8 @@ def contestforecast(request):       #用于提供比赛预告
         cflist.append({
             'cname':contest.cname,
             'starttime':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(contest.starttime)),
-            'during':datautils.timestamptotime(int(contest.during))
+            'during':datautils.timestamptotime(int(contest.during)),
+            'link':contest.link,
         })
     for contest in ac:
         aclist.append({
@@ -780,10 +654,13 @@ def addprizet(request):     #比赛获奖记录功能,此模块尚未开发完�
     else:
         formt = addprize()
     return render(request,'addprize.html',{'form': formt})
+
+
 #月排名模块
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def monthlyrating(request,year='0',month='0'):
     currYear = datetime.datetime.now().year
-    yearlist = [currYear,currYear-1,currYear-2,currYear-3]
+    yearlist = [currYear,currYear-1,currYear-2,currYear-3,currYear-4,currYear-5,currYear-6,currYear-7,currYear-8,currYear-9,currYear-10,'ALL']
     if year == '0':
         year = str(currYear)
         month = datetime.datetime.now().month
@@ -813,6 +690,10 @@ def monthlyrating(request,year='0',month='0'):
     else:
         starttime = ("%s-%s-01 00:00:00") % (year, month)
         endtime = ("%s-%s-31 23:59:59") % (year, month)
+
+    if year == "ALL":        
+        starttime = "2014-01-01 00:00:00"
+        endtime = ("%s-%s-31 23:59:59") % (currYear, 12)
 
     datalist = StudentContest.objects.filter(cdate__range=(starttime,endtime))
     studentlist = []
@@ -861,43 +742,52 @@ def monthlyrating(request,year='0',month='0'):
         elif d.ctype == 'nc':
             stu['nc'] += 1
             stu['ncp'] += int(d.solve.split('/')[0])
-    if month == 'S1':   #第一季度
-        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),4)
-        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),4,type='ac')
+    
+    if year == 'ALL':
+        datalist_cfpp = datautils.getbigaftersolve(2014,1,currYear,12,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(2014,1,currYear,12,source='ac')
+    elif month == 'S1':   #第一季度
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),4,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),4,source='ac')
     elif month == 'S2':
-        datalist_cfpp = datautils.getbigaftersolve(int(year),4,int(year),7)
-        datalist_acpp = datautils.getbigaftersolve(int(year),4,int(year),7,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),4,int(year),7,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),4,int(year),7,source='ac')
     elif month == 'S3':
-        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year),10)
-        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year),10,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year),10,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year),10,source='ac')
     elif month == 'S4':
-        datalist_cfpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1)
-        datalist_acpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),10,int(year)+1,1,source='ac')
     elif month == 'H1': #上半年
-        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),7)
-        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),7,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year),7,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year),7,source='ac')
     elif month == 'H2':
-        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1)
-        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),7,int(year)+1,1,source='ac')
     elif month == 'ALL':    #全年
-        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1)
-        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),1,int(year)+1,1,source='ac')
     else:
-        datalist_cfpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1)
-        datalist_acpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1,type='ac')
+        datalist_cfpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1,source='cf')
+        datalist_acpp = datautils.getbigaftersolve(int(year),int(month),int(year),int(month)+1,source='ac')
     for s in studentlist:
-        try:
+        if s['stuNO'] in datalist_cfpp:
             s['cfpp']=datalist_cfpp[s['stuNO']]-s['cfp']
-            s['acpp']=datalist_acpp[s['stuNO']]-s['acp']
-        except:
+        else:
             s['cfpp']=0
+        if s['stuNO'] in datalist_acpp:
+            s['acpp']=datalist_acpp[s['stuNO']]-s['acp']
+        else:
+            s['acpp']=0
         s["score"] = (s['cf']+s['ac']+s['jsk']+s['nc']) * 20 + (s['cfp']+s['cfpp']+s['jskp']+s['ncp']+s['acp']+s['acpp']) * 5 + (s['cfdiff']+s['acdiff'])
 
     studentlist = sorted(studentlist, reverse=True, key=lambda x: x['score'])
     monthlist = ["01","02","03","04","05","06","07","08","09","10","11","12","S1","S2","S3","S4","H1","H2","ALL"]
-    context = {'studentlist': studentlist ,"year":int(year), "month":month,"yearlist":yearlist, "monthlist":monthlist}
+    context = {'studentlist': studentlist ,"year":year, "month":month,"yearlist":yearlist, "monthlist":monthlist}
     return render(request, 'monthlyrating.html', context)
 
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
 def studentmonthlys(request,stuNO):
     thisyear = datetime.datetime.now().year
     thismon = datetime.datetime.now().month
@@ -918,7 +808,7 @@ def studentmonthlys(request,stuNO):
             else:
                 for month in range(12,0,-1):
                     monthlist[year].append(month)"""
-    datalist = datautils.getbigstudentmonth(stu,stu.year,9,thisyear,thismon+1)
+    datalist = datautils.getbigstudentmonth(stu,stu.year-2,9,thisyear,thismon+1)
     """lent= len(datalist)
     lists = []
     for ids,data in enumerate(datalist):
@@ -1017,47 +907,7 @@ def monthlysub(request,type,stuNO,year,month):
     
 #end月排名
 
-#权重模块
-def updataweightratingstatistics(request):      #更新权重
-    students = Student.objects.all()
-    strs=''
-    tngap = time.time() - 8035200
-    for stu in students:
-        strs += stu.realName +"、"
-        div2 = 0
-        div1 = 0
-        div3 = 0 
-        contests = StudentContest.objects.filter(stuNO = stu.stuNO,ctype='cf')
-        for contest in contests :
-            if Contest.objects.get(cid=contest.cid,ctype='cf').starttimestamp >= tngap:
-                if contest.cdiv == '2':
-                    div2=div2+1
-                elif contest.cdiv == '1':
-                    div1=div1+1
-                elif contest.cdiv == '3':
-                    div3=div3+1
-        count = stu.cfRating + div1 * 30 + div2 * 20 + div3 * 10 +stu.correct_cf_aftersolve * 5 + stu.acRating
-        datalist={
-            'div1':div1,
-            'div2':div2,
-            'div3':div3,
-            'stuNO':stu.stuNO,
-            'realName':stu.realName,
-            'className':stu.className,
-            'year':stu.year,
-            'after':str(stu.correct_cf_aftersolve) + '/' + str(stu.all_cf_aftersolve),
-            'count':count,
-            'cfRating':stu.cfRating,
-            'acRating':stu.acRating,
-        }
-        Weightrating.objects.update_or_create(datalist,stuNO=stu.stuNO)
-    context = {'str': strs }
-    return render(request, 'spiderResults.html', context)
 
-def weightratingstatistic(request):     #权重展示
-    list = Weightrating.objects.order_by("-count").all()
-    return render(request,'weightrating.html',{'studentlist': list})
-#权重模块结束
 
 def jskdataupdate(request): #计蒜客数据更新
     students = Student.objects.all()
@@ -1092,3 +942,60 @@ def fixacdiff(request):
             con.save()
     context = {'str': strs }
     return render(request, 'spiderResults.html', context)
+
+def updateCodeforcesQuestion(request):
+    strs = CQ.updateContestQuestion()
+    context = {'str': strs }
+    return render(request, 'spiderResults.html', context)
+@cache_page(24*60*60) #一天
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
+def CodeforcesQuestionsview(request,cid,index):
+    que = CodeforcesQuestion.objects.get(cid=cid,index = index)
+    acsub = CFContest.objects.filter(cid=cid,index=index,statu = "OK")
+    acnum = acsub.count()
+    failnum = CFContest.objects.filter(cid=cid,index=index).count()-acnum
+    data = []
+    for submit in acsub:
+        data.append({
+            'realName':submit.realName,
+            'subid':submit.subid,
+            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(submit.ctime)),
+        })
+    text = que.mdtext
+    text = markdown.markdown(text,extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
+        'markdown.extensions.latex',
+    ])
+    content = {
+        "cid":cid,
+        "index":index,
+        "cname":que.cname,
+        "name":que.name,
+        "text":text,
+        "acsub":data,
+        "acnum":acnum,
+        "failnum":failnum,
+    }
+    return render(request,"CoderforcesQuestion.html",content)
+@cache_page(60*60) #1小时
+
+@cache_page(60 * 15) # 单位：秒，这里表示15分钟
+def Problemset(request,tag):
+    if tag == "ALL":
+        qus = CodeforcesQuestion.objects.defer("mdtext").all().order_by("-cid")
+    else:
+        qus = CodeforcesQuestion.objects.defer("mdtext").order_by("-difficulty").filter(tags__contains = tag)
+        print(qus)
+    tags = ['brute force', 'greedy', 'math', 'sortings', 'implementation', 'binary search', 'ternary search', 'number theory', 'dp', 'strings', 'data structures', 'two pointers', 'constructive algorithms', 'combinatorics', 'flows', 'bitmasks', 'dfs and similar', 'expression parsing', 'shortest paths', 'geometry', 'meet-in-the-middle', 'divide and conquer', 'trees', 'graphs', 'games', 'dsu', 'interactive','hashing', 'matrices', 'string suffix structures', 'chinese remainder theorem', 'probabilities', '2-sat', 'graph matchings', 'fft']
+    tags.insert(0,"ALL")
+    content = {
+        "problems": qus,
+        "tags": tags,
+        "tag" :tag,
+        
+    }
+    return render(request,"Problemset.html",content)
+

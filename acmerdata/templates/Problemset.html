@@ -5,7 +5,7 @@
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BUCTCODER</title>
+    <title>Codeforces Problems - BUCTCODER</title>
 	<!-- Bootstrap Styles-->
     <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FontAwesome Styles-->
@@ -41,61 +41,55 @@
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            {{classname}}  {{realname}}&emsp;CoderforceName:{{cfID}}&emsp;AtcoderName:{{acID}}&emsp;牛客网ID:{{ncID}}&emsp;计蒜客ID:{{jskID}}
-                        </div>
- 
-</table>
+                        <!-- <div class="panel-heading">
+                            students' data
+                        </div> -->
                         <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group col-md-3">                               
+                                    <select class="form-control" style="width:250px" id="tags">
+                                        {% for s in tags %}
+                                            <option {% if s == tag %}  selected="selected"  {% endif %} >{{s}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <a href="#" class="btn btn-primary" id="query" onclick="query()">query</a>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>date</th>
-                                            <th>#cf</th>
-                                            <th>cf-diff</th>
-                                            <th>#cf+</th>
-                                            <th>#cf++</th>
-                                            <th>#ac</th>
-                                            <th>#ac+</th>
-                                            <th>#ac++</th>
-                                            <th>ac-diff</th>
-                                            <th>#jsk</th>
-                                            <th>#jsk+</th>
-                                            <th>#nc</th>
-                                            <th>#nc+</th>
-                                            <th>Score</th>                                
+                                            <th>ContestName</th>
+                                            <th>Index</th>
+                                            <th>Name</th>
+                                            <th>Tags</th>
+                                            <th>Difficulty</th>
+                                            <th>View</th>
+                                            <th>submit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if list %}
-                                            {% for s in list %}
+                                            {% for s in problems %}
                                             <tr class="odd gradeX">
-                                                <td class="center">{{  forloop.counter }}</td class="center">  
-                                                <td>{{ s.year }} - {{ s.month }}</td>
-                                                <td>{{ s.cf }}</td>
-                                                <td>{{ s.cfdiff }}</td>
-                                                <td>{{ s.cfp }}</td>
-                                                <td>{{ s.cfpp }}</td>
-                                                <td>{{ s.ac }}</td>
-                                                <td>{{ s.acp }}</td>
-                                                <td>{{ s.acpp }}</td>
-                                                <td>{{ s.acdiff }}</td>
-                                                <td>{{ s.jsk }}</td>
-                                                <td>{{ s.jskp }}</td>
-                                                <td>{{ s.nc }}</td>
-                                                <td>{{ s.ncp }}</td>
-                                                <td>{{ s.score }}</td>
+                                                <td>{{  forloop.counter }}</td>
+                                                <td>{{s.cname}}</td>
+                                                <td>{{ s.index }}</td>
+                                                <td>{{ s.name }}</td>
+                                                <td>{{ s.tags }}</td>
+                                                <td>{{ s.difficulty }}</td>
+                                                <td><a href="/acmerdata/CodeforcesQuestionsview/{{s.cid}}/{{s.index}}" class="btn btn-primary btn-sm">View</a></td>
+                                                <td><a href="https://codeforces.com/contest/{{s.cid}}/problem/{{s.index}}" target="_blank" class="btn btn-primary btn-sm">Submit</a></td>
                                             </tr>
                                             {% endfor %}
-                                        {% endif %}
                                         
                                     </tbody>
 
                                 </table>
                             </div>
-                            
+                        
                         </div>
                     </div>
                     <!--End Advanced Tables -->
@@ -123,6 +117,11 @@
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
+                $("#query").on('click',function query(){
+                    var tag = $("#tags").find("option:selected").text();
+                    var url = "/acmerdata/Problemset/"+tag;
+                    $(location).attr('href', url);
+                });
             });
     </script>
          <!-- Custom Js -->
@@ -131,4 +130,3 @@
    
 </body>
 </html>
-

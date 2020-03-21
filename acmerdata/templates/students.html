@@ -44,8 +44,192 @@
                         <!-- <div class="panel-heading">
                             students' data
                         </div> -->
+                        
                         <div class="panel-body">
-                            <div class="table-responsive">
+                            <div class="panel-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#active" data-toggle="tab">现役</a>
+                                </li>
+                                <li class=""><a href="#retire" data-toggle="tab">退役</a>
+                                </li>
+                                <li class=""><a href="#all" data-toggle="tab">所有</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="active">
+                                    
+                                        <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-active">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>stuNO</th>
+                                            <th>realname</th>
+                                            <th>classname</th>
+                                            <th>sex</th>
+                                            <th>school</th>
+                                            <th>year</th>
+                                            <th>cfRating</th>
+                                            <th>#cf</th>
+                                            <th>#cf++</th>
+                                            <th>acRating</th>
+                                            <th>#ac</th>
+                                            <th>#ac++</th>
+                                            <th>#vj</th>
+                                            <th>#nc</th>
+                                            <th>ncRating</th>  
+                                            <th>#jsk</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if active %}
+                                            {% for s in active %}
+                                            <tr class="odd gradeX">
+                                                <td><input type="checkbox" value="{{s.stuNO}}" id="chb_{{s.stuNO}}" onclick="setSelStuNO({{ s.stuNO }})">{{  forloop.counter }}</input></td>
+                                                <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.stuNO }}</a></td>
+                                                <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                <td>{{ s.className }}</td>
+                                                <td>{{ s.sex }}</td>
+                                                <td>{{ s.school }}</td>
+                                                <td>{{ s.year }}</td>
+                                                <td>{{ s.cfRating }}</td>
+                                                <td>{{ s.cfTimes }}</td>
+                                                <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.CFafter }}</a></td>
+                                                <td>{{ s.acRating }}</td>
+                                                <td>{{ s.acTimes }}</td>
+                                                <td><a href="/acmerdata/afterac/{{ s.stuNO }}">{{ s.ACafter }}</a></td>
+                                                <td></td>
+                                                <td>{{s.ncTimes}}</td>
+                                                <td>{{s.ncRating}}</td>
+                                                <td>{{ s.jskTimes }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                    </tbody>
+
+                                </table>
+                            
+                                        
+                                        </div>
+                                </div>
+                                <div class="tab-pane fade" id="retire">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-retire">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>stuNO</th>
+                                                    <th>realname</th>
+                                                    <th>classname</th>
+                                                    <th>sex</th>
+                                                    <th>school</th>
+                                                    <th>year</th>
+                                                    <th>cfRating</th>
+                                                    <th>#cf</th>
+                                                    <th>#cf++</th>
+                                                    <th>acRating</th>
+                                                    <th>#ac</th>
+                                                    <th>#ac++</th>
+                                                    <th>#vj</th>
+                                                    <th>#nc</th>
+                                                    <th>ncRating</th>  
+                                                    <th>#jsk</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if retire %}
+                                                    {% for s in retire %}
+                                                    <tr class="odd gradeX">
+                                                        <td><input type="checkbox" value="{{s.stuNO}}" id="chb_{{s.stuNO}}" onclick="setSelStuNO({{ s.stuNO }})">{{  forloop.counter }}</input></td>
+                                                        <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.stuNO }}</a></td>
+                                                        <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                        <td>{{ s.className }}</td>
+                                                        <td>{{ s.sex }}</td>
+                                                        <td>{{ s.school }}</td>
+                                                        <td>{{ s.year }}</td>
+                                                        <td>{{ s.cfRating }}</td>
+                                                        <td>{{ s.cfTimes }}</td>
+                                                        <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.CFafter }}</a></td>
+                                                        <td>{{ s.acRating }}</td>
+                                                        <td>{{ s.acTimes }}</td>
+                                                        <td><a href="/acmerdata/afterac/{{ s.stuNO }}">{{ s.ACafter }}</a></td>
+                                                        <td></td>
+                                                        <td>{{s.ncTimes}}</td>
+                                                        <td>{{s.ncRating}}</td>
+                                                        <td>{{ s.jskTimes }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                
+                                            </tbody>
+        
+                                        </table>
+                                    
+                                                
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="all">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-all">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>stuNO</th>
+                                                    <th>realname</th>
+                                                    <th>classname</th>
+                                                    <th>sex</th>
+                                                    <th>school</th>
+                                                    <th>year</th>
+                                                    <th>cfRating</th>
+                                                    <th>#cf</th>
+                                                    <th>#cf++</th>
+                                                    <th>acRating</th>
+                                                    <th>#ac</th>
+                                                    <th>#ac++</th>
+                                                    <th>#vj</th>
+                                                    <th>#nc</th>
+                                                    <th>ncRating</th>  
+                                                    <th>#jsk</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if studentlist %}
+                                                    {% for s in studentlist %}
+                                                    <tr class="odd gradeX">
+                                                        <td><input type="checkbox" value="{{s.stuNO}}" id="chb_{{s.stuNO}}" onclick="setSelStuNO({{ s.stuNO }})">{{  forloop.counter }}</input></td>
+                                                        <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.stuNO }}</a></td>
+                                                        <td><a href="/acmerdata/student/{{ s.stuNO }}">{{ s.realName }}</a></td>
+                                                        <td>{{ s.className }}</td>
+                                                        <td>{{ s.sex }}</td>
+                                                        <td>{{ s.school }}</td>
+                                                        <td>{{ s.year }}</td>
+                                                        <td>{{ s.cfRating }}</td>
+                                                        <td>{{ s.cfTimes }}</td>
+                                                        <td><a href="/acmerdata/aftercf/{{ s.stuNO }}">{{ s.CFafter }}</a></td>
+                                                        <td>{{ s.acRating }}</td>
+                                                        <td>{{ s.acTimes }}</td>
+                                                        <td><a href="/acmerdata/afterac/{{ s.stuNO }}">{{ s.ACafter }}</a></td>
+                                                        <td></td>
+                                                        <td>{{s.ncTimes}}</td>
+                                                        <td>{{s.ncRating}}</td>
+                                                        <td>{{ s.jskTimes }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                
+                                            </tbody>
+        
+                                        </table>
+                                    
+                                                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <!--div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -96,7 +280,9 @@
                                     </tbody>
 
                                 </table>
-                            </div>
+                            </div -->
+                        <span type="button" title="点击查看相同年级下的cf rating时间线对比" class="btn btn-info btn-sm" onclick="DrawCFRatingLine()">CFRatingLine</span>
+                        <span type="button" title="点击查看CF完成题目类别极坐标图对比" class="btn btn-info btn-sm" onclick="DrawGroupTagPolor()">CFTagPolor</span>
                             
                         </div>
                     </div>
@@ -104,7 +290,6 @@
                 </div>
             </div>
                 <!-- /. ROW  -->
-            
         </div>
                
     </div>
@@ -124,8 +309,45 @@
     <script src="{% static 'assets/js/dataTables/dataTables.bootstrap.js' %}"></script>
         <script>
             $(document).ready(function () {
-                $('#dataTables-example').dataTable();
+                $('#dataTables-active').dataTable();
             });
+            $(document).ready(function () {
+                $('#dataTables-retire').dataTable();
+            });
+            $(document).ready(function () {
+                $('#dataTables-all').dataTable();
+            });
+
+            function setSelStuNO(stuNO){
+            }
+            function DrawCFRatingLine(){
+                var stuList = "";
+                $.each($('input:checkbox:checked'),function(){
+                    if(stuList != ""){
+                        stuList += ",";
+                    }
+                    stuList += $(this).val();
+                });
+                if(stuList != ""){
+                    window.open("/acmerdata/group/ratingline/"+stuList);  
+                }else{
+                    window.alert("请选择队员！");
+                }
+            }
+            function DrawGroupTagPolor(){
+                var stuList = "";
+                $.each($('input:checkbox:checked'),function(){
+                    if(stuList != ""){
+                        stuList += ",";
+                    }
+                    stuList += $(this).val();
+                });
+                if(stuList != ""){
+                    window.open("/acmerdata/groupTagPolor/"+stuList);  
+                }else{
+                    window.alert("请选择队员！");
+                }
+            }
     </script>
          <!-- Custom Js -->
     <script src="{% static 'assets/js/custom-scripts.js' %}"></script>

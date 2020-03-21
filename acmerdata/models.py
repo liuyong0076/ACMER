@@ -39,6 +39,7 @@ class Contest(models.Model):    #比赛模型
     starttimestamp = models.IntegerField(default=0)
     endtimestamp = models.IntegerField(default=0)
     nickName = models.CharField(default='',max_length=100,blank=True)
+    questionnum = models.IntegerField(default=0)
     def __str__(self):
         return self.cdate + self.cname
 
@@ -144,17 +145,11 @@ class AddContestprize(models.Model):    #比赛奖项模型,未完全开发
     def __str__(self):
         return self.cname +'-'+self.name
 
-class Weightrating(models.Model):   #权重模型
-    stuNO = models.CharField(max_length=100, default='')
-    realName = models.CharField(max_length=100, default='')
-    className = models.CharField(max_length=100, default='')
-    div1 = models.IntegerField(default=0)
-    div2 = models.IntegerField(default=0)
-    div3 = models.IntegerField(default=0)
-    count = models.IntegerField(default=0)
-    cfRating = models.IntegerField(default=0)
-    acRating = models.IntegerField(default=0)
-    year = models.IntegerField(default=0)
-    after = models.CharField(default='',max_length=100)
-
-    
+class CodeforcesQuestion(models.Model):
+    name = models.CharField(default="",max_length=100)
+    cid = models.IntegerField(default=0)
+    cname = models.CharField(default="",max_length=300)
+    index = models.CharField(default="",max_length=100)
+    tags = models.CharField(default="",max_length=200)
+    mdtext = models.TextField(default="")
+    difficulty = models.IntegerField(default=0)

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views,viewsVisualData
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -16,7 +16,7 @@ urlpatterns = [
     path('addstudentslist',views.addstatu,name='addstatu'),
     path('aftercf/<str:stuNO>',views.aftersolve,name='aftersolve'),
     path('addprizet',views.addprizet,name='addprize'),
-    path('weightratingstatistic',views.weightratingstatistic,name="weightratingstatistics"),
+
     path('monthlyrating/<str:year>/<str:month>',views.monthlyrating,name="monthlyrating"),
     path('monthlyrating',views.monthlyrating,name="monthlyrating"),
     path('studentmonthlys/<str:stuNO>',views.studentmonthlys,name='studentmonthlys'),
@@ -24,11 +24,12 @@ urlpatterns = [
     path('ac/<str:nickName>',views.acContestSubmit,name='acContestSubmit'),
     path('acsubmit/<int:submitID>',views.viewACCode,name='viewACCode'),
     path('afterac/<str:stuNO>',views.afterSolveAC,name='afterSolveAC'),
+    path('CodeforcesQuestionsview/<int:cid>/<str:index>',views.CodeforcesQuestionsview,name="CodeforcesQuestionsview"),
+    path('Problemset/<str:tag>',views.Problemset,name="Problemset"),
     #group
-    path('group',views.group,name='group'),
-    path('group/del/<int:groupid>',views.groupdel,name='groupdel'),
-    path('group/ratingline/<int:groupid>',views.groupRatingLine,name='groupdata'),
-    path('group/data/<int:groupid>',views.groupdata,name='groupdata'),
+    path('group',viewsVisualData.group,name='group'),
+    path('group/del/<int:groupid>',viewsVisualData.groupdel,name='groupdel'),
+    path('group/data/<int:groupid>',viewsVisualData.groupdata,name='groupdata'),
     #bsdata
     path('fixcodeerrorforinternetproblem',views.fixcodeerrorforinternetproblem,name='fixcodeerror'),
     path('fixcodeerrorforlanguageerror',views.fixcodeerrorforlanguageerror,name='fixcodeerror'),
@@ -43,15 +44,21 @@ urlpatterns = [
     path('standardizecftime',views.Standardizecftime,name='Standardizecftime'),
     path('setallcontestsolve',views.setallcontestsolve,name='setallcontestsolve'),
     path('setallaftersolve',views.setallaftersolve,name='setallaftersolve'),
-    path('updataweightratingstatistics',views.updataweightratingstatistics,name="updatacfstatistics"),
+    path('updateCodeforcesQuestion',views.updateCodeforcesQuestion,name="updateCodeforcesQuestion"),
     path('jskdataupdate',views.jskdataupdate,name='jskdataupdate'),
     path('fixacdiff',views.fixacdiff,name='fixacdiff'),
     path('getaccode/<str:utype>',views.getACCode,name="getACCode"),
     path('updateACDataByContest',views.updateACDataByContest,name='updateACDataByContest'),
     
     # data visualization
-    path('groupRatingLine', views.groupRatingLine, name='groupRatingLine'),
-    path('timeline', views.timeline, name='timeline'),
+    path('group/ratingline/<str:groupid>',viewsVisualData.groupRatingLine,name='groupdata'),
+    path('groupRatingLine', viewsVisualData.groupRatingLine, name='groupRatingLine'),
+    path('timeline', viewsVisualData.timeline, name='timeline'),
+    path('teamMembersCount',viewsVisualData.teamMembersCount,name="teamMembersCount"),
+    path('topCompare',viewsVisualData.topCompare,name="topCompare"),
+    path('contestCount',viewsVisualData.contestCount,name="contestCount"),
+    path('groupTagLine/<str:groupid>',viewsVisualData.groupTagCompare,name="groupTagCompare"),
+    path('groupTagPolor/<str:groupid>',viewsVisualData.groupTagPolor,name="groupTagPolor"),
     #etc
     path('contact', views.contact, name='contact'),
     path('fixbug', views.fixbug, name='fixbug'),

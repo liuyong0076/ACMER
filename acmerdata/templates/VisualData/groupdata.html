@@ -35,7 +35,7 @@
                         var lineX = JSON.parse('{{lineX|safe}}');
                         var stuNOList = JSON.parse('{{stuNOList|safe}}');
                         var dic_stuNO_rating = JSON.parse('{{dic_stuNO_rating|safe}}');
-                        var color = JSON.parse('{{color|safe}}');
+                        var color = JSON.parse('{{colors|safe}}');
                 
                         var datalist = []
                         for(var item in stuNOList){
@@ -185,6 +185,174 @@
                     </script>
                     <p  style="text-align:center"><a href="/acmerdata/group/ratingline/{{ groupid }}"class="btn btn-primary btn-sm">点此进入全屏</a></p>
                     <p></p>
+                    <div id="polor" style="height: 800%;width:100%;"></div>
+                    <p  style="text-align:center"><a href="/acmerdata/groupTagPolor/{{ groupid }}"class="btn btn-primary btn-sm">点此进入全屏</a></p>
+                    <p></p>
+                    <script type="text/javascript">
+                        var chart = echarts.init(document.getElementById("polor"))
+                            let XData = [];
+                            var mychart =echarts.init(document.getElementById("container"));
+                            var ser = [];
+                            var names = JSON.parse('{{names|safe}}');
+                            var datalist = JSON.parse('{{datalist|safe}}');
+                            var tags = JSON.parse('{{tags|safe}}');
+                            var color = JSON.parse('{{ colors|safe }}');
+                            let windDirection = [];
+                            for(var j=0;j<names.length;j++)
+                            {
+                                var datas = []
+                                for(var i = 0 ;i<tags.length;i++)
+                                {
+                                    data = [datalist[names[j]][i],i,tags[i]];
+                                    datas.push(data);
+                                }
+                                var n = {
+                                    name:names[j],
+                                        coordinateSystem: 'polar',
+                                        type: 'line',
+                                        itemStyle: {
+                                            normal: {
+                                                color: color[j] + ', 0.3)',
+                                            }
+                                        },
+                                        polarIndex: 0,
+                                        symbol: 'emptyCircle',
+                                        symbolSize: 6,
+                                        areaStyle: {
+                                            normal: {
+                                                color: {
+                                                    type: 'radial',
+                                                    x: 0.5,
+                                                    y: 0.5,
+                                                    r: 0.5,
+                                                    colorStops: [{
+                                                        offset: 0,
+                                                        color: 'transparent',
+                                                    }, {
+                                                        offset: 1,
+                                                        color: color[j] + ', 0.8)' // 100% 处的颜色
+                                                    }],
+                                                    globalCoord: false // 缺省为 false
+                                                },
+                                                opacity: 0.7
+                                            }
+                                        },
+                                        data: datas
+                                    }
+                                    ser.push(n);
+                            }
+                            
+                            option = {
+                                title: {
+                                    text: '极坐标系对比'
+                                },
+                                legend: {
+                                    data: names,
+                                },
+                                polar: [{
+                                        center: ['50%', '50%']
+                                    },
+                                    {
+                                        center: ['50%', '50%']
+                                    },
+                                ],
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'line',
+                                        snap:true
+                                    },
+                                    formatter:(e)=>{
+                                        return `
+                                          tags：${e[0].value[2]}</br>
+                                          {% for name in namesforit %}
+                                          {{ name }}：${e[{{forloop.counter0}}].value[0]}</br>
+                                          {% endfor %}
+                                        `
+                                    }
+                            
+                                },
+                                angleAxis: [{
+                                        // type: 'value',
+                                        boundaryGap: false,
+                                        startAngle: 90,
+                                        splitNumber:30,
+                                        polarIndex: 0,
+                                        // data: XData,
+                                        axisLabel: {
+                                            formatter: (e) => {
+                                                return tags[e]
+                                                 //return e[0].value[3]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        // type: 'value',
+                                        boundaryGap: false,
+                                        startAngle: 90,
+                                        polarIndex: 1,
+                                        // data: XData,
+                                        axisLine: {
+                                            show: false
+                                        },
+                                        splitLine: {
+                                            show: false
+                                        },
+                                        axisTick: {
+                                            show: false
+                                        },
+                                        axisLabel: {
+                                            show: false
+                                        }
+                                    }
+                                ],
+                                radiusAxis: [{
+                                    min: 0,
+                                    polarIndex: 0,
+                                    max: 'dataMax',
+                                   
+                                    axisLabel: {
+                                        show: true
+                                    },
+                                   
+                                    axisTick: {
+                                        show: false
+                                    }
+                                }, {
+                                    min: 0,
+                                    polarIndex: 1,
+                                    max: 'dataMax',
+                                    axisLine: {
+                                        show: false
+                                    },
+                                    axisLabel: {
+                                        show: false
+                                    },
+                                    splitLine: {
+                                        show: false
+                                    },
+                                    axisTick: {
+                                        show: false
+                                    }
+                                }],
+                                dataZoom:[
+                                    {
+                                        type: 'slider',
+                                        angleAxisIndex:[0,1],
+            
+                                    },
+                                    /*{
+                                        type: 'inside',
+                                        radiusAxisIndex:[0,1],
+                                        filterMode: 'filter'
+            
+                                    }*/
+                                ],
+                                series: ser,
+                                animationDuration: 2000
+                            };
+                            chart.setOption(option)
+                    </script>
 			 <div class="row">
                 <div class="col-md-6">
                     <div class="panel panel-default">

@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body style="height: 100%; margin: 0;">
+            <div id="container" style="height: 100%;width: 100%;"></div>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+            <script type="text/javascript">
+            var myChart = echarts.init(document.getElementById('container'));
+                var myColor = ['#eb2100', '#eb3600', '#d0570e', '#d0a00e', '#34da62', '#00e9db', '#00c0e9', '#0096f3', '#33CCFF', '#33FFCC'];
+                var option = {
+                backgroundColor: '#0e2147',
+                grid: {
+                left: '11%',
+                top: '12%',
+                right: '10%',
+                bottom: '8%',
+                containLabel: true
+                },
+                xAxis: [{
+                show: false,
+                }],
+                yAxis: [{
+                axisTick: 'none',
+                axisLine: 'none',
+                offset: '27',
+        axisLabel: {
+            textStyle: {
+                color: '#ffffff',
+                fontSize: '16',
+            }
+        },
+        data: JSON.parse("{{year|safe}}")
+    }, {
+        axisTick: 'none',
+        axisLine: 'none',
+        axisLabel: {
+            textStyle: {
+                color: '#ffffff',
+                fontSize: '16',
+            }
+        },
+        data: JSON.parse("{{cnt|safe}}")
+    }, {
+        name: '北化各年级有效人数统计',
+        nameGap: '50',
+        nameTextStyle: {
+            color: '#ffffff',
+            fontSize: '16',
+        },
+        axisLine: {
+            lineStyle: {
+                color: 'rgba(0,0,0,0)'
+            }
+        },
+        data: [],
+    }],
+                series: [{
+            name: '条',
+            type: 'bar',
+            yAxisIndex: 0,
+            data: JSON.parse("{{number|safe}}"),
+            label: {
+                normal: {
+                    show: true,
+                    position: 'right',
+                    textStyle: {
+                        color: '#ffffff',
+                        fontSize: '16',
+                    }
+                }
+            },
+            barWidth: 12,
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        var num = myColor.length;
+                        return myColor[params.dataIndex % num]
+                    },
+                }
+            },
+            z: 2
+        }, {
+            name: '白框',
+            type: 'bar',
+            yAxisIndex: 1,
+            barGap: '-100%',
+            data: JSON.parse("{{bar1|safe}}"),
+            barWidth: 20,
+            itemStyle: {
+                normal: {
+                    color: '#0e2147',
+                    barBorderRadius: 5,
+                }
+            },
+            z: 1
+        }, {
+            name: '外框',
+            type: 'bar',
+            yAxisIndex: 2,
+            barGap: '-100%',
+            data: JSON.parse("{{bar|safe}}"),
+            barWidth: 24,
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        var num = myColor.length;
+                        return myColor[params.dataIndex % num]
+                    },
+                    barBorderRadius: 5,
+                }
+            },
+            z: 0
+        },
+        {
+            name: '外圆',
+            type: 'scatter',
+            hoverAnimation: false,
+            data: JSON.parse("{{cycle|safe}}"),
+            yAxisIndex: 2,
+            symbolSize: 35,
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        var num = myColor.length;
+                        return myColor[params.dataIndex % num]
+                    },
+                    opacity: 1,
+                }
+            },
+            z: 2
+        }
+    ]
+};
+                myChart.setOption(option);
+            </script>
+    </body>
+</html>

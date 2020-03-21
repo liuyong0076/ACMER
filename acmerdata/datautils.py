@@ -1,7 +1,7 @@
 # commonly used functions to write data into database
 
 from acmerdata import bsdata
-from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,Weightrating,ACContest
+from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,ACContest
 from django.db.models import Max
 import logging
 import time
@@ -503,40 +503,61 @@ def getstudentmonthsolve(stu,year,month):       #按月获取学生补题数据,
             aftersolve=aftersolve+1
     return aftersolve
 
-def getbigaftersolve(y1,m1,y2,m2,type='cf'):      #大范围获取全部学生月补题数据，返回一个字典,对应学生号和解题数
+def getbigaftersolve(y1,m1,y2,m2,source='cf'):      #大范围获取全部学生月补题数据，返回一个字典,对应学生号和解题数
     if m2==13:
         m2=1
         y2=y2+1
     starttime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y1, m1),"%Y-%m-%d %H:%M:%S"))
     endtime = time.mktime(time.strptime(("%d-%02d-01 00:00:00") % (y2, m2),"%Y-%m-%d %H:%M:%S"))
     endt = {}
-    if type =='cf':
+    if source =='cf':
         contests = CFContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
-    elif type == 'ac':
-        contests = ACContest.objects.filter(statu='OK',ctime__range=(starttime,endtime))
+    elif source == 'ac':
+        contests = ACContest.objects.filter(statu='AC',ctime__range=(starttime,endtime))
+
+    # logger = logging.getLogger('log')
+    # logger.info("source=%s, size of contests=%d" % (source,len(contests)))
+
+
     aftersolve={}
     end = {}
     index = {}
-    for contest in contests:
-        if not contest.stuNO in aftersolve:
-            aftersolve[contest.stuNO]=0
-        if not contest.cid in index :
-            index[contest.cid]={}
-        if not contest.stuNO in index[contest.cid]:
-            index[contest.cid][contest.stuNO] = []
-        if contest.index not in index[contest.cid][contest.stuNO]:
-            index[contest.cid][contest.stuNO].append(contest.index)
-            aftersolve[contest.stuNO] = aftersolve[contest.stuNO] + 1
+    if source == 'cf':
+        for contest in contests:
+            if not contest.stuNO in aftersolve:
+                aftersolve[contest.stuNO]=0
+            if not contest.cid in index :
+                index[contest.cid]={}
+            if not contest.stuNO in index[contest.cid]:
+                index[contest.cid][contest.stuNO] = []
+            if contest.index not in index[contest.cid][contest.stuNO]:
+                index[contest.cid][contest.stuNO].append(contest.index)
+                aftersolve[contest.stuNO] = aftersolve[contest.stuNO] + 1
+    elif source == 'ac':
+        for contest in contests:
+            if not contest.stuNO in aftersolve:
+                aftersolve[contest.stuNO]=0
+            if not contest.cname in index :
+                index[contest.cname]={}
+            if not contest.stuNO in index[contest.cname]:
+                index[contest.cname][contest.stuNO] = []
+            if contest.task not in index[contest.cname][contest.stuNO]:
+                index[contest.cname][contest.stuNO].append(contest.task)
+                aftersolve[contest.stuNO] = aftersolve[contest.stuNO] + 1
+
+    # if source == 'ac':
+    #     logger.info(aftersolve)
+    
     return aftersolve
 
 def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)代表数据起始年月,(y2,m2)代表截止年月,返回记录着学生从起始到截止年月的每月数据的字典列表
     if m2==13:
         m2=1
         y2=y2+1
-    s={}
     starttime = ("%d-%02d-01 00:00:00") % (y1, m1)
     endtime = ("%d-%02d-01 00:00:00") % (y2, m2)
     datas = StudentContest.objects.filter(stuNO=stu.stuNO,cdate__range=(starttime,endtime))
+    s={}
     for con in datas:
         date = con.cdate[0:7]
         year = date.split("-")[0]
@@ -553,6 +574,8 @@ def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)�
                 'cfp':0,
                 'cfpp':0,
                 'ac':0,
+                'acp':0,
+                'acpp':0,
                 'acdiff':0,
                 'jsk':0,
                 'jskp':0,
@@ -566,6 +589,7 @@ def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)�
             s[year][month]['cfdiff'] += int(con.diff)
         elif con.ctype == 'ac':
             s[year][month]['ac'] += 1
+            s[year][month]['acp'] += int(con.solve)
             try:
                 s[year][month]['acdiff'] += int(con.diff)
             except:
@@ -579,6 +603,7 @@ def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)�
     start=time.mktime(time.strptime(starttime,"%Y-%m-%d %H:%M:%S"))
     end = time.mktime(time.strptime(endtime,"%Y-%m-%d %H:%M:%S"))
     sc = CFContest.objects.filter(stuNO=stu.stuNO,ctime__range=(start,end),statu='OK')
+    asc = ACContest.objects.filter(stuNO=stu.stuNO,ctime__range=(start,end),statu='AC')
     index = {}
     for data in sc:
         date=time.localtime(data.ctime)
@@ -589,11 +614,22 @@ def getbigstudentmonth(stu,y1,m1,y2,m2):    #大范围获取学生数据(y1,m1)�
         if data.index not in index[data.cid]:
             s[str(year)][("%02d")%(month)]['cfpp'] += 1
             index[data.cid].append(data.index)
+    index = {}
+    for data in asc:
+        date=time.localtime(data.ctime)
+        year = date.tm_year
+        month = date.tm_mon
+        if data.nickName not in index:
+            index[data.nickName]=[]
+        if data.task not in index[data.nickName]:
+            s[str(year)][("%02d")%(month)]['acpp'] += 1
+            index[data.nickName].append(data.task)
     datalist = []
     for ykey in s.keys():
         for mkey in s[ykey].keys():
             s[ykey][mkey]['cfpp']=s[ykey][mkey]['cfpp']-s[ykey][mkey]['cfp']
-            s[ykey][mkey]['score'] = (s[ykey][mkey]['cf']+s[ykey][mkey]['ac']+s[ykey][mkey]['jsk']+s[ykey][mkey]['nc']) * 20 + (s[ykey][mkey]['cfp']+s[ykey][mkey]['cfpp']+s[ykey][mkey]['jskp']+s[ykey][mkey]['ncp']) * 5 + (s[ykey][mkey]['cfdiff']+s[ykey][mkey]['acdiff'])
+            s[ykey][mkey]['acpp']=s[ykey][mkey]['acpp']-s[ykey][mkey]['acp']
+            s[ykey][mkey]['score'] = (s[ykey][mkey]['cf']+s[ykey][mkey]['ac']+s[ykey][mkey]['jsk']+s[ykey][mkey]['nc']) * 20 + (s[ykey][mkey]['cfp']+s[ykey][mkey]['cfpp']+s[ykey][mkey]['jskp']+s[ykey][mkey]['ncp']+s[ykey][mkey]['acp']+s[ykey][mkey]['acpp']) * 5 + (s[ykey][mkey]['cfdiff']+s[ykey][mkey]['acdiff'])
             datalist.append(s[ykey][mkey])
     datalist.sort(key=lambda x: x['date'],reverse=True)
     return datalist

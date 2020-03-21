@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from acmerdata import bsdata
-from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,Weightrating,ACContest
+from .models import Student, Contest, StudentContest,AddStudentqueue,CFContest,Contestforecast,ACContest
 import logging
 import time
 import datetime
@@ -105,6 +105,7 @@ def saveACDataAll(stu):    #   根据学生对象全部获取atcoder数据
         dataList = getACUserData(stu.acID)
         stu.acTimes = len(dataList)
         if(stu.acTimes > 0):
+            stu.acRating = dataList[-1]["newRating"]
             for data in dataList:
                 subList = getACSubmitData(stu.acID,data['nickName'])
                 task = []
@@ -121,7 +122,6 @@ def saveACDataAll(stu):    #   根据学生对象全部获取atcoder数据
                     if ACContest.objects.filter(stuNO=stu.stuNO,subid=submit['subid'],nickName=data['nickName']).count() == 0:
                         ACContest.objects.create(stuNO=stu.stuNO,realName=stu.realName,ctime=submit['ctime'],nickName=data['nickName'],cname=data["contest"],
                             subid=submit['subid'],code="wating to get",task=submit['task'],statu=submit['statu'],language=submit['language'])
-                stu.acRating = dataList[-1]["newRating"]
                 if Contest.objects.filter(cname = data['contest'],nickName=data['nickName']).count()==0:
                     Contest.objects.create(cid=data['contestID'],cname=data['contest'],cdate=data['date'],cdiv=0,ctype='ac',cnumber=0,endtimestamp=data['endtimestamp'],nickName=data['nickName'],starttimestamp=0)
                 addStudentContestForAC(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac",str(solve),str(after),data['nickName'])
@@ -138,6 +138,7 @@ def saveACDataIncrementally(stu):    #   根据学生对象增量获取atcoder�
         dataList.reverse()
         stu.acTimes = len(dataList)
         if(stu.acTimes > 0):
+            stu.acRating = dataList[0]["newRating"]
             for data in dataList:
                 if StudentContest.objects.filter(nickName=data['nickName'],ctype='ac',stuNO=stu.stuNO).count() !=0:
                     break
@@ -156,7 +157,6 @@ def saveACDataIncrementally(stu):    #   根据学生对象增量获取atcoder�
                     if ACContest.objects.filter(stuNO=stu.stuNO,subid=submit['subid'],nickName=data['nickName']).count() == 0:
                         ACContest.objects.create(stuNO=stu.stuNO,realName=stu.realName,ctime=submit['ctime'],nickName=data['nickName'],cname=data["contest"],
                             subid=submit['subid'],code="wating to get",task=submit['task'],statu=submit['statu'],language=submit['language'])
-                stu.acRating = dataList[-1]["newRating"]
                 if Contest.objects.filter(cname = data['contest'],nickName=data['nickName']).count()==0:
                     Contest.objects.create(cid=data['contestID'],cname=data['contest'],cdate=data['date'],cdiv=0,ctype='ac',cnumber=0,endtimestamp=data['endtimestamp'],nickName=data['nickName'],starttimestamp=0)
                 addStudentContestForAC(stu.stuNO,stu.realName,stu.className,data["contestID"],data["contest"],data["date"],data["rank"],data["newRating"],data["diff"],"ac",str(solve),str(after),data['nickName'])

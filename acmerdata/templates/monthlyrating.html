@@ -91,7 +91,7 @@
                                         {% if studentlist %}
                                             {% for s in studentlist %}
                                             <tr class="odd gradeX">
-                                                <td>{{  forloop.counter }}</td>
+                                                <td><input type="checkbox" value="{{s.stuNO}}" id="chb_{{s.stuNO}}" onclick="setSelStuNO({{ s.stuNO }})">{{  forloop.counter }}</input></td>
                                                 <td><a href="/acmerdata/student/{{ s.stuNO }}" title="点击查看其参赛列表">{{s.stuNO}}</a></td>
                                                 <td><a href="/acmerdata/studentmonthlys/{{ s.stuNO }}" title="点击查看其每月积分变化详情">{{ s.realName }}</a></td>
                                                 <td>{{ s.className }}</td>
@@ -116,7 +116,10 @@
 
                                 </table>
                             </div>
-                            
+                        <div style="margin-bottom: 10px;">
+                            <span type="button" title="点击查看相同年级下的cf rating时间线对比" class="btn btn-info btn-sm" onclick="DrawCFRatingLine()">CFRatingLine</span>
+                            <span type="button" title="点击查看CF完成题目类别极坐标图对比" class="btn btn-info btn-sm" onclick="DrawGroupTagPolor()">CFTagPolor</span>
+                        </div>
                             <div class="alert alert-success">
                                 Score = 参赛场次*20 + 解题数*5 + cfdiff + acdiff
                             </div>
@@ -154,6 +157,36 @@
                     $(location).attr('href', url);
                 });
             });
+
+            
+            function DrawCFRatingLine(){
+                var stuList = "";
+                $.each($('input:checkbox:checked'),function(){
+                    if(stuList != ""){
+                        stuList += ",";
+                    }
+                    stuList += $(this).val();
+                });
+                if(stuList != ""){
+                    window.open("/acmerdata/group/ratingline/"+stuList);  
+                }else{
+                    window.alert("请选择队员！");
+                }
+            }
+            function DrawGroupTagPolor(){
+                var stuList = "";
+                $.each($('input:checkbox:checked'),function(){
+                    if(stuList != ""){
+                        stuList += ",";
+                    }
+                    stuList += $(this).val();
+                });
+                if(stuList != ""){
+                    window.open("/acmerdata/groupTagPolor/"+stuList);  
+                }else{
+                    window.alert("请选择队员！");
+                }
+            }
     </script>
          <!-- Custom Js -->
     <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
