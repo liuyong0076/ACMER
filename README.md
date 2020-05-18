@@ -6,7 +6,7 @@
 
 ### 项目介绍
 
-ACMERDATA是一个acm队员数据系统,能够直接从CodeForces、AtCoder、newcoder网站上获取队员比赛的参与情况以及对队员比赛解题数目\参赛情况等数据进行展示，北京化工大学和南通大学正在使用该系统进行竞赛集训队员管理，网址为：http://trytotest.top:8000/acmerdata/
+ACMERDATA是一个acm队员数据系统,能够直接从CodeForces、AtCoder、newcoder网站上获取队员比赛的参与情况以及对队员比赛解题数目\参赛情况等数据进行展示，北京化工大学和南通大学正在使用该系统进行竞赛集训队员管理，网址为：http://www.acmer.site:81/
 
 ### 使用模块：
 
