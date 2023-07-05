@@ -130,7 +130,7 @@ DATABASES = {
 输入
 
 ```
-python3 manage.py makemigrations
+python3 manage.py makemigrations acmerdata
 python3 manage.py migrate
 ```
 
@@ -211,7 +211,7 @@ DATABASES = {
 执行 
 
 ```bash
-python3 manage.py makemigrations
+python3 manage.py makemigrations acmerdata
 python3 manage.py migrate
 ```
 
